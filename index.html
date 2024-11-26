@@ -1,0 +1,530 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Пасьянс Медичи. Бдилка ✵</title>
+    <style>
+      body {
+    font-family: 'Courier New', Courier, monospace;
+    color: #ffffff;
+    background: radial-gradient(circle at center, #000428, #004e92 70%, #000428);
+    background-attachment: fixed;
+    background-size: cover;
+    margin: 0;
+    min-height: 100vh;
+    overflow-y: auto;
+    display: block;
+    padding: 20px;
+}
+
+.container {
+    text-align: center;
+    max-width: 600px;
+    padding: 20px;
+    background: rgba(0, 0, 0, 0.7);
+    border-radius: 15px;
+    box-shadow: 0 0 20px #00d4ff, 0 0 30px #005f8f;
+    margin: 20px auto; /* Центрируем с помощью отступов */
+}
+
+        /* Заголовок */
+        h1 {
+            font-size: 3rem;
+            color: #00d4ff;
+            text-shadow: 0 0 10px #00d4ff, 0 0 20px #00e5ff, 0 0 30px #00aaff;
+            margin-bottom: 40px;
+        }
+
+        /* Стили для меток и полей */
+        label {
+            font-size: 1.2rem;
+            display: block;
+            margin-bottom: 10px;
+            color: #a8d0e6;
+        }
+
+        input, select {
+    font-size: 1rem;
+    color: #00d4ff;
+    background-color: #1e3b5a;
+    border: 2px solid #00d4ff;
+    border-radius: 5px;
+    padding: 10px;
+    margin-bottom: 20px;
+    width: 100%; /* Элемент займет всю доступную ширину */
+    max-width: 600px; /* Максимальная ширина */
+    box-shadow: 0 0 5px #00d4ff;
+    box-sizing: border-box; /* Гарантируем, что padding и border не выталкивают элемент */
+}
+
+        /* Кнопка */
+        button {
+            font-size: 1.2rem;
+            background: linear-gradient(45deg, #00d4ff, #007bbf);
+            color: white;
+            border: none;
+            border-radius: 5px;
+            padding: 15px 25px;
+            cursor: pointer;
+            box-shadow: 0 0 15px #00d4ff;
+            transition: all 0.3s ease-in-out;
+            margin-top: 20px;
+        }
+
+        button:hover {
+            background: linear-gradient(45deg, #00eaff, #005f8f);
+            box-shadow: 0 0 25px #00eaff, 0 0 35px #00bfff;
+            transform: scale(1.05);
+        }
+
+        /* Результаты */
+        #result {
+            font-size: 1.4rem;
+            color: #fff;
+            background-color: rgba(0, 0, 0, 0.5);
+            border: 2px solid #00d4ff;
+            border-radius: 10px;
+            padding: 20px;
+            margin-top: 30px;
+            text-align: center;
+            box-shadow: 0 0 10px #00d4ff, 0 0 20px #005f8f;
+        }
+
+        /* Анимация звезд */
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: url('https://www.transparenttextures.com/patterns/stardust.png');
+            z-index: -1;
+            opacity: 0.3;
+        }
+
+        /* Добавляем плавность взаимодействия */
+        input, select {
+            transition: all 0.3s ease-in-out;
+        }
+
+        input:focus, select:focus {
+            outline: none;
+            border-color: #00eaff;
+            box-shadow: 0 0 10px #00eaff, 0 0 15px #005f8f;
+        }
+    </style>
+</head><body>
+    <div class="container">
+        <h1>Пасьянс Медичи. Бдилка ✵</h1>
+        
+        <label for="gender">Выберите пол:</label>
+        <select id="gender">
+            <option value="male">Мужской</option>
+            <option value="female">Женский</option>
+        </select>
+        
+        <label for="startCard">Последняя карта:</label>
+        <select id="startCard">
+            <option value="Т">Т</option>
+            <option value="К">К</option>
+            <option value="Д">Д</option>
+            <option value="В">В</option>
+            <option value="10">10</option>
+            <option value="9">9</option>
+            <option value="8">8</option>
+            <option value="7">7</option>
+            <option value="6">6</option>
+            <option value="5">5</option>
+            <option value="4">4</option>
+            <option value="3">3</option>
+            <option value="2">2</option>
+        </select>
+        
+        <label for="wish">Желаю чтобы:</label>
+        <input type="text" id="wish" placeholder="Введите ваше пожелание">
+        
+        <label for="sphere">Выберите сферу влияния:</label>
+        <select id="sphere" onchange="updateDirections()">
+            <option value="стратегия">Стратегия</option>
+            <option value="восхищение">Восхищение</option>
+            <option value="вдохновение">Вдохновение</option>
+            <option value="прорицание">Прорицание</option>
+        </select>
+        
+        <label for="direction">Выберите направление влияния:</label>
+        <select id="direction">
+        </select>
+        
+        <label for="needType">Выберите тип необходимости:</label>
+        <select id="needType">
+            <option value="з-р-п">Нужда</option>
+            <option value="п-р-з">Внедрение</option>
+        </select>
+        
+        <button style="width:100%;" onclick="getCard()">Получить расклад</button>
+        
+        <div id="result" style="display:none;"></div>
+    </div>
+
+
+    <script>
+        // Схема выбора карты
+        const cardMatrix = {
+            'стратегия': { 
+                'Расположение': 'Т', 
+                'Позиционирование': 'К', 
+                'Маскировка': 'Д', 
+                'Празднование': '2' 
+            },
+            'восхищение': { 
+                'Блаженство': 'В', 
+                'Озарение': '10', 
+                'Посредственность': '9', 
+            },
+            'вдохновение': { 
+                'Рациональность': '8', 
+                'Чистка': '7', 
+                'Уединение': '6' 
+            },
+            'прорицание': { 
+                'Прагматичность': '5', 
+                'Привязанность': '4', 
+                'Выгода': '3' 
+            }
+        };
+
+        // Начальная карта
+        const table = {
+            'Т': { 'п-р-з': ['В', '8', 'К'], 'з-р-п': [] },
+            'К': { 'п-р-з': ['Д', 'В', '8', '5'], 'з-р-п': ['Т', 'В', '8', '5'] },
+            'Д': { 'п-р-з': ['2', '9', '6', '4', '10', '7'], 'з-р-п': ['4', '7', 'К', '10', '9'] },
+            'В': { 'п-р-з': ['8', 'К'], 'з-р-п': ['К', '10', '8', '5', 'Т'] },
+            '10': { 'п-р-з': ['В', '8', '5', 'К', '7', 'Д'], 'з-р-п': ['К', '8', '5', '7', '4', 'Д', '9'] },
+            '9': { 'п-р-з': ['Д', '10', '7', '4', '6', '2'], 'з-р-п': ['Д', '7', '4', '6', '3', '2'] },
+            '8': { 'п-р-з': ['К', 'В', '10', '7', '5'], 'з-р-п': ['Т', 'В', 'К', '10', '5'] },
+            '7': { 'п-р-з': ['5', '10', '4', '9', '6', 'Д'], 'з-р-п': ['К', '10', '8', '5', '4', 'Д', '9'] },
+            '6': { 'п-р-з': ['4', '9', '2', '3'], 'з-р-п': ['7', '4', 'Д', '9', '3', '2'] },
+            '5': { 'п-р-з': ['В', '8', '10', '7', 'К'], 'з-р-п': ['8', 'К', '10', '7', '4'] },
+            '4': { 'п-р-з': ['5', '10', '7', 'Д', '9', '6'], 'з-р-п': ['7', 'Д', '9', '6', '3'] },
+            '3': { 'п-р-з': ['4', '9', '6', '2'], 'з-р-п': ['6', '2'] },
+            '2': { 'п-р-з': ['9', '6', '3'], 'з-р-п': ['6', '3', 'Д', '9'] }
+        };
+
+       
+const enrichmentData = {
+    "7": {
+        '♥': "осмотрительного",
+        '♠': "осмысленного",
+        '♣': "познавательного",
+        '♦': "энтузиасного"
+    },
+    "1": {
+        '♥': "сюрреализного",
+        '♠': "парадоксального",
+        '♣': "невинного",
+        '♦': "замечательного"
+    },
+    "2": {
+        '♥': "поощрительного",
+        '♠': "рассудительного",
+        '♣': "кокетского",
+        '♦': "аргументированого"
+    },
+    "3": {
+        '♥': "осторожного",
+        '♠': "безжалостного",
+        '♣': "устроенного",
+        '♦': "занимательного"
+    },
+    "4": {
+        '♥': "подсматривающего",
+        '♠': "абсолютного",
+        '♣': "результативного",
+        '♦': "координированного"
+    },
+    "5": {
+        '♥': "впечатляющего",
+        '♠': "отстаивающего",
+        '♣': "привлекательного",
+        '♦': "одобряющего"
+    },
+    "6": {
+        '♥': "искренного",
+        '♠': "предоставленного",
+        '♣': "дружелюбного",
+        '♦': "внимательного"
+    }
+};
+
+const cardActions = {
+    "Т": {
+        '♥': "тайны",
+        '♠': "бронирования",
+        '♣': "комплектации",
+        '♦': "подобранности"
+    },
+    "К": {
+        '♥': "уверенности",
+        '♠': "чередования",
+        '♣': "удивления",
+        '♦': "впечатления"
+    },
+    "Д": {
+        '♥': "оформления",
+        '♠': "проложения",
+        '♣': "ограничивания",
+        '♦': "доведения"
+    },
+    "В": {
+        '♥': "обнадеженности",
+        '♠': "словления",
+        '♣': "утомления",
+        '♦': "обоснования"
+    },
+    "10": {
+        '♥': "изменения",
+        '♠': "пропущения",
+        '♣': "сведения",
+        '♦': "открытия"
+    },
+    "9": {
+        '♥': "обласкания",
+        '♠': "принятия",
+        '♣': "налаживания",
+        '♦': "сконцентрирования"
+    },
+    "8": {
+        '♥': "привлечения",
+        '♠': "предоставления",
+        '♣': "замятия",
+        '♦': "настроения"
+    },
+    "7": {
+        '♥': "устоятия",
+        '♠': "уравновешивания",
+        '♣': "избавления",
+        '♦': "обсудить"
+    },
+    "6": {
+        '♥': "разобранности",
+        '♠': "настоенности",
+        '♣': "дополнения",
+        '♦': "обеспечения"
+    },
+    "5": {
+        '♥': "взвешивания",
+        '♠': "предсказания",
+        '♣': "впитывания",
+        '♦': "советования"
+    },
+    "4": {
+        '♥': "передачи",
+        '♠': "удовлетворения",
+        '♣': "сдобривания",
+        '♦': "обрадования"
+    },
+    "3": {
+        '♥': "ноплнения",
+        '♠': "раздачи",
+        '♣': "оптимизирования",
+        '♦': "намечивания"
+    },
+    "2": {
+        '♥': "разделения",
+        '♠': "подытоживания",
+        '♣': "наделения",
+        '♦': "подведения"
+    }
+};
+
+let days = [
+  'Воскресенье',
+  'Понедельник',
+  'Вторник',
+  'Среда',
+  'Четверг',
+  'Пятница',
+  'Суббота'
+];
+
+// Масти для мужского и женского пола
+const ar_replace_mast_male = { '': '', 'п-р-з': '♦', 'з-р-п': '♠' };
+const ar_replace_mast_female = { '': '', 'п-р-з': '♥', 'з-р-п': '♣' };
+
+let currentMast = ar_replace_mast_male;
+
+        // Функция для обновления списка направлений в зависимости от выбранной сферы
+        function updateDirections() {
+            const sphere = document.getElementById('sphere').value;
+            const directionSelect = document.getElementById('direction');
+            
+            // Очистим текущие элементы в select "direction"
+            directionSelect.innerHTML = '';
+
+            // Заполняем новый список направлений на основе выбранной сферы
+            for (const direction in cardMatrix[sphere]) {
+                const option = document.createElement('option');
+                option.value = direction;
+                option.textContent = direction;
+                directionSelect.appendChild(option);
+            }
+        }
+
+        // Функция для получения карты
+        function getCard() {
+            const resultDiv = document.getElementById('result');
+            resultDiv.style.display = 'block';
+            resultDiv.innerHTML = 'Загрузка...'; // Очистить предыдущий результат
+
+            resultDiv.scrollIntoView({
+    behavior: "smooth", // Плавная прокрутка
+    block: "start" // Начало элемента будет у верхнего края окна
+});
+
+            const wish = document.getElementById('wish').value;
+            const startCard = document.getElementById('startCard').value;
+            const sphere = document.getElementById('sphere').value;
+            const direction = document.getElementById('direction').value;
+            const needType = document.getElementById('needType').value;
+            const gender = document.getElementById('gender').value;
+
+            const endCard = cardMatrix[sphere][direction];
+
+
+
+            if(wish===''){
+                resultDiv.innerHTML = 'Введите желание!';
+                return;
+            }
+
+if(startCard===endCard){
+    resultDiv.innerHTML = 'Выбранное направление сходно с предыдущей картой, смените!';
+    return;
+}
+
+if(endCard==='Т' && needType==='п-р-з'){
+    resultDiv.innerHTML = 'Выбранный тип не применим для выбранного направления!';
+    return;
+}
+
+
+            // Определяем масть карты на основе выбранного пола и направления
+
+            if (gender === 'male') {
+                let currentMast = ar_replace_mast_male;
+            } else if (gender === 'female') {
+                let currentMast = ar_replace_mast_female;
+            }
+
+            // Дополнительно учитываем начальную карту и её значения
+            const initialCards = table[startCard] ? table[startCard][needType] : [];
+
+            let output = `Желание: желаю чтобы ${wish}.<br><br>Расклад: `;
+            let output2 = '';
+            
+            const result2 = findBalancedPathWithSpecificEndTransition(startCard, endCard, needType);
+
+            if (result2) {
+            result2.path.forEach((card, i) => {
+
+                let mastNow = currentMast[result2.transitions[i]];
+
+                let cardWithMast = card + mastNow;
+                output += cardWithMast;
+                if (i < result2.path.length - 1) {
+                    output += ` → `;
+                }
+
+
+                if(mastNow!=''){
+
+                    output2 += card + mastNow + ': я желаю от своей бдилки ' + enrichmentData[(new Date().getDay())][mastNow] + ' ' + cardActions[card][mastNow] + ' чтобы ' + wish + '<br><br>';
+                    
+                }
+
+            });
+
+
+            if(output2!=''){
+                output2 = '<hr>МАНТРЫ на ' + days[(new Date().getDay())] + ':<br><br>' + output2;
+            }
+            
+        } else {
+            output += "не найден.";
+        }
+
+        resultDiv.innerHTML = output + output2;
+
+
+        }
+
+         // Функция для поиска сбалансированного пути
+    function findBalancedPathWithSpecificEndTransition(startCard, endCard, lastTransitionType) {
+
+        
+        // Проверка на одинаковые карты
+        if (startCard === endCard) {
+            return;
+        }
+        if (endCard === 'Т' && lastTransitionType==='п-р-з') {
+            return;
+        }
+
+
+        let queue = [[startCard, [], [], {}, 0, 0, '']]; // Начальные параметры
+        let cardUsage = {}; // Счетчик использования карт
+
+        while (queue.length > 0) {
+            const [currentCard, path, transitions, cardUsage, countPruz, countZrp, lastTransition] = queue.shift();
+
+            // Проверка на максимальное количество использований карты
+            if (cardUsage[currentCard] && cardUsage[currentCard] >= 2) {
+                continue;
+            }
+
+            // Добавляем текущую карту в путь
+            path.push(currentCard);
+
+            // Проверка и обновление переходов
+            let newCountPruz = countPruz;
+            let newCountZrp = countZrp;
+            if (path.length > 1) {
+                if (lastTransition === 'п-р-з') {
+                    newCountPruz++;
+                } else if (lastTransition === 'з-р-п') {
+                    newCountZrp++;
+                }
+            }
+
+            transitions.push(lastTransition);
+
+            // Проверка на совпадение переходов и типов
+            if (currentCard === endCard) {
+                if (newCountPruz === newCountZrp && lastTransition === lastTransitionType) {
+                    return { path, transitions };
+                }
+            }
+
+            cardUsage[currentCard] = (cardUsage[currentCard] || 0) + 1;
+
+            // Переход к следующей карте
+            ['п-р-з', 'з-р-п'].forEach(type => {
+                table[currentCard][type].forEach(nextCard => {
+                    if (!path.includes(nextCard)) {
+                        const newCardUsage = { ...cardUsage };
+                        queue.push([nextCard, path.slice(), transitions.slice(), newCardUsage, newCountPruz, newCountZrp, type]);
+                    }
+                });
+            });
+        }
+
+        return null;
+    }
+
+        // Инициализация списка направлений при загрузке страницы
+        window.onload = updateDirections;
+    </script>
+</body>
+</html>
