@@ -392,15 +392,17 @@ if(getCookie('startCard') !=undefined){
                 document.getElementById('result').innerHTML = 'Ваша последняя карта: ' + getCookie('endCard'); // Очистить предыдущий результат
                 document.getElementById('button').innerHTML = 'Получить расклад';
 
- var cookie_date = new Date();
- cookie_date.setYear(cookie_date.getFullYear() + 1);
- document.cookie = "lastCard=" + getCookie('endCard') + ";expires=" + cookie_date.toUTCString();
-
                 var cookies = document.cookie.split(/;/);
 for (var i = 0, len = cookies.length; i < len; i++) {
 	var cookie = cookies[i].split(/=/);
 	document.cookie = cookie[0] + "=;max-age=-1";
 }
+
+
+
+var cookie_date = new Date();
+ cookie_date.setYear(cookie_date.getFullYear() + 1);
+ document.cookie = "lastCard=" + getCookie('endCard') + ";expires=" + cookie_date.toUTCString();
 
                 return;
             }
