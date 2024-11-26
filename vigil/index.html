@@ -86,7 +86,6 @@
             border: 2px solid #00d4ff;
             border-radius: 10px;
             padding: 20px;
-            margin-top: 30px;
             text-align: center;
             box-shadow: 0 0 10px #00d4ff, 0 0 20px #005f8f;
         }
@@ -163,9 +162,11 @@
             <option value="п-р-з">Внедрение</option>
         </select>
         
-        <button style="width:100%;" onclick="getCard()">Получить расклад</button>
-        
         <div id="result">Пасьянс Медичи помогает в сложных ситуациях, а Бдилка выявляет скрытые желания. Перед вами инструмент настоящей свободы в мире, где ваши границы сознания станут как спасением, так и ловушкой. <a href="https://github.com/botogame/botogame/blob/main/freedom/interaction/vigil/README.md">Подробнее</a></div>
+
+        <button id="button" style="width:100%;" onclick="getCard()">Получить расклад</button>
+        
+    
     </div>
 
 
@@ -355,6 +356,12 @@ const ar_replace_mast_female = { '': '', 'п-р-з': '♥', 'з-р-п': '♣' };
 
 let currentMast = ar_replace_mast_male;
 
+if(getCookie('startCard') !=undefined){
+
+    set_result(getCookie('gender'),getCookie('startCard'),getCookie('endCard'),getCookie('needType'),getCookie('wish'));
+
+}
+
         // Функция для обновления списка направлений в зависимости от выбранной сферы
         function updateDirections() {
             const sphere = document.getElementById('sphere').value;
@@ -371,9 +378,25 @@ let currentMast = ar_replace_mast_male;
                 directionSelect.appendChild(option);
             }
         }
-
+        
         // Функция для получения карты
         function getCard() {
+
+
+            if(document.getElementById('button').innerHTML == 'Завершить расклад'){
+                document.getElementById("startCard").value = getCookie('endCard');
+                document.getElementById('button').innerHTML = 'Получить расклад';
+
+                var cookies = document.cookie.split(/;/);
+for (var i = 0, len = cookies.length; i < len; i++) {
+	var cookie = cookies[i].split(/=/);
+	document.cookie = cookie[0] + "=;max-age=-1";
+}
+
+                return;
+            }
+
+
             const resultDiv = document.getElementById('result');
             resultDiv.style.display = 'block';
             resultDiv.innerHTML = 'Загрузка...'; // Очистить предыдущий результат
@@ -410,6 +433,21 @@ if(endCard==='Т' && needType==='п-р-з'){
 }
 
 
+set_result(gender,startCard,endCard,needType,wish);
+
+        }
+
+        function getCookie(name) {
+	var matches = document.cookie.match(new RegExp("(?:^|; )" + name.replace(/([\.$?*|{}\(\)\[\]\\\/\+^])/g, '\\$1') + "=([^;]*)"));
+	return matches ? decodeURIComponent(matches[1]) : undefined;
+}
+
+function set_result(gender,startCard,endCard,needType,wish){
+    
+    const resultDiv = document.getElementById('result');
+            resultDiv.style.display = 'block';
+            resultDiv.innerHTML = 'Формирование результата...'; // Очистить предыдущий результат
+
             // Определяем масть карты на основе выбранного пола и направления
 
             if (gender === 'male') {
@@ -417,9 +455,6 @@ if(endCard==='Т' && needType==='п-р-з'){
             } else if (gender === 'female') {
                 let currentMast = ar_replace_mast_female;
             }
-
-            // Дополнительно учитываем начальную карту и её значения
-            const initialCards = table[startCard] ? table[startCard][needType] : [];
 
             let output = `Желание: желаю чтобы ${wish}.<br><br>Расклад: `;
             let output2 = '';
@@ -450,15 +485,25 @@ if(endCard==='Т' && needType==='п-р-з'){
             if(output2!=''){
                 output2 = '<hr>МАНТРЫ на ' + days[(new Date().getDay())] + ':<br><br>' + output2;
             }
+
+ var cookie_date = new Date();
+ cookie_date.setYear(cookie_date.getFullYear() + 1);
+ document.cookie = "startCard=" + startCard + ";expires=" + cookie_date.toUTCString();
+ document.cookie = "endCard=" + endCard + ";expires=" + cookie_date.toUTCString();
+ document.cookie = "needType=" + needType + ";expires=" + cookie_date.toUTCString();
+ document.cookie = "gender=" + gender + ";expires=" + cookie_date.toUTCString();
+ document.cookie = "wish=" + wish + ";expires=" + cookie_date.toUTCString();
             
+ document.getElementById('button').innerHTML = 'Завершить расклад';
+
         } else {
             output += "не найден.";
         }
 
         resultDiv.innerHTML = output + output2;
 
+}
 
-        }
 
          // Функция для поиска сбалансированного пути
     function findBalancedPathWithSpecificEndTransition(startCard, endCard, lastTransitionType) {
