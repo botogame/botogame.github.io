@@ -117,7 +117,9 @@
 </head><body>
     <div class="container">
         <h1>Пасьянс Медичи. Бдилка ✵</h1>
-        
+
+<div id="selectForm">
+	    
         <label for="gender">Выберите пол:</label>
         <select id="gender">
             <option value="male">Мужской</option>
@@ -161,6 +163,8 @@
             <option value="з-р-п">Нужда</option>
             <option value="п-р-з">Внедрение</option>
         </select>
+
+    </div>
         
         <div id="result">Пасьянс Медичи помогает в сложных ситуациях, а Бдилка выявляет скрытые желания. Перед вами инструмент настоящей свободы в мире, где ваши границы сознания станут как спасением, так и ловушкой. Если впервые делаете расклад последней картой ставьте 8. <a href="https://github.com/botogame/botogame/blob/main/freedom/interaction/vigil/README.md">Подробнее</a></div>
 
@@ -412,6 +416,9 @@ var cookie_date = new Date();
  document.cookie = "lastCard=" + lastCard + ";expires=" + cookie_date.toUTCString();
  document.cookie = "gender=" + gender + ";expires=" + cookie_date.toUTCString();
 
+document.getElementById('selectForm').style.display = 'block';
+
+		    
                 return;
             }
 
@@ -514,6 +521,7 @@ function set_result(gender,startCard,endCard,needType,wish){
  document.cookie = "wish=" + wish + ";expires=" + cookie_date.toUTCString();
             
  document.getElementById('button').innerHTML = 'Завершить расклад';
+		    document.getElementById('selectForm').style.display = 'none';
 
         } else {
             output += "не найден.";
