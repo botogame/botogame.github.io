@@ -512,6 +512,13 @@ function set_result(gender,startCard,endCard,needType,wish){
                 output2 = '<hr>МАНТРЫ на ' + days[(new Date().getDay())] + ':<br><br>' + output2 + '<hr>При обновлении данной страницы ваш собранный расклад останется прежним, а текущий день для продолжения чтения мантр обновится.';
             }
 
+
+                var cookies = document.cookie.split(/;/);
+for (var i = 0, len = cookies.length; i < len; i++) {
+	var cookie = cookies[i].split(/=/);
+	document.cookie = cookie[0] + "=;max-age=-1";
+}
+		    
  var cookie_date = new Date();
  cookie_date.setYear(cookie_date.getFullYear() + 1);
  document.cookie = "startCard=" + startCard + ";expires=" + cookie_date.toUTCString();
