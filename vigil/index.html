@@ -389,7 +389,7 @@ if(getCookie('startCard') !=undefined){
 
             if(document.getElementById('button').innerHTML == 'Завершить расклад'){
                 document.getElementById("startCard").value = getCookie('endCard');
-                resultDiv.innerHTML = 'Ваша последняя карта: ' + getCookie('endCard'); // Очистить предыдущий результат
+                document.getElementById('result').innerHTML = 'Ваша последняя карта: ' + getCookie('endCard'); // Очистить предыдущий результат
                 document.getElementById('button').innerHTML = 'Получить расклад';
 
  var cookie_date = new Date();
