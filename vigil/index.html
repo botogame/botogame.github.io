@@ -356,7 +356,7 @@ const ar_replace_mast_female = { '': '', 'п-р-з': '♥', 'з-р-п': '♣' };
 
 let currentMast = ar_replace_mast_male;
 
-if(getCookie('startCard') !=undefined){
+if(getCookie('startCard') !=undefined && getCookie('startCard') !='undefined'){
 
     set_result(getCookie('gender'),getCookie('startCard'),getCookie('endCard'),getCookie('needType'),getCookie('wish'));
 
@@ -379,7 +379,7 @@ if(getCookie('startCard') !=undefined){
             }
         }
 
-        if(getCookie('lastCard')!=undefined){
+        if(getCookie('lastCard')!=undefined && getCookie('lastCard')!='undefined'){
             document.getElementById("startCard").value = getCookie('lastCard');
             document.getElementById('result').innerHTML = 'Ваша последняя карта: ' + getCookie('endCard'); // Очистить предыдущий результат
         }
