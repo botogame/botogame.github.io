@@ -415,8 +415,6 @@
             'з-р-п': '♣'
         };
 
-        let currentMast = ar_replace_mast_male;
-
         if (getCookie('startCard') != undefined && getCookie('startCard') != 'undefined') {
 
             set_result(getCookie('gender'), getCookie('startCard'), getCookie('endCard'), getCookie('needType'), getCookie('wish'));
@@ -547,7 +545,15 @@
             if (result2) {
                 result2.path.forEach((card, i) => {
 
-                    let mastNow = currentMast[result2.transitions[i]];
+
+            if (gender === 'male') {
+                    let mastNow = ar_replace_mast_male[result2.transitions[i]];
+            } else if (gender === 'female') {
+                    let mastNow = ar_replace_mast_female[result2.transitions[i]];
+            }
+			else {
+			mastNow = '';
+			}
 
                     let cardWithMast = card + mastNow;
                     output += cardWithMast;
