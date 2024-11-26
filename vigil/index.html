@@ -162,7 +162,7 @@
             <option value="п-р-з">Внедрение</option>
         </select>
         
-        <div id="result">Пасьянс Медичи помогает в сложных ситуациях, а Бдилка выявляет скрытые желания. Перед вами инструмент настоящей свободы в мире, где ваши границы сознания станут как спасением, так и ловушкой. <a href="https://github.com/botogame/botogame/blob/main/freedom/interaction/vigil/README.md">Подробнее</a></div>
+        <div id="result">Пасьянс Медичи помогает в сложных ситуациях, а Бдилка выявляет скрытые желания. Перед вами инструмент настоящей свободы в мире, где ваши границы сознания станут как спасением, так и ловушкой. Если впервые делаете расклад последней картой ставьте 8. <a href="https://github.com/botogame/botogame/blob/main/freedom/interaction/vigil/README.md">Подробнее</a></div>
 
         <button id="button" style="width:100%;" onclick="getCard()">Получить расклад</button>
         
@@ -381,7 +381,7 @@ if(getCookie('startCard') !=undefined && getCookie('startCard') !='undefined'){
 
         if(getCookie('lastCard')!=undefined && getCookie('lastCard')!='undefined'){
             document.getElementById("startCard").value = getCookie('lastCard');
-            document.getElementById('result').innerHTML = 'Ваша последняя карта: ' + getCookie('endCard'); // Очистить предыдущий результат
+            document.getElementById('result').innerHTML = 'Ваша последняя карта: ' + getCookie('lastCard'); // Очистить предыдущий результат
         }
         
         // Функция для получения карты
@@ -436,12 +436,12 @@ var cookie_date = new Date();
             }
 
 if(startCard===endCard){
-    resultDiv.innerHTML = 'Выбранное направление сходно с предыдущей картой, смените!';
+    resultDiv.innerHTML = 'Выбранное направление сходно с последней картой, смените!';
     return;
 }
 
 if(endCard==='Т' && needType==='п-р-з'){
-    resultDiv.innerHTML = 'Выбранный тип не применим для выбранного направления!';
+    resultDiv.innerHTML = 'Выбранный тип не применим для выбранного направления, так как представляет собой Т буби (черви)!';
     return;
 }
 
