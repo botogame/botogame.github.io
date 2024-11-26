@@ -381,6 +381,7 @@ if(getCookie('startCard') !=undefined){
 
         if(getCookie('lastCard')!=undefined){
             document.getElementById("startCard").value = getCookie('lastCard');
+            document.getElementById('result').innerHTML = 'Ваша последняя карта: ' + getCookie('endCard'); // Очистить предыдущий результат
         }
         
         // Функция для получения карты
