@@ -532,9 +532,9 @@
             // Определяем масть карты на основе выбранного пола и направления
 
             if (gender === 'male') {
-                let currentMast = ar_replace_mast_male;
+                currentMast = ar_replace_mast_male;
             } else if (gender === 'female') {
-                let currentMast = ar_replace_mast_female;
+                currentMast = ar_replace_mast_female;
             }
 
             let output = `Желание: желаю чтобы ${wish}.<br><br>Расклад: `;
@@ -545,15 +545,7 @@
             if (result2) {
                 result2.path.forEach((card, i) => {
 
-
-            if (gender === 'male') {
-                    let mastNow = ar_replace_mast_male[result2.transitions[i]];
-            } else if (gender === 'female') {
-                    let mastNow = ar_replace_mast_female[result2.transitions[i]];
-            }
-			else {
-			mastNow = '';
-			}
+                    let mastNow = currentMast[result2.transitions[i]];
 
                     let cardWithMast = card + mastNow;
                     output += cardWithMast;
