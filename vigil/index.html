@@ -982,7 +982,7 @@ function countAllCards() {
     
     // Проходим по каждому раскладу в объекте
     for (let group in cardGroups) {
-        totalCards += alert(cardGroups[group].length);; // Добавляем количество карт в этом раскладе
+        totalCards += cardGroups[group].length; // Добавляем количество карт в этом раскладе
     }
 
     return totalCards;
