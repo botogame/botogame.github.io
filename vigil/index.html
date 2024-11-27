@@ -233,12 +233,64 @@ color:#005f8f;
             margin: 5px 0;
         }
 		
+		
+		
+		
+        #overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.8);
+            opacity: 0;
+            transition: opacity 1s;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+            pointer-events: none; /* Не блокирует клики */
+        }
+
+        #star {
+            position: relative;
+        }
+
+
+        @keyframes flyAround {
+            0% {
+                transform: translate(-50%, -50%);
+            }
+            25% {
+                transform: translate(50vw, -40vh);
+            }
+            50% {
+                transform: translate(-30vw, 30vh);
+            }
+            75% {
+                transform: translate(40vw, 40vh);
+            }
+            100% {
+                transform: translate(-50%, -50%);
+            }
+        }
+
+        .animate {
+            animation: flyAround 4s linear forwards;
+            opacity: 1;
+        }
+		
     </style>
 </head>
 
 <body>
     <div class="container">
-        <h1>ПМ [<a title="Показать матрицу" onclick="openModal();return false;" href="" style="color:#45a29e;">✵</a>] Бдилка</h1>
+	
+	
+    <div id="overlay"><b>Cпасибо!</b></div>
+    
+	
+        <h1>ПМ [<a title="Показать матрицу" onclick="openModal();return false;" id="star" href="" style="color:#45a29e;">✵</a>] Бдилка</h1>
 
         <div id="selectForm">
 
@@ -530,19 +582,19 @@ const oneYearInSeconds = 365 * 24 * 60 * 60; // Количество секун�
             'з-р-п': '♣'
         };
 
-        if (getCookie('startCard') != undefined && getCookie('startCard') != 'undefined') {
+        if (getCookie('startCard') != undefined) {
 
             set_result(getCookie('gender'), getCookie('startCard'), getCookie('endCard'), getCookie('needType'), getCookie('wish'));
 
         }
 		else{
 		
-		if (getCookie('endCard') != undefined && getCookie('endCard') != 'undefined') {
+		if (getCookie('endCard') != undefined) {
             document.getElementById("startCard").value = getCookie('endCard');
             document.getElementById('result').innerHTML = 'Ваша последняя карта: ' + getCookie('endCard'); // Очистить предыдущий результат
         }
 
-        if (getCookie('gender') != undefined && getCookie('gender') != 'undefined') {
+        if (getCookie('gender') != undefined) {
             document.getElementById("gender").value = getCookie('gender');
         }
 		
@@ -581,7 +633,12 @@ const oneYearInSeconds = 365 * 24 * 60 * 60; // Количество секун�
 				document.cookie = "wish=; max-age=-1";
 
                 document.getElementById('selectForm').style.display = 'block';
-
+				
+				var checkMatrix = findMatrix();
+				
+				if(checkMatrix.cellsLeft===0){
+				   openModal();
+				}
 
                 return;
             }
@@ -629,7 +686,24 @@ const oneYearInSeconds = 365 * 24 * 60 * 60; // Количество секун�
 
         function getCookie(name) {
             var matches = document.cookie.match(new RegExp("(?:^|; )" + name.replace(/([\.$?*|{}\(\)\[\]\\\/\+^])/g, '\\$1') + "=([^;]*)"));
-            return matches ? decodeURIComponent(matches[1]) : undefined;
+			
+			if(matches){
+			   var result = decodeURIComponent(matches[1]);
+			   
+			   if(result==='undefined'){
+			     return undefined;
+			   }
+			   else if(result===''){
+			     return undefined;
+			   }
+			   else{
+			     return result;
+			   }
+			}
+			else{
+			  return undefined;
+			}
+			
         }
 
 function formatDate() {
@@ -801,13 +875,16 @@ var date = new Date();
             </div>
             <table id="matrix"></table>
 			
+			
+			<button id="button5" class="open-modal-btn" onclick="freeMartix()">Освободить матрицу</button>
+			
                 <!-- Миниатюрный листинг раскладов -->
                 <div id="cardListContainer">
                     <ul id="cardList" class="card-list"></ul>
                 </div>
 				
 				
-    <button id="button3" class="open-modal-btn" onclick="deleteCardGroupsCookies()">Стереть историю</button>
+    <button id="button3" class="open-modal-btn" onclick="deleteCardGroupsCookies()">Очистить историю</button>
         </div>
     </div>
 	
@@ -912,7 +989,7 @@ var date = new Date();
 			document.getElementById('button3').style.display = "block";
 			}
 			else{
-			cardListElement.innerHTML = '<br><br><b style="float:right;text-align:center;width:100%;">Здесь будет хранится история ваших желаний. Но вы сможете её стереть.</b>';
+			cardListElement.innerHTML = '<br><br><b style="float:right;text-align:center;width:100%;">Здесь будет хранится история ваших желаний. Но вы сможете её очистить. Или подождать когда 100% заполнится матрица чтобы её освободить!</b>';
 			document.getElementById('button3').style.display = "none";
 			}
         }
@@ -1046,6 +1123,26 @@ openModal();}
 		
             var matrix = fillSpiral(checkMatrix.matrix);
             renderMatrix(matrix);
+
+			if(getCookie('startCard') === undefined && checkMatrix.cellsLeft===0){
+            document.getElementById("cardListContainer").style.display = "none";
+            document.getElementById("button3").style.display = "none";
+            document.getElementById("button5").style.display = "block";
+			}
+			else{
+			
+            document.getElementById("cardListContainer").style.display = "block";
+            document.getElementById("button5").style.display = "none";
+			
+			if(countAllCards()>0){
+            document.getElementById("button3").style.display = "block";
+			}
+			else{
+			
+            document.getElementById("button3").style.display = "none";
+			}
+			
+			}
 			
             document.getElementById("matrixModal").style.display = "block";
         }
@@ -1059,7 +1156,48 @@ openModal();}
 		function updateDayNow(){
 		set_result(getCookie('gender'), getCookie('startCard'), getCookie('endCard'), getCookie('needType'), getCookie('wish'));
 		}
+		
+		function freeMartix(){
+		
+    document.cookie = "cardGroups=;max-age=-1";
+	cardGroups = {};
+	
+	
+	closeModal();
+	
+	darkenScreenAndAnimateStar();
+		
+		}
+		
+		function darkenScreenAndAnimateStar() {
+            
+			
+        var overlay = document.getElementById('overlay');
+        var star = document.getElementById('star');
+			
+            // Затемнение экрана
+            overlay.style.opacity = 1;
+            overlay.style.pointerEvents = 'auto';
+            star.style.position = 'fixed';
+
+            // Появление звезды и запуск анимации
+            star.classList.add('animate');
+			
+            // Возвращаем звезду в исходное положение
+            setTimeout(() => {
+                star.classList.remove('animate');
+            star.style.position = 'relative';
+            }, 4000);
+            // Возвращаем звезду в исходное положение
+            setTimeout(() => {
+                overlay.style.opacity = 0;
+                overlay.style.pointerEvents = 'none';
+                openModal();
+            }, 4500);
+        }
     </script>
+	
+	
 </body>
 
 </html>
