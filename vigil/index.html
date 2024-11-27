@@ -285,7 +285,7 @@ color:#005f8f;
 
         </div>
 
-        <div id="result">Пасьянс Медичи помогает в сложных ситуациях, а Бдилка выявляет скрытые желания. Перед вами инструмент настоящей свободы в мире, где ваши границы сознания станут как спасением, так и ловушкой. Если впервые делаете расклад последней картой ставьте 8. <a href="https://github.com/botogame/botogame/blob/main/freedom/interaction/vigil/README.md">Подробнее</a></div>
+        <div id="result">Пасьянс Медичи помогает в сложных ситуациях, а Бдилка выявляет скрытые желания. Перед вами инструмент настоящей свободы в мире, где ваши границы сознания станут как спасением, так и ловушкой. Все расклады сохраняются, по нажатию на звезду сможете просмотреть историю. Если впервые делаете расклад последней картой ставьте 8. <a href="https://github.com/botogame/botogame/blob/main/freedom/interaction/vigil/README.md">Подробнее</a></div>
 
         <button id="button" style="width:100%;" onclick="getCard()">Получить расклад</button>
 
@@ -689,7 +689,7 @@ var date = new Date();
 
 
                 if (output2 != '') {
-                    output2 = '<hr>МАНТРЫ на ' + days[(new Date().getDay())] + ':<br><br>' + output2 + '<hr>При обновлении данной страницы ваш собранный расклад останется прежним, а текущий день для продолжения чтения мантр обновится.';
+                    output2 = '<hr>МАНТРЫ на ' + days[(new Date().getDay())] + ':<br><br>' + output2 + '<br><button id="button2" class="open-modal-btn" onclick="updateDayNow()">Обновить день недели</button>';
                 }
 
                 document.cookie = "startCard=" + startCard + ";expires=" + oneYearInSeconds;
@@ -1051,6 +1051,11 @@ openModal();}
         function closeModal() {
             document.getElementById("matrixModal").style.display = "none";
         }
+		
+		
+		function updateDayNow(){
+		set_result(getCookie('gender'), getCookie('startCard'), getCookie('endCard'), getCookie('needType'), getCookie('wish'));
+		}
     </script>
 </body>
 
