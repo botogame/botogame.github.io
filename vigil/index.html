@@ -511,6 +511,9 @@ color:#005f8f;
             'Пятницу',
             'Субботу'
         ];
+		
+		
+const oneYearInSeconds = 365 * 24 * 60 * 60; // Количество секунд в 1 году
 
         // Масти для мужского и женского пола
         const ar_replace_mast_male = {
@@ -565,9 +568,9 @@ color:#005f8f;
                 document.getElementById('result').innerHTML = 'Ваша последняя карта: ' + getCookie('endCard'); // Очистить предыдущий результат
                 document.getElementById('button').innerHTML = 'Получить расклад';
 				
-                document.cookie = "startCard=; path=/; max-age=-1";
-				document.cookie = "needType=; path=/; max-age=-1";
-				document.cookie = "wish=; path=/; max-age=-1";
+                document.cookie = "startCard=; max-age=-1";
+				document.cookie = "needType=; max-age=-1";
+				document.cookie = "wish=; max-age=-1";
 
                 document.getElementById('selectForm').style.display = 'block';
 
@@ -992,10 +995,9 @@ function saveCardGroupsToCookies(groupName, card) {
 
     // Сохраняем данные в куки с временем действия 1 год
 
-document.cookie = `cardGroups=${encodeURIComponent(serializedData)}; path=/; max-age=${oneYearInSeconds}`;
+document.cookie = `cardGroups=${encodeURIComponent(serializedData)};max-age=${oneYearInSeconds}`;
 }
 
-const oneYearInSeconds = 365 * 24 * 60 * 60; // Количество секунд в 1 году
 
 // Функция для извлечения данных из куки
 function getCardGroupsFromCookies() {
@@ -1024,7 +1026,7 @@ getCard();
 
 }
 
-    document.cookie = "cardGroups=; path=/; max-age=-1";
+    document.cookie = "cardGroups=;max-age=-1";
 	cardGroups = [];
 openModal();}
 }
