@@ -654,16 +654,16 @@ const oneYearInSeconds = 365 * 24 * 60 * 60; // Количество секун�
                 block: "start" // Начало элемента будет у верхнего края окна
             });
 
-            const wish = document.getElementById('wish').value;
-            const startCard = document.getElementById('startCard').value;
-            const sphere = document.getElementById('sphere').value;
-            const direction = document.getElementById('direction').value;
-            const needType = document.getElementById('needType').value;
-            const gender = document.getElementById('gender').value;
+            var wish = document.getElementById('wish').value;
+            var startCard = document.getElementById('startCard').value;
+            var sphere = document.getElementById('sphere').value;
+            var direction = document.getElementById('direction').value;
+            var needType = document.getElementById('needType').value;
+            var gender = document.getElementById('gender').value;
 
-            const endCard = cardMatrix[sphere][direction];
-
-
+            var endCard = cardMatrix[sphere][direction];
+			
+			wish = wish.toLowerCase();
 
             if (wish === '') {
                 resultDiv.innerHTML = 'Введите желание!';
