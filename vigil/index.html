@@ -954,7 +954,7 @@ var date = new Date();
 		function findMatrix() {
 		
 		var size = countAllCards() - 1;
-	alert(size);
+
 		
     const matrices = [3, 5, 7, 9, 11, 13, 15];
     let result = {};
@@ -981,8 +981,8 @@ function countAllCards() {
     let totalCards = 0;
     
     // Проходим по каждому раскладу в объекте
-    for (let group in cardGroups) {
-        totalCards += cardGroups[group].length; // Добавляем количество карт в этом раскладе
+    for (let group in cardGroups) {alert(cardGroups[group].length);
+        totalCards += alert(cardGroups[group].length);; // Добавляем количество карт в этом раскладе
     }
 
     return totalCards;
