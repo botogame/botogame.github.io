@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Пасьянс Медичи. Бдилка ✵</title>
+    <title>Пасьянс Медичи. Бдилка</title>
     <style>
         body {
             font-family: 'Courier New', Courier, monospace;
@@ -18,6 +18,11 @@
             display: block;
             padding: 20px;
         }
+
+a {
+text-decoration: none;
+color:#005f8f;
+}
 
         .container {
             text-align: center;
@@ -121,12 +126,116 @@
             border-color: #00eaff;
             box-shadow: 0 0 10px #00eaff, 0 0 15px #005f8f;
         }
+		
+		
+		
+		
+
+        table {
+            border-collapse: collapse;
+            position: relative;
+            box-shadow: 0 0 15px #45a29e;
+            margin: 0 auto; /* Центрирование таблицы */
+        }
+
+        td {
+            width: 60px;
+            height: 60px;
+            text-align: center;
+            vertical-align: middle;
+            border: 1px solid #1f2833;
+            font-size: 18px;
+            font-weight: bold;
+            color: #c5c6c7;
+            cursor: pointer;
+            transition: background-color 0.3s ease, color 0.3s ease;
+        }
+
+        .highlight {
+            background-color: #45a29e;
+            color: #0b0c10;
+        }
+
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            overflow: auto;
+            background-color: rgba(11, 12, 16, 0.9);
+            padding-top: 60px;
+            transition: opacity 0.5s ease;
+        }
+
+        .modal-content {
+            background-color: #1f2833;
+            margin: 5% auto;
+            padding: 20px;
+            border: 1px solid #66fcf1;
+            width: 80%;
+            max-width: 600px;
+            box-shadow: 0 4px 8px rgba(69, 162, 158, 0.2);
+            transition: transform 0.5s ease-in-out;
+        }
+
+        .modal-header {
+            font-size: 24px;
+            margin-bottom: 20px;
+            text-align: center;
+            color: #66fcf1;
+        }
+
+        .close {
+            color: #c5c6c7;
+            float: right;
+            font-size: 28px;
+            font-weight: bold;
+        }
+
+        .close:hover,
+        .close:focus {
+            color: #66fcf1;
+            text-decoration: none;
+            cursor: pointer;
+        }
+
+        .open-modal-btn {
+            background-color: #45a29e;
+            color: #0b0c10;
+            border: none;
+			width:100%;
+            padding: 10px 20px;
+            font-size: 18px;
+            cursor: pointer;
+            border-radius: 5px;
+            transition: background-color 0.3s ease;
+        }
+
+        .open-modal-btn:hover {
+            background-color: #66fcf1;
+        }
+
+        .card-list {
+            list-style-type: none;
+            padding: 0;
+            font-size: 18px;
+            color: #c5c6c7;
+            max-height: 400px;
+            overflow-y: auto;
+        }
+
+        .card-list li {
+            margin: 5px 0;
+        }
     </style>
 </head>
 
 <body>
     <div class="container">
-        <h1>Пасьянс Медичи. Бдилка <a href="https://github.com/botogame/botogame/blob/main/freedom/interaction/vigil/README.md">✵</a></h1>
+        <h1>Пасьянс Медичи. Бдилка <a href="" title="Показать матрицу" onclick="openModal();return false;">✵</a></h1>
 
         <div id="selectForm">
 
@@ -438,9 +547,9 @@
             }
         }
 
-        if (getCookie('lastCard') != undefined && getCookie('lastCard') != 'undefined') {
-            document.getElementById("startCard").value = getCookie('lastCard');
-            document.getElementById('result').innerHTML = 'Ваша последняя карта: ' + getCookie('lastCard'); // Очистить предыдущий результат
+        if (getCookie('endCard') != undefined && getCookie('endCard') != 'undefined') {
+            document.getElementById("startCard").value = getCookie('endCard');
+            document.getElementById('result').innerHTML = 'Ваша последняя карта: ' + getCookie('endCard'); // Очистить предыдущий результат
         }
 
         if (getCookie('gender') != undefined && getCookie('gender') != 'undefined') {
@@ -455,21 +564,10 @@
                 document.getElementById("startCard").value = getCookie('endCard');
                 document.getElementById('result').innerHTML = 'Ваша последняя карта: ' + getCookie('endCard'); // Очистить предыдущий результат
                 document.getElementById('button').innerHTML = 'Получить расклад';
-
-                let lastCard = getCookie('endCard');
-                let gender = getCookie('gender');
-                var cookies = document.cookie.split(/;/);
-                for (var i = 0, len = cookies.length; i < len; i++) {
-                    var cookie = cookies[i].split(/=/);
-                    document.cookie = cookie[0] + "=;max-age=-1";
-                }
-
-
-
-                var cookie_date = new Date();
-                cookie_date.setYear(cookie_date.getFullYear() + 1);
-                document.cookie = "lastCard=" + lastCard + ";expires=" + cookie_date.toUTCString();
-                document.cookie = "gender=" + gender + ";expires=" + cookie_date.toUTCString();
+				
+                document.cookie = "startCard=; path=/; max-age=-1";
+				document.cookie = "needType=; path=/; max-age=-1";
+				document.cookie = "wish=; path=/; max-age=-1";
 
                 document.getElementById('selectForm').style.display = 'block';
 
@@ -514,7 +612,7 @@
             }
 
 
-            set_result(gender, startCard, endCard, needType, wish);
+            set_result(gender, startCard, endCard, needType, wish,true);
 
         }
 
@@ -523,7 +621,22 @@
             return matches ? decodeURIComponent(matches[1]) : undefined;
         }
 
-        function set_result(gender, startCard, endCard, needType, wish) {
+function formatDate() {
+var date = new Date();
+
+  var dd = date.getDate();
+  if (dd < 10) dd = '0' + dd;
+
+  var mm = date.getMonth() + 1;
+  if (mm < 10) mm = '0' + mm;
+
+  var yy = date.getFullYear() % 100;
+  if (yy < 10) yy = '0' + yy;
+
+  return dd + '/' + mm + '/' + yy;
+}
+
+        function set_result(gender, startCard, endCard, needType, wish,generation = false) {
 
             const resultDiv = document.getElementById('result');
             resultDiv.style.display = 'block';
@@ -557,6 +670,10 @@
                     if (mastNow != '') {
 
                         output2 += card + mastNow + ': я желаю от своей бдилки ' + enrichmentData[(new Date().getDay())][mastNow] + ' ' + cardActions[card][mastNow] + ' чтобы ' + wish + '<br><br>';
+						
+						if(generation==true){
+						   saveCardGroupsToCookies(formatDate() + ' | ' +wish, card+mastNow);
+						}
 
                     }
 
@@ -567,20 +684,11 @@
                     output2 = '<hr>МАНТРЫ на ' + days[(new Date().getDay())] + ':<br><br>' + output2 + '<hr>При обновлении данной страницы ваш собранный расклад останется прежним, а текущий день для продолжения чтения мантр обновится.';
                 }
 
-
-                var cookies = document.cookie.split(/;/);
-                for (var i = 0, len = cookies.length; i < len; i++) {
-                    var cookie = cookies[i].split(/=/);
-                    document.cookie = cookie[0] + "=;max-age=-1";
-                }
-
-                var cookie_date = new Date();
-                cookie_date.setYear(cookie_date.getFullYear() + 1);
-                document.cookie = "startCard=" + startCard + ";expires=" + cookie_date.toUTCString();
-                document.cookie = "endCard=" + endCard + ";expires=" + cookie_date.toUTCString();
-                document.cookie = "needType=" + needType + ";expires=" + cookie_date.toUTCString();
-                document.cookie = "gender=" + gender + ";expires=" + cookie_date.toUTCString();
-                document.cookie = "wish=" + wish + ";expires=" + cookie_date.toUTCString();
+                document.cookie = "startCard=" + startCard + ";expires=" + oneYearInSeconds;
+                document.cookie = "endCard=" + endCard + ";expires=" + oneYearInSeconds;
+                document.cookie = "needType=" + needType + ";expires=" + oneYearInSeconds;
+                document.cookie = "gender=" + gender + ";expires=" + oneYearInSeconds;
+                document.cookie = "wish=" + wish + ";expires=" + oneYearInSeconds;
 
                 document.getElementById('button').innerHTML = 'Завершить расклад';
                 document.getElementById('selectForm').style.display = 'none';
@@ -671,6 +779,271 @@
 
         // Инициализация списка направлений при загрузке страницы
         window.onload = updateDirections;
+    </script>
+
+    <!-- Модальное окно -->
+    <div id="matrixModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal()">&times;</span>
+            <div class="modal-header">
+                Матрица
+            </div>
+            <table id="matrix"></table>
+			
+                <!-- Миниатюрный листинг раскладов -->
+                <div id="cardListContainer">
+                    <ul id="cardList" class="card-list"></ul>
+                </div>
+				
+				
+    <button id="button3" class="open-modal-btn" onclick="deleteCardGroupsCookies()">Стереть матрицу</button>
+        </div>
+    </div>
+	
+	<script>
+        // Группировка карт по раскладам
+        let cardGroups = getCardGroupsFromCookies();
+		
+            let currentGroupIndex = 0;
+            let currentCardIndex = 0;
+            let currentGroupIndexWiew = -2;
+
+       let cardListElement = document.getElementById('cardList');
+
+        // Функция для выбора карт из разных раскладов
+        function createCardIterator() {
+			
+            return function() {
+            var groups = Object.values(cardGroups);
+            var groupsNames = Object.keys(cardGroups);
+			
+                if (currentGroupIndex < groups.length) {
+                    var currentGroup = groups[currentGroupIndex];
+					
+			
+			if(currentGroupIndexWiew!=currentGroupIndex){
+			    currentGroupIndexWiew = currentGroupIndex;
+                var currentGroupName = groupsNames[currentGroupIndexWiew];
+
+			    var li = document.createElement('li');
+                li.textContent = `${currentGroupName}: ${cardGroups[currentGroupName].join(' → ')}`;
+                cardListElement.appendChild(li);
+			}
+
+                    if (currentCardIndex < currentGroup.length) {
+                        return currentGroup[currentCardIndex++];
+                    } else {
+                        currentCardIndex = 0;
+                        currentGroupIndex++;
+                        return createCardIterator(cardGroups)();
+                    }
+                }
+                return null; // Все карты использованы
+            };
+        }
+
+        const getNextCard = createCardIterator();
+
+        // Функция для заполнения матрицы по спирали
+        function fillSpiral(n) {
+            const matrix = Array.from({ length: n }, () => Array(n).fill(null));
+            let x = Math.floor(n / 2);
+            let y = Math.floor(n / 2);
+            let num = 1;
+            let directions = [[0, 1], [1, 0], [0, -1], [-1, 0]]; // Направления: вправо, вниз, влево, вверх
+            let dir = 0;  // Начинаем двигаться вправо
+            let steps = 1;
+
+            matrix[x][y] = num++;
+
+            while (num <= n * n) {
+                for (let i = 0; i < 2; i++) {
+                    for (let step = 0; step < steps; step++) {
+                        x += directions[dir][0];
+                        y += directions[dir][1];
+                        if (x >= 0 && x < n && y >= 0 && y < n) {
+                            matrix[x][y] = num++;
+                        }
+                    }
+                    dir = (dir + 1) % 4;  // Поворачиваемся по часовой стрелке
+                }
+                steps++;  // Увеличиваем шаги после каждого полного круга
+            }
+            return matrix;
+        }
+
+        // Функция для отображения матрицы в таблице
+        function renderMatrix(matrix) {
+            const table = document.getElementById('matrix');
+            const n = matrix.length;
+			
+			table.innerHTML = '';
+            cardListElement.innerHTML = '';
+			
+            currentGroupIndex = 0;
+            currentCardIndex = 0;
+            currentGroupIndexWiew = -2;
+			
+            for (let i = 0; i < n; i++) {
+                const tr = document.createElement('tr');
+                for (let j = 0; j < n; j++) {
+                    const td = document.createElement('td');
+                    //td.textContent = getNextCard();
+                    tr.appendChild(td);
+                }
+                table.appendChild(tr);
+            }
+			
+            highlightSequence(matrix);
+
+            // Добавляем выделение последовательности чисел
+			if(countAllCards()>0){
+			document.getElementById('button3').style.display = "block";
+			}
+			else{
+			cardListElement.innerHTML = '<br><br><b style="float:right;text-align:center;width:100%;">Здесь будет хранится история ваших желаний. Но вы сможете её стереть.</b>';
+			document.getElementById('button3').style.display = "none";
+			}
+        }
+
+        // Функция для выделения последовательности чисел от 1 до 25
+        function highlightSequence(matrix) {
+            const n = matrix.length;
+            const positions = [];
+
+            // Собираем позиции для всех чисел от 1 до 25
+            for (let i = 0; i < n; i++) {
+                for (let j = 0; j < n; j++) {
+                    if (matrix[i][j] !== null) {
+                        positions[matrix[i][j] - 1] = { x: i, y: j };
+                    }
+                }
+            }
+
+            // Добавляем класс highlight для каждого числа от 1 до 25
+            positions.forEach((position, index) => {
+                const td = document.getElementById('matrix').rows[position.x].cells[position.y];
+				
+				
+                setTimeout(() => {
+				
+				if(currentGroupIndexWiew==-2){
+				currentGroupIndexWiew = -1;
+				var cardNext = '✵';
+				}
+				else{
+				var cardNext = getNextCard();
+				}
+				
+				if(cardNext!==null){
+                    td.classList.add('highlight');
+					td.textContent = cardNext;
+				}
+                }, index * 50);  // Задержка, чтобы подсветка происходила поочередно
+            });
+        }
+		
+		function findMatrix() {
+		
+		var size = countAllCards() - 1;
+		
+		
+    const matrices = [3, 5, 7, 9, 11, 13];
+    let result = {};
+
+    for (let i = 0; i < matrices.length; i++) {
+        let matrixSize = matrices[i] * matrices[i]; // Количество клеток в матрице
+        if (size <= matrixSize) {
+            result.matrix = matrices[i];
+            result.cellsLeft = matrixSize - size;
+            break;
+        }
+    }
+
+    // Если не подошла ни одна матрица
+    if (!result.matrix) {
+        result.matrix = false;
+        result.cellsLeft = false;
+    }
+
+    return result;
+}
+
+function countAllCards() {
+    let totalCards = 0;
+    
+    // Проходим по каждому раскладу в объекте
+    for (let group in cardGroups) {
+        totalCards += cardGroups[group].length; // Добавляем количество карт в этом раскладе
+    }
+
+    return totalCards;
+}
+
+// Функция для сохранения данных в куки
+function saveCardGroupsToCookies(groupName, card) {
+// Добавляем карту в указанную группу или создаем новую группу, если она не существует
+    if (!cardGroups[groupName]) {
+        cardGroups[groupName] = [];  // Если группа не существует, создаем её
+    }
+    cardGroups[groupName].push(card); // Добавляем карту в группу
+    // Сериализуем объект в строку
+    const serializedData = JSON.stringify(cardGroups);
+
+    // Сохраняем данные в куки с временем действия 1 год
+
+document.cookie = `cardGroups=${encodeURIComponent(serializedData)}; path=/; max-age=${oneYearInSeconds}`;
+}
+
+const oneYearInSeconds = 365 * 24 * 60 * 60; // Количество секунд в 1 году
+
+// Функция для извлечения данных из куки
+function getCardGroupsFromCookies() {
+    const cookieValue = document.cookie
+        .split('; ')
+        .find(row => row.startsWith('cardGroups='))
+        ?.split('=')[1];
+
+    if (cookieValue) {
+        // Десериализуем данные обратно в объект
+        return JSON.parse(decodeURIComponent(cookieValue));
+    } else {
+        return [];
+    }
+}
+
+// Функция для удаления куки
+function deleteCardGroupsCookies() {
+
+var isDelete = confirm("Точно хотите удалить всю историю?");
+
+if(isDelete==true){
+   
+if(document.getElementById('button').innerHTML == 'Завершить расклад'){
+getCard();
+
+}
+
+    document.cookie = "cardGroups=; path=/; max-age=-1";
+	cardGroups = [];
+openModal();}
+}
+
+        // Функция для открытия модального окна
+        function openModal() {
+		
+		var checkMatrix = findMatrix();
+		
+            var matrix = fillSpiral(checkMatrix.matrix);
+            renderMatrix(matrix);
+			
+            document.getElementById("matrixModal").style.display = "block";
+        }
+
+        // Функция для закрытия модального окна
+        function closeModal() {
+            document.getElementById("matrixModal").style.display = "none";
+        }
     </script>
 </body>
 
