@@ -996,7 +996,7 @@ function saveCardGroupsToCookies(groupName, card) {
     }
     cardGroups[groupName].push(card); // Добавляем карту в группу
     // Сериализуем объект в строку
-    const serializedData = JSON.stringify(cardGroups);
+    var serializedData = JSON.stringify(cardGroups);
 
     // Сохраняем данные в куки с временем действия 1 год
 
@@ -1015,7 +1015,7 @@ function getCardGroupsFromCookies() {
         // Десериализуем данные обратно в объект
         return JSON.parse(decodeURIComponent(cookieValue));
     } else {
-        return [];
+        return {};
     }
 }
 
@@ -1032,7 +1032,7 @@ getCard();
 }
 
     document.cookie = "cardGroups=;max-age=-1";
-	cardGroups = [];
+	cardGroups = {};
 openModal();}
 }
 
