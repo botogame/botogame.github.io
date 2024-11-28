@@ -116,10 +116,6 @@ function formatDate() {
     return dd + '/' + mm + '/' + yy;
 }
 
-if (typeof Website2APK !== 'undefined') {
-    document.getElementById('buttonClose').style.display = 'block';
-}
-
 function set_result(gender, startCard, endCard, needType, wish, generation = false) {
 
     const resultDiv = document.getElementById('result');
@@ -606,5 +602,9 @@ function setupOnLoad() {
 
     // Инициализация списка направлений при загрузке страницы
     updateDirections();
+	
+    if (typeof Website2APK !== 'undefined') {
+        document.getElementById('buttonClose').style.display = 'block';
+    }
 
 }
