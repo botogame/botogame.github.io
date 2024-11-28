@@ -7,7 +7,7 @@ function updateDirections() {
     directionSelect.innerHTML = '';
 
     // Заполняем новый список направлений на основе выбранной сферы
-    for (const direction in cardMatrix[sphere]) {
+    for (const direction in schemeSphereInfluence[sphere]) {
         const option = document.createElement('option');
         option.value = direction;
         option.textContent = direction;
@@ -58,7 +58,7 @@ function getCard() {
     var needType = document.getElementById('needType').value;
     var gender = document.getElementById('gender').value;
 
-    var endCard = cardMatrix[sphere][direction];
+    var endCard = schemeSphereInfluence[sphere][direction];
 
     wish = wish.toLowerCase();
 
@@ -153,7 +153,7 @@ function set_result(gender, startCard, endCard, needType, wish, generation = fal
 
             if (mastNow != '') {
 
-                output2 += card + mastNow + ': я желаю от своей бдилки ' + enrichmentData[(new Date().getDay())][mastNow] + ' ' + cardActions[card][mastNow] + ' чтобы ' + wish + '<br><br>';
+                output2 += card + mastNow + ': я желаю от своей бдилки ' + schemeSuitsDaysWeek[(new Date().getDay())][mastNow] + ' ' + schemeСardAssignments[card][mastNow] + ' чтобы ' + wish + '<br><br>';
 
                 if (generation == true) {
                     saveCardGroupsToCookies(formatDate() + ' | желаю чтобы ' + wish, card + mastNow);
@@ -247,7 +247,7 @@ function findBalancedPathWithSpecificEndTransition(startCard, endCard, lastTrans
 
         // Переход к следующей карте
         ['п-р-з', 'з-р-п'].forEach(type => {
-            table[currentCard][type].forEach(nextCard => {
+            schemeTransitions[currentCard][type].forEach(nextCard => {
                 if (!path.includes(nextCard)) {
                     const newCardUsage = {
                         ...cardUsage
@@ -567,4 +567,44 @@ function darkenScreenAndAnimateStar() {
         overlay.style.pointerEvents = 'none';
         openModal();
     }, 4500);
+}
+
+// Функция для загрузки js
+function loadScript(src, onLoadCallback, onErrorCallback) {
+
+    var uniqueParam = new Date().getTime();
+
+    var script = document.createElement('script');
+    script.src = src + '?' + uniqueParam;
+
+    script.onload = onLoadCallback;
+    script.onerror = onErrorCallback;
+
+    document.head.appendChild(script);
+}
+
+// Настройка после загрузки страницы 
+function setupOnLoad() {
+    if (getCookie('startCard') != undefined) {
+
+        set_result(getCookie('gender'), getCookie('startCard'), getCookie('endCard'), getCookie('needType'), getCookie('wish'));
+
+    } else {
+
+        if (getCookie('endCard') != undefined) {
+            document.getElementById("startCard").value = getCookie('endCard');
+            document.getElementById('result').innerHTML = 'Ваша последняя карта: ' + getCookie('endCard'); // Очистить предыдущий результат
+        }
+
+        if (getCookie('gender') != undefined) {
+            document.getElementById("gender").value = getCookie('gender');
+        }
+
+    }
+
+    cardGroups = getCardGroupsFromCookies();
+
+    // Инициализация списка направлений при загрузке страницы
+    updateDirections();
+
 }
