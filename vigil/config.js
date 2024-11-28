@@ -40,7 +40,7 @@ document.addEventListener("DOMContentLoaded", function() {
 
     }
 
-    let cardGroups = getCardGroupsFromCookies();
+    cardGroups = getCardGroupsFromCookies();
 
     // Инициализация списка направлений при загрузке страницы
     updateDirections();
