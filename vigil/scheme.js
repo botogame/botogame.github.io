@@ -1,5 +1,5 @@
-// Схема выбора карты
-const cardMatrix = {
+// Схема сфер влияний
+const schemeSphereInfluence = {
     'стратегия': {
         'Расположение': 'Т',
         'Позиционирование': 'К',
@@ -23,8 +23,8 @@ const cardMatrix = {
     }
 };
 
-// Начальная карта
-const table = {
+// Схема переходов
+const schemeTransitions = {
     'Т': {
         'п-р-з': ['В', '8', 'К'],
         'з-р-п': []
@@ -79,8 +79,8 @@ const table = {
     }
 };
 
-
-const enrichmentData = {
+// Схема мастей дней недели
+const schemeSuitsDaysWeek = {
     "7": {
         '♥': "осмотрительного",
         '♠': "осмысленного",
@@ -125,7 +125,8 @@ const enrichmentData = {
     }
 };
 
-const cardActions = {
+// Схема назначения карт
+const schemeСardAssignments = {
     "Т": {
         '♥': "тайника",
         '♠': "бронирования",
@@ -204,18 +205,4 @@ const cardActions = {
         '♣': "наделения",
         '♦': "подведения"
     }
-};
-
-
-
-// Масти для мужского и женского пола
-const ar_replace_mast_male = {
-    '': '',
-    'п-р-з': '♦',
-    'з-р-п': '♠'
-};
-const ar_replace_mast_female = {
-    '': '',
-    'п-р-з': '♥',
-    'з-р-п': '♣'
 };
