@@ -8,6 +8,18 @@ let days = [
     'Субботу'
 ];
 
+// Масти для мужского и женского пола
+let ar_replace_mast_male = {
+    '': '',
+    'п-р-з': '♦',
+    'з-р-п': '♠'
+};
+
+let ar_replace_mast_female = {
+    '': '',
+    'п-р-з': '♥',
+    'з-р-п': '♣'
+};
 
 let oneYearInSeconds = 365 * 24 * 60 * 60; // Количество секунд в 1 году
 
@@ -22,27 +34,20 @@ let getNextCard = createCardIterator();
 
 document.addEventListener("DOMContentLoaded", function() {
 
-
-    if (getCookie('startCard') != undefined) {
-
-        set_result(getCookie('gender'), getCookie('startCard'), getCookie('endCard'), getCookie('needType'), getCookie('wish'));
-
-    } else {
-
-        if (getCookie('endCard') != undefined) {
-            document.getElementById("startCard").value = getCookie('endCard');
-            document.getElementById('result').innerHTML = 'Ваша последняя карта: ' + getCookie('endCard'); // Очистить предыдущий результат
+    // Попытка загрузить актуальные данные схемы
+    loadScript(
+        'https://botogame.github.io/vigil/scheme.js',
+        function() {
+            setupOnLoad();
+        },
+        function() {
+            // Попытка загрузить локальный скрипт при ошибке внешнего
+            loadScript('./scheme.js', function() {
+                setupOnLoad();
+            }, function() {
+                alert('Криптическая ошибка в работе программы. Пожалуйста попробуйте сменить приложение для его запуска!');
+            });
         }
-
-        if (getCookie('gender') != undefined) {
-            document.getElementById("gender").value = getCookie('gender');
-        }
-
-    }
-
-    cardGroups = getCardGroupsFromCookies();
-
-    // Инициализация списка направлений при загрузке страницы
-    updateDirections();
+    );
 
 });
