@@ -16,6 +16,10 @@ a {
     color: #005f8f;
 }
 
+.a_info {
+	color:#00d4ff
+}
+
 .container {
     text-align: center;
     max-width: 600px;
