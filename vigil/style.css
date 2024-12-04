@@ -1,323 +1,362 @@
-body {
-    font-family: 'Courier New', Courier, monospace;
-    color: #ffffff;
-    background: radial-gradient(circle at center, #000428, #004e92 70%, #000428);
-    background-attachment: fixed;
-    background-size: cover;
-    margin: 0;
-    min-height: 100vh;
-    overflow-y: auto;
-    display: block;
-    padding: 20px;
-}
-
-a {
-    text-decoration: none;
-    color: #005f8f;
-}
-
 .a_info {
-	color:#00d4ff
+ color: #00d4ff;
 }
-
-.container {
-    text-align: center;
-    max-width: 600px;
-    padding: 20px;
-    background: rgba(0, 0, 0, 0.7);
-    border-radius: 15px;
-    box-shadow: 0 0 20px #00d4ff, 0 0 30px #005f8f;
-    margin: 20px auto;
-    /* Центрируем с помощью отступов */
-}
-
-/* Заголовок */
-h1 {
-    font-size: 3rem;
-    color: #00d4ff;
-    text-shadow: 0 0 10px #00d4ff, 0 0 20px #00e5ff, 0 0 30px #00aaff;
-    margin-bottom: 40px;
-}
-
-/* Стили для меток и полей */
-label {
-    font-size: 1.2rem;
-    display: block;
-    margin-bottom: 10px;
-    color: #a8d0e6;
-}
-
-input,
-select {
-    font-size: 1rem;
-    color: #00d4ff;
-    background-color: #1e3b5a;
-    border: 2px solid #00d4ff;
-    border-radius: 5px;
-    padding: 10px;
-    margin-bottom: 20px;
-    width: 100%;
-    /* Элемент займет всю доступную ширину */
-    max-width: 600px;
-    /* Максимальная ширина */
-    box-shadow: 0 0 5px #00d4ff;
-    box-sizing: border-box;
-    /* Гарантируем, что padding и border не выталкивают элемент */
-}
-
-/* Кнопка */
-button {
-    font-size: 1.2rem;
-    background: linear-gradient(45deg, #00d4ff, #007bbf);
-    color: white;
-    border: none;
-    border-radius: 5px;
-    padding: 15px 25px;
-    cursor: pointer;
-    box-shadow: 0 0 15px #00d4ff;
-    transition: all 0.3s ease-in-out;
-    margin-top: 20px;
-    width: 100%;
+.a_info2 {
+ color: #00d4ff;
 }
 
 button:hover {
-    background: linear-gradient(45deg, #00eaff, #005f8f);
-    box-shadow: 0 0 25px #00eaff, 0 0 35px #00bfff;
-    transform: scale(1.05);
+ background: linear-gradient(45deg, #00eaff, #005f8f);
+ box-shadow: 0 0 25px #00eaff, 0 0 35px #00bfff;
+ transform: scale(1.05);
 }
 
 /* Результаты */
 #result {
-    font-size: 1.4rem;
-    color: #fff;
-    background-color: rgba(0, 0, 0, 0.5);
-    border: 2px solid #00d4ff;
-    border-radius: 10px;
-    padding: 20px;
-    text-align: center;
-    box-shadow: 0 0 10px #00d4ff, 0 0 20px #005f8f;
+ font-size: 1.4rem;
+ color: #fff;
+ background-color: rgba(0, 0, 0, 0.5);
+ border: 2px solid #00d4ff;
+ border-radius: 10px;
+ padding: 20px;
+ text-align: center;
+ box-shadow: 0 0 10px #00d4ff, 0 0 20px #005f8f;
 }
 
 /* Анимация звезд */
 body::before {
-    content: '';
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background: url('./stardust.png');
-    z-index: -1;
-    opacity: 0.3;
+ content: "";
+ position: fixed;
+ top: 0;
+ left: 0;
+ width: 100%;
+ height: 100%;
+ background: url("./stardust.png");
+ z-index: -1;
+ opacity: 0.3;
 }
 
 /* Добавляем плавность взаимодействия */
 input,
 select {
-    transition: all 0.3s ease-in-out;
+ transition: all 0.3s ease-in-out;
 }
 
 input:focus,
 select:focus {
-    outline: none;
-    border-color: #00eaff;
-    box-shadow: 0 0 10px #00eaff, 0 0 15px #005f8f;
+ outline: none;
+ border-color: #00eaff;
+ box-shadow: 0 0 10px #00eaff, 0 0 15px #005f8f;
 }
 
-
-
-
 table {
-    border-collapse: collapse;
-    position: relative;
-    box-shadow: 0 0 15px #45a29e;
-    margin: 0 auto;
-    /* Центрирование таблицы */
+ border-collapse: collapse;
+ position: relative;
+ box-shadow: 0 0 15px #45a29e;
+ margin: 0 auto;
+ /* Центрирование таблицы */
 }
 
 td {
-    width: 60px;
-    height: 60px;
-    text-align: center;
-    vertical-align: middle;
-    border: 1px solid #1f2833;
-    font-size: 18px;
-    font-weight: bold;
-    color: #c5c6c7;
-    cursor: pointer;
-    transition: background-color 0.3s ease, color 0.3s ease;
+ width: 60px;
+ height: 60px;
+ text-align: center;
+ vertical-align: middle;
+ border: 1px solid #1f2833;
+ font-size: 18px;
+ font-weight: bold;
+ color: #c5c6c7;
+ cursor: pointer;
+ transition: background-color 0.3s ease, color 0.3s ease;
 }
 
 .highlight {
-    background-color: #45a29e;
-    color: #0b0c10;
-}
-
-.modal {
-    display: none;
-    position: fixed;
-    z-index: 1;
-    left: 0;
-    top: 0;
-    width: 100%;
-    height: 100%;
-    overflow: auto;
-    background-color: rgba(11, 12, 16, 0.9);
-    padding-bottom: 60px;
-    transition: opacity 0.5s ease;
-}
-
-.modal-content {
-    background-color: #1f2833;
-    margin: 5% auto;
-    padding: 20px;
-    border: 1px solid #66fcf1;
-    width: 80%;
-    max-width: 600px;
-    box-shadow: 0 4px 8px rgba(69, 162, 158, 0.2);
-    transition: transform 0.5s ease-in-out;
-}
-
-.modal-header {
-    font-size: 24px;
-    margin-bottom: 20px;
-    text-align: center;
-    color: #66fcf1;
-}
-
-.close {
-    color: #c5c6c7;
-    float: right;
-    font-size: 28px;
-    font-weight: bold;
-}
-
-.close:hover,
-.close:focus {
-    color: #66fcf1;
-    text-decoration: none;
-    cursor: pointer;
+ background-color: #00ff00;
+ color: #0b0c10;
 }
 
 .open-modal-btn {
-    background-color: #45a29e;
-    color: #0b0c10;
-    border: none;
-    width: 100%;
-    padding: 10px 20px;
-    font-size: 18px;
-    cursor: pointer;
-    border-radius: 5px;
-    transition: background-color 0.3s ease;
+ background-color: #45a29e;
+ color: #0b0c10;
+ border: none;
+ width: 100%;
+ padding: 10px 20px;
+ font-size: 18px;
+ cursor: pointer;
+ border-radius: 5px;
+ transition: background-color 0.3s ease;
 }
 
 .open-modal-btn:hover {
-    background-color: #66fcf1;
+ background-color: #66fcf1;
 }
 
 .card-list {
-    list-style-type: none;
-    padding: 0;
-    font-size: 18px;
-    color: #c5c6c7;
-    max-height: 400px;
-    overflow-y: auto;
+ list-style-type: none;
+ padding: 0;
+ font-size: 18px;
+ color: #c5c6c7;
+ max-height: 400px;
+ overflow-y: auto;
 }
 
 .card-list li {
-    margin: 5px 0;
+ margin: 5px 0;
 }
 
-
-
-
 #overlay {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background-color: rgba(0, 0, 0, 0.8);
-    opacity: 0;
-    transition: opacity 1s;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    z-index: 1000;
-    pointer-events: none;
-    /* Не блокирует клики */
+ position: fixed;
+ top: 0;
+ left: 0;
+ width: 100%;
+ height: 100%;
+ background-color: rgba(0, 0, 0, 0.8);
+ opacity: 0;
+ transition: opacity 1s;
+ display: flex;
+ justify-content: center;
+ align-items: center;
+ z-index: 1000;
+ pointer-events: none;
+ /* Не блокирует клики */
 }
 
 #star {
-    position: relative;
-    color: #45a29e;
+ position: relative;
+ color: #45a29e;
 }
 
-
 @keyframes flyAround {
-    0% {
-        transform: translate(-50%, -50%);
-    }
+ 0% {
+  transform: translate(-50%, -50%);
+ }
 
-    25% {
-        transform: translate(50vw, -40vh);
-    }
+ 25% {
+  transform: translate(50vw, -40vh);
+ }
 
-    50% {
-        transform: translate(-30vw, 30vh);
-    }
+ 50% {
+  transform: translate(-30vw, 30vh);
+ }
 
-    75% {
-        transform: translate(40vw, 40vh);
-    }
+ 75% {
+  transform: translate(40vw, 40vh);
+ }
 
-    100% {
-        transform: translate(-50%, -50%);
-    }
+ 100% {
+  transform: translate(-50%, -50%);
+ }
 }
 
 .animate {
-    animation: flyAround 4s linear forwards;
-    opacity: 1;
+ animation: flyAround 4s linear forwards;
+ opacity: 1;
 }
 
 #buttonClose {
-    background: linear-gradient(45deg, gray, #007bbf);
-    width: 100%;
-    display: none;
+ background: linear-gradient(45deg, gray, #007bbf);
+ width: 100%;
+ display: none;
 }
 
+body {
+ font-family: "Courier New", Courier, monospace;
+ background: radial-gradient(circle, #1a0025, #001540 60%, #000428);
+ color: #ffffff;
+ margin: 0;
+ padding: 0;
+ min-height: 100vh;
+ display: flex;
+ justify-content: center;
+ align-items: center;
 
+ background-attachment: fixed;
+ background-size: cover;
+ overflow-y: auto;
+ padding: 20px;
+}
+
+h1 {
+ font-size: 3rem;
+ color: #00ff00;
+ text-shadow: 0 0 10px #00ff00, 0 0 20px #007f00, 0 0 30px #00ff00;
+ text-align: center;
+}
+
+.container {
+ max-width: 800px;
+ width: 100%;
+ background: rgba(0, 0, 0, 0.8);
+ padding: 20px;
+ border-radius: 20px;
+ box-shadow: 0 0 20px #00ff00, 0 0 40px #00eaff;
+}
+
+label {
+ display: block;
+ font-size: 1.2rem;
+ color: #00d4ff;
+ margin: 15px 0 5px;
+ text-align:center;
+ font-weight: bold; /* Делаем текст жирным */
+}
+.inline-form {
+ display: flex;
+ align-items: center; /* Вертикальное выравнивание */
+ gap: 10px; /* Отступ между элементами */
+}
+select,
+input {
+ width: 100%;
+ padding: 10px;
+ margin-top: 10px;
+ font-size: 1rem;
+ border-radius: 10px;
+ border: 2px solid #00eaff;
+ background: #002b36;
+ color:  #00d4ff;
+ box-shadow: 0 0 10px #00eaff;
+
+ background-color: #1e3b5a;
+
+ box-sizing: border-box;
+}
+#direction {
+ display: none;
+}
+.alert_input {
+ border: 2px solid #ff0000; /* Красная граница при ошибке */
+ background-color: #3e1c1c; /* Темный фон с красным оттенком */
+ color: #ff0000; /* Красный цвет текста */
+ box-shadow: 0 0 15px #ff0000, 0 0 25px #ff4d4d; /* Красное свечение */
+}
+
+input::placeholder{
+ color:  #00d4ff;
+}
+
+select:hover,
+input:hover {
+ border-color: #00ff00;
+ box-shadow: 0 0 20px #00ff00;
+}
+
+button {
+ width: 100%;
+ padding: 15px;
+ font-size: 1.2rem;
+ border: none;
+ border-radius: 10px;
+ background: linear-gradient(45deg, #00ff00, #00eaff);
+ color: #ffffff;
+ box-shadow: 0 0 20px #00ff00, 0 0 40px #00eaff;
+ margin-top: 10px;
+ cursor: pointer;
+ transition: transform 0.3s, box-shadow 0.3s;
+}
+
+button:hover {
+ transform: scale(1.05);
+ box-shadow: 0 0 30px #00ff00, 0 0 50px #00eaff;
+}
+#result {
+ margin-top: 20px;
+ padding: 20px;
+ background: rgba(0, 0, 0, 0.8); /* Полупрозрачный фон */
+ border-radius: 10px;
+ box-shadow: 0 0 15px #00ff00, 0 0 30px #00eaff; /* Яркое свечение */
+ color: #ffffff; /* Белый текст */
+ font-size: 1.1rem; /* Увеличиваем размер шрифта */
+ font-weight: bold; /* Делаем текст жирным */
+ text-shadow: 0 0 5px #00ff00, 0 0 15px #00eaff; /* Неоновое свечение текста */
+ letter-spacing: 1px; /* Увеличиваем межбуквенный интервал для лучшего восприятия */
+ transition: all 0.3s ease-in-out; /* Плавный переход для всех свойств */
+ display: block;
+ font-size: 1.2rem;
+ color: #00ff00;
+ margin: 15px 0 5px;
+
+ font-weight: bold; /* Делаем текст жирным */
+}
+
+/* Эффект при наведении на #result */
+#result:hover {
+ background: rgba(0, 0, 0, 0.9); /* Темнее фон при наведении */
+ box-shadow: 0 0 20px #00ff00, 0 0 40px #00eaff; /* Более яркое свечение */
+ text-shadow: 0 0 10px #00ff00, 0 0 20px #00eaff; /* Увеличиваем свечение текста */
+}
+
+a {
+ color: #00eaff;
+ text-decoration: none;
+}
+
+a:hover {
+ text-shadow: 0 0 10px #00eaff;
+}
+
+.modal {
+ display: none;
+ position: fixed;
+ top: 0;
+ left: 0;
+ width: 100%;
+ height: 100%;
+ background: rgba(0, 0, 0, 0.9);
+ z-index: 1000;
+ padding: 20px;
+ box-sizing: border-box;
+}
+
+.modal-content {
+ max-width: 600px;
+ margin: 0 auto;
+ background: rgba(0, 0, 0, 0.8);
+ padding: 20px;
+ border-radius: 15px;
+ box-shadow: 0 0 20px #00ff00, 0 0 40px #00eaff;
+}
+
+.close {
+ font-size: 2rem;
+ color: #00eaff;
+ float: right;
+ cursor: pointer;
+}
+
+.close:hover {
+ color: #00ff00;
+}
+
+.modal-header {
+ font-size: 1.5rem;
+ text-align: center;
+ color: #00ff00;
+ margin-bottom: 20px;
+}
 /* Медиазапрос для мобильных устройств */
 @media only screen and (max-width: 768px) {
+ .container {
+  text-align: center;
+  max-width: 100%;
+  background: none;
+  border-radius: 0px;
+  box-shadow: none;
+  margin: ;
+  /* Центрируем с помощью отступов */
+ }
 
-    .container {
-        text-align: center;
-        max-width: 100%;
-        padding: 0px;
-        background: none;
-        border-radius: 0px;
-        box-shadow: none;
-        margin: ;
-        /* Центрируем с помощью отступов */
-    }
+ h1 {
+  margin-top: -20px;
+ }
+ .a_info2 {
+  display: block; /* Ссылка будет на новой строке */
+  margin-top: 10px; /* Добавляем немного отступа сверху, если нужно */
+  margin-bottom: -20px;
+ }
 
-
-    input,
-    select {
-        font-size: 1rem;
-        color: #00d4ff;
-        background-color: #1e3b5a;
-        border: 2px solid #00d4ff;
-        border-radius: 5px;
-        padding: 10px;
-        margin-bottom: 20px;
-        width: 100%;
-        /* Элемент займет всю доступную ширину */
-        max-width: 100%;
-        /* Максимальная ширина */
-        box-shadow: 0 0 5px #00d4ff;
-        box-sizing: border-box;
-        /* Гарантируем, что padding и border не выталкивают элемент */
-    }
+ /* Убираем вертикальную черту (|) на мобильных устройствах */
+ .separator {
+  display: none; /* Скрываем разделитель */
+ }
 }
