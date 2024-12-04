@@ -617,6 +617,7 @@ function darkenScreenAndAnimateStar() {
     overlay.style.opacity = 1;
     overlay.style.pointerEvents = "auto";
     star.style.position = "fixed";
+        star.classList.remove("sparkling-label");
 
     // Появление звезды и запуск анимации
     star.classList.add("animate");
@@ -625,6 +626,7 @@ function darkenScreenAndAnimateStar() {
     setTimeout(() => {
         star.classList.remove("animate");
         star.style.position = "relative";
+        star.classList.add("sparkling-label");
     }, 4000);
     // Возвращаем звезду в исходное положение
     setTimeout(() => {
