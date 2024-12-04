@@ -149,7 +149,6 @@ td {
 
 body {
  font-family: "Courier New", Courier, monospace;
- background: radial-gradient(circle, #1a0025, #001540 60%, #000428);
  color: #ffffff;
  margin: 0;
  padding: 0;
@@ -160,8 +159,8 @@ body {
 
  overflow-y: auto;
  padding: 20px;
- 
-    background-image: url('background.jpg');
+ background-image: radial-gradient(circle, #1a0025, #001540 60%, #000428),  url(background.jpg);
+background-blend-mode: overlay;
     background-repeat: no-repeat;
     background-position: center;
     background-size: cover;
