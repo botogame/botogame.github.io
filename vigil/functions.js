@@ -670,4 +670,8 @@ function setupOnLoad() {
     if (typeof Website2APK !== "undefined") {
         document.getElementById("buttonClose").style.display = "block";
     }
+	
+	
+    clear_input_error(document.getElementById("startCard"), true, false);
+    clear_input_error(document.getElementById("gender"), true, false);
 }
