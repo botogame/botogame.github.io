@@ -160,7 +160,7 @@ body {
  overflow-y: auto;
  padding: 20px;
  background-image: radial-gradient(circle, #1a0025, #001540 60%, #000428),  url(background.jpg);
-background-blend-mode: overlay;
+ background-blend-mode: overlay, color;
     background-repeat: no-repeat;
     background-position: center;
     background-size: cover;
@@ -297,6 +297,7 @@ a:hover {
  z-index: 1000;
  padding: 20px;
  box-sizing: border-box;
+ overflow-y: auto;
 }
 
 .modal-content {
