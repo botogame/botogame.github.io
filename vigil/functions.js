@@ -133,7 +133,7 @@ function getCard() {
     wish = wish.toLowerCase();
 
     if (startCard === endCard) {
-        resultDiv.innerHTML = "Выбранное направление сходно с последней картой, смените!";
+        resultDiv.innerHTML = "Выбранное направление сходно с направлением последней карты, смените!";
         return;
     }
 
