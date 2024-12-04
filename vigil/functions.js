@@ -612,6 +612,8 @@ function freeMartix() {
 function darkenScreenAndAnimateStar() {
     var overlay = document.getElementById("overlay");
     var star = document.getElementById("star");
+	
+	star.classList.remove("sparkling-label");
 
     // Затемнение экрана
     overlay.style.opacity = 1;
@@ -625,6 +627,7 @@ function darkenScreenAndAnimateStar() {
     setTimeout(() => {
         star.classList.remove("animate");
         star.style.position = "relative";
+		star.classList.add("sparkling-label");
     }, 4000);
     // Возвращаем звезду в исходное положение
     setTimeout(() => {
@@ -654,7 +657,7 @@ function setupOnLoad() {
     } else {
         if (getCookie("endCard") != undefined) {
             document.getElementById("startCard").value = getCookie("endCard");
-            document.getElementById("result").innerHTML = "Ваша последняя карта: " + getCookie("endCard"); // Очистить предыдущий результат
+            document.getElementById("result").innerHTML = "Ваша последняя карта: " + getCookie("endCard");
         }
 
         if (getCookie("gender") != undefined) {
