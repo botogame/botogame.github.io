@@ -264,6 +264,7 @@ button:hover {
  color: #00ff00;
  margin: 15px 0 5px;
  font-weight: bold; /* Делаем текст жирным */
+ text-align:center;
 }
 
 /* Эффект при наведении на #result */
@@ -346,4 +347,63 @@ a:hover {
  .separator {
   display: none; /* Скрываем разделитель */
  }
+}
+
+
+
+
+/* Основной стиль для символа ✵ */
+.sparkling-label {
+    color: #00ff00; /* Основной зеленый цвет */
+    text-shadow: 0 0 10px #00ff00, 0 0 20px #00ff00, 0 0 30px #00eaff; /* Свечение */
+    animation: star-glow 2s infinite alternate ease-in-out; /* Анимация свечения ✵ */
+}
+
+/* Псевдоэлемент для лучей */
+.sparkling-label::before {
+    content: '';
+    position: absolute;
+    top: 40%;
+    left: 50%;
+    width: 60px; /* Диаметр области с лучами уменьшен */
+    height: 60px; /* Уменьшение размеров круга */
+    border-radius: 50%; /* Круговая форма */
+    transform: translate(-50%, -50%) scale(0.8); /* Центрируем и уменьшаем размер */
+    background: radial-gradient(circle, rgba(0, 255, 0, 0.2) 50%, transparent 70%);
+    box-shadow: 
+        0 -15px 10px -2px #00ff00, /* Уменьшенные размеры лучей */
+        15px 15px 10px -2px #00eaff,
+        -15px 15px 10px -2px #00ff00,
+        15px -15px 10px -2px #00eaff,
+        -15px -15px 10px -2px #00ff00;
+    animation: star-rays 3s infinite linear; /* Анимация вращения лучей */
+}
+
+/* Анимация свечения ✵ */
+@keyframes star-glow {
+    0% {
+        text-shadow: 0 0 10px #00ff00, 0 0 20px #00eaff, 0 0 30px #00ff00;
+    }
+    50% {
+        text-shadow: 0 0 20px #00ff00, 0 0 40px #00eaff, 0 0 50px #00ff00;
+    }
+    100% {
+        text-shadow: 0 0 10px #00ff00, 0 0 20px #00eaff, 0 0 30px #00ff00;
+    }
+}
+
+/* Анимация вращения лучей */
+@keyframes star-rays {
+    0% {
+        transform: translate(-50%, -50%) rotate(0deg) scale(0.8);
+        opacity: 1;
+    }
+    50% {
+        transform: translate(-50%, -50%) rotate(180deg) scale(1.2);
+        opacity: 0.8;
+    }
+    100% {
+        transform: translate(-50%, -50%) rotate(360deg) scale(0.8);
+        opacity: 1;
+    }
 }
