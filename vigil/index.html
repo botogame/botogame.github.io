@@ -1,99 +1,106 @@
 <!DOCTYPE html>
 <html lang="ru">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>ПМ Бдилка</title>
+        <meta name="keywords" content="Пасьянс Медичи, ПМ, Бдилка, Волков Андрей, желания" />
+        <meta name="description" content="Пасьянс Медичи помогает в сложных ситуациях, а Бдилка выявляет скрытые желания. Перед вами инструмент настоящей свободы в мире, где ваши границы сознания станут как спасением, так и ловушкой." />
+        <link rel="icon" type="image/x-icon" href="./favicon.ico" />
+        <link rel="stylesheet" href="./style.css?v=04.12.2024" />
+        <script src="./functions.js?v=04.12.2024"></script>
+        <script src="./config.js?v=28.11.2024"></script>
+        <style></style>
+    </head>
 
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ПМ Бдилка</title>
-    <meta name="keywords" content="Пасьянс Медичи, ПМ, Бдилка, Волков Андрей, желания">
-    <meta name="description" content="Пасьянс Медичи помогает в сложных ситуациях, а Бдилка выявляет скрытые желания. Перед вами инструмент настоящей свободы в мире, где ваши границы сознания станут как спасением, так и ловушкой.">
-    <link rel="icon" type="image/x-icon" href="./favicon.ico">
-    <link rel='stylesheet' href='./style.css?v=01.12.2024'>
-    <script src='./functions.js?v=28.11.2024'></script>
-    <script src='./config.js?v=28.11.2024'></script>
-</head>
+    <body>
+        <div class="container">
+            <div id="overlay"><b>Cпасибо!</b></div>
 
-<body>
-    <div class="container">
+            <h1>ПМ [<a title="Показать матрицу" onclick="openModal()" id="star" href="#">✵</a>] Бдилка</h1>
 
-        <div id="overlay"><b>Cпасибо!</b></div>
+            <div id="selectForm">
+                <select id="gender" onchange="clear_input_error(this,true);" data-selected="Ваш пол">
+                    <option value="">[ Выберите пол ]</option>
+                    <option value="male">Мужской</option>
+                    <option value="female">Женский</option>
+                </select>
 
-        <h1>ПМ [<a title="Показать матрицу" onclick="openModal()" id="star" href="#">✵</a>] Бдилка</h1>
+                <select id="startCard" onchange="clear_input_error(this,true);" data-selected="Последняя карта">
+                    <option value="">[ Последняя карта ]</option>
+                    <option value="Т">Т</option>
+                    <option value="К">К</option>
+                    <option value="Д">Д</option>
+                    <option value="В">В</option>
+                    <option value="10">10</option>
+                    <option value="9">9</option>
+                    <option value="8">8</option>
+                    <option value="7">7</option>
+                    <option value="6">6</option>
+                    <option value="5">5</option>
+                    <option value="4">4</option>
+                    <option value="3">3</option>
+                    <option value="2">2</option>
+                </select>
 
-        <div id="selectForm">
+                <div class="inline-form">
+                    <label for="wish">Желаю чтобы </label>
+                    <input type="text" id="wish" placeholder="[ ваше пожелание ]" onchange="clear_input_error(this);" />
+                </div>
 
-            <label for="gender">Выберите пол:</label>
-            <select id="gender">
-                <option value="male">Мужской</option>
-                <option value="female">Женский</option>
-            </select>
+                <select id="sphere" onchange="clear_input_error(this,true);updateDirections()" data-selected="Сфера влияния">
+                    <option value="">[ Выберите сферу влияния ]</option>
+                    <option value="стратегия">Стратегия</option>
+                    <option value="восхищение">Восхищение</option>
+                    <option value="вдохновение">Вдохновение</option>
+                    <option value="прорицание">Прорицание</option>
+                </select>
 
-            <label for="startCard">Последняя карта:</label>
-            <select id="startCard">
-                <option value="Т">Т</option>
-                <option value="К">К</option>
-                <option value="Д">Д</option>
-                <option value="В">В</option>
-                <option value="10">10</option>
-                <option value="9">9</option>
-                <option value="8">8</option>
-                <option value="7">7</option>
-                <option value="6">6</option>
-                <option value="5">5</option>
-                <option value="4">4</option>
-                <option value="3">3</option>
-                <option value="2">2</option>
-            </select>
+                <select id="direction" onchange="clear_input_error(this,true);" data-selected="Направление влияния">
+                    <option value="">[ Выберите направление влияния ]</option>
+                </select>
 
-            <label for="wish">Желаю чтобы:</label>
-            <input type="text" id="wish" placeholder="Введите ваше пожелание">
+                <select id="needType" onchange="clear_input_error(this,true);" data-selected="Тип необходимости">
+                    <option value="">[ Выберите тип необходимости ]</option>
+                    <option value="з-р-п">Нужда</option>
+                    <option value="п-р-з">Внедрение</option>
+                </select>
+            </div>
 
-            <label for="sphere">Выберите сферу влияния:</label>
-            <select id="sphere" onchange="updateDirections()">
-                <option value="стратегия">Стратегия</option>
-                <option value="восхищение">Восхищение</option>
-                <option value="вдохновение">Вдохновение</option>
-                <option value="прорицание">Прорицание</option>
-            </select>
+            <div class="lavel" id="result">
+                Пасьянс Медичи помогает в сложных ситуациях, а Бдилка выявляет скрытые желания. Перед вами инструмент настоящей свободы в мире, где ваши границы сознания станут как спасением, так и ловушкой. Если это первый расклад, то
+                ставьте последней картой: 8. Полную инструкцию смотрите на <br />
+                <a class="a_info" href="https://github.com/botogame/botogame/blob/main/freedom/interaction/vigil/README.md">сайте разработчика</a>
+            </div>
 
-            <label for="direction">Выберите направление влияния:</label>
-            <select id="direction">
-            </select>
-
-            <label for="needType">Выберите тип необходимости:</label>
-            <select id="needType">
-                <option value="з-р-п">Нужда</option>
-                <option value="п-р-з">Внедрение</option>
-            </select>
-
+            <button id="button" onclick="getCard()">Получить расклад</button>
+            <button id="buttonClose" onclick="Website2APK.exitApp()">Закрыть программу</button>
+            <br />
+            <br />
+            <p>
+                <center>
+                    Версия 1-04.12.2024
+                    <span class="separator">|</span>
+                    <a class="a_info2" href="https://github.com/botogame/botogame/blob/main/freedom/interaction/vigil/README.md">сайт разработчика</a>
+                </center>
+            </p>
         </div>
 
-        <div id="result">Пасьянс Медичи помогает в сложных ситуациях, а Бдилка выявляет скрытые желания. Перед вами инструмент настоящей свободы в мире, где ваши границы сознания станут как спасением, так и ловушкой. Если это первый расклад, то ставьте последней картой: 8. Полную инструкцию смотрите на <a class="a_info" href="https://github.com/botogame/botogame/blob/main/freedom/interaction/vigil/README.md">сайте разработчика</a>.</div>
-
-        <button id="button" onclick="getCard()">Получить расклад</button>
-        <button id="buttonClose" onclick="Website2APK.exitApp()">Закрыть программу</button>
-        <br><br>
-		Версия 1-01.12.2024 | <a class="a_info" href="https://github.com/botogame/botogame/blob/main/freedom/interaction/vigil/README.md">сайт разработчика</a>
-
-    </div>
-
-    <!-- Модальное окно -->
-    <div id="matrixModal" class="modal">
-        <div class="modal-content">
-            <span class="close" onclick="closeModal()">&times;</span>
-            <div class="modal-header">
-                Матрица
+        <!-- Модальное окно -->
+        <div id="matrixModal" class="modal">
+            <div class="modal-content">
+                <span class="close" onclick="closeModal()">&times;</span>
+                <div class="modal-header">
+                    Матрица
+                </div>
+                <table id="matrix"></table>
+                <button id="button5" class="open-modal-btn" onclick="freeMartix()">Освободить матрицу</button>
+                <!-- Миниатюрный листинг раскладов -->
+                <div id="cardListContainer">
+                    <ul id="cardList" class="card-list"></ul>
+                </div>
+                <button id="button3" class="open-modal-btn" onclick="deleteCardGroupsCookies()">Очистить историю</button>
             </div>
-            <table id="matrix"></table>
-            <button id="button5" class="open-modal-btn" onclick="freeMartix()">Освободить матрицу</button>
-            <!-- Миниатюрный листинг раскладов -->
-            <div id="cardListContainer">
-                <ul id="cardList" class="card-list"></ul>
-            </div>
-            <button id="button3" class="open-modal-btn" onclick="deleteCardGroupsCookies()">Очистить историю</button>
         </div>
-    </div>
-
-</body>
-
+    </body>
 </html>
