@@ -661,6 +661,8 @@ function setupOnLoad() {
             document.getElementById("gender").value = getCookie("gender");
         }
     }
+	
+	document.getElementById("result").style.display = 'block';
 
     cardGroups = getCardGroupsFromCookies();
 
