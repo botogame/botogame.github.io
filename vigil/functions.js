@@ -47,6 +47,9 @@ function check_unselected(){
     if (document.getElementById("needType").value === "") {
         return "needType";
     }
+    if (document.getElementById("symvol_text").value === "") {
+        return "symvol_text";
+    }
 	
 	return '';
 }
@@ -67,6 +70,7 @@ function getCard() {
 		
 		document.getElementById("direction").style.display = "none";
         document.getElementById("wish").value = "";
+		document.getElementById("symvol_text").value = "";
 
         clear_input_error(document.getElementById("startCard"), true, false,false);
         clear_input_error(document.getElementById("sphere"), true, true,false);
@@ -99,6 +103,7 @@ function getCard() {
     var direction = document.getElementById("direction").value;
     var needType = document.getElementById("needType").value;
     var gender = document.getElementById("gender").value;
+    var symvol_text = document.getElementById("symvol_text").value;
 
     if (gender === "") {
         resultDiv.innerHTML = "Выберите ваш пол!";
@@ -131,10 +136,15 @@ function getCard() {
         document.getElementById("needType").classList.add("alert_input");
         return;
     }
+    if (symvol_text === "") {
+        resultDiv.innerHTML = "Опишите для чего ваше желание!";
+        document.getElementById("symvol_text").classList.add("alert_input");
+        return;
+    }
 
     var endCard = schemeSphereInfluence[sphere][direction];
 
-    wish = wish.toLowerCase();
+    wish = wish.toLowerCase() + ' для ' + symvol_text.toLowerCase();
 
     if (startCard === endCard) {
         resultDiv.innerHTML = "Выбранное направление сходно с направлением последней карты, смените!";
@@ -273,6 +283,7 @@ function set_result(gender, startCard, endCard, needType, wish, generation = fal
         document.getElementById("selectForm").style.display = "none";
 
         document.getElementById("wish").value = "";
+		document.getElementById("symvol_text").value = "";
     } else {
         output += "не найден.";
     }
