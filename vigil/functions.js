@@ -53,7 +53,9 @@ function check_unselected(){
 
 // Функция для получения карты
 function getCard() {
+	
     if (document.getElementById("button").innerHTML == "Завершить расклад") {
+		
         document.getElementById("startCard").value = getCookie("endCard");
         document.getElementById("result").innerHTML = "Ваша последняя карта: " + getCookie("endCard"); // Очистить предыдущий результат
         document.getElementById("button").innerHTML = "Получить расклад";
@@ -61,15 +63,17 @@ function getCard() {
         document.cookie = "startCard=; max-age=-1";
         document.cookie = "needType=; max-age=-1";
         document.cookie = "wish=; max-age=-1";
-
-        document.getElementById("selectForm").style.display = "block";
-
+		
+		
+		document.getElementById("direction").style.display = "none";
         document.getElementById("wish").value = "";
 
         clear_input_error(document.getElementById("startCard"), true, false);
         clear_input_error(document.getElementById("sphere"), true, true);
         clear_input_error(document.getElementById("direction"), true, true);
         clear_input_error(document.getElementById("needType"), true, true);
+
+        document.getElementById("selectForm").style.display = "block";
 
         var checkMatrix = findMatrix();
 
