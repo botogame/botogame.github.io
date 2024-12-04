@@ -149,8 +149,8 @@ function getCard() {
     set_result(gender, startCard, endCard, needType, wish, true);
 }
 
-function clear_input_error(_this, isSelect = false, restore = false) {
-    if (!restore) {
+function clear_input_error(_this, isSelect = false, restore = false,alarm=true) {
+    if (!restore && alarm) {
         if (_this.value != "") {
             _this.classList.remove("alert_input");
 			
@@ -672,6 +672,6 @@ function setupOnLoad() {
     }
 	
 	
-    clear_input_error(document.getElementById("startCard"), true, false);
-    clear_input_error(document.getElementById("gender"), true, false);
+    clear_input_error(document.getElementById("startCard"), true, false,false);
+    clear_input_error(document.getElementById("gender"), true, false,false);
 }
