@@ -21,6 +21,7 @@ button:hover {
  padding: 20px;
  text-align: center;
  box-shadow: 0 0 10px #00d4ff, 0 0 20px #005f8f;
+ display:none;
 }
 
 /* Анимация звезд */
@@ -271,11 +272,10 @@ button:hover {
  text-shadow: 0 0 5px #00ff00, 0 0 15px #00eaff; /* Неоновое свечение текста */
  letter-spacing: 1px; /* Увеличиваем межбуквенный интервал для лучшего восприятия */
  transition: all 0.3s ease-in-out; /* Плавный переход для всех свойств */
- display: block;
+ display: none;
  font-size: 1.2rem;
  color: #00ff00;
  margin: 15px 0 5px;
-
  font-weight: bold; /* Делаем текст жирным */
 }
 
