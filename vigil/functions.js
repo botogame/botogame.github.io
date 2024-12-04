@@ -68,10 +68,10 @@ function getCard() {
 		document.getElementById("direction").style.display = "none";
         document.getElementById("wish").value = "";
 
-        clear_input_error(document.getElementById("startCard"), true, false);
-        clear_input_error(document.getElementById("sphere"), true, true);
-        clear_input_error(document.getElementById("direction"), true, true);
-        clear_input_error(document.getElementById("needType"), true, true);
+        clear_input_error(document.getElementById("startCard"), true, false,false);
+        clear_input_error(document.getElementById("sphere"), true, true,false);
+        clear_input_error(document.getElementById("direction"), true, true,false);
+        clear_input_error(document.getElementById("needType"), true, true,false);
 
         document.getElementById("selectForm").style.display = "block";
 
