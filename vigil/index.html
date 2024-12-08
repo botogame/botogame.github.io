@@ -7,9 +7,9 @@
         <meta name="keywords" content="Пасьянс Медичи, ПМ, Бдилка, Волков Андрей, желания" />
         <meta name="description" content="Пасьянс Медичи помогает в сложных ситуациях, а Бдилка выявляет скрытые желания. Перед вами инструмент настоящей свободы в мире, где ваши границы сознания станут как спасением, так и ловушкой." />
         <link rel="icon" type="image/x-icon" href="./favicon.png" />
-        <link rel="stylesheet" href="./style.css?v=2-04.12.2024" />
-        <script src="./functions.js?v=2-04.12.2024"></script>
-        <script src="./config.js?v=28.11.2024"></script>
+        <link rel="stylesheet" href="./style.css?v=08.12.2024_13:38" />
+        <script src="./functions.js?v=08.12.2024_13:38"></script>
+        <script src="./config.js?v=08.12.2024_13:38"></script>
         <style></style>
     </head>
 
@@ -45,7 +45,7 @@
 
                 <div class="inline-form">
                     <label for="wish">Желаю чтобы</label>
-                    <input type="text" id="wish" placeholder="[ ваше пожелание ]" onchange="clear_input_error(this);" />
+                    <input type="text" id="wish" placeholder="[ ваше пожелание ]" oninput="trackInput(this);" />
                 </div>
 
                 <select id="sphere" onchange="clear_input_error(this,true);updateDirections()" data-selected="Сфера влияния">
@@ -56,7 +56,7 @@
                     <option value="прорицание">Прорицание</option>
                 </select>
 
-                <select id="direction" onchange="clear_input_error(this,true);" data-selected="Направление влияния">
+                <select id="direction" onchange="clear_input_error(this,true);" data-selected="Направление влияния" disabled>
                     <option value="">[ Выберите направление влияния ]</option>
                 </select>
 
@@ -68,16 +68,18 @@
 				
                 <div class="inline-form">
                     <label for="symvol_text">Желаю для</label>
-                    <input type="text" id="symvol_text" placeholder="[ опишите для чего ]" onchange="clear_input_error(this);" />
+                    <input type="text" id="symvol_text" placeholder="[ опишите для чего ]" oninput="trackInput(this);" />
                 </div>
 				
             </div>
 
             <div id="result">
-                Пасьянс Медичи помогает в сложных ситуациях, а Бдилка выявляет скрытые желания. Перед вами инструмент настоящей свободы в мире, где ваши границы сознания станут как спасением, так и ловушкой. Если это первый расклад, то
-                ставьте последней картой: 8. Полную инструкцию смотрите на <br />
-                <a class="a_info" href="https://github.com/botogame/botogame/blob/main/freedom/interaction/vigil/README.md">сайте разработчика</a>
+                Загрузка...
             </div>
+
+            <select id="uklad" onchange="clear_input_error(this,true,false,true,false);" data-selected="Характеристика уклада">
+                <option value="">[ Выберите характеристику уклада ]</option>
+            </select>
 
             <button id="button" onclick="getCard()">Получить расклад</button>
             <button id="buttonClose" onclick="Website2APK.exitApp()">Закрыть программу</button>
@@ -85,7 +87,7 @@
             <br />
             <p>
                 <center>
-                    Версия 1-05.12.2024
+                    Версия 2-08.12.2024
                     <span class="separator">|</span>
                     <a class="a_info2" href="https://github.com/botogame/botogame/blob/main/freedom/interaction/vigil/README.md">сайт разработчика</a>
                 </center>
