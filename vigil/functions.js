@@ -6,15 +6,14 @@ function updateDirections() {
     // Очистим текущие элементы в select "direction"
     directionSelect.innerHTML = "";
 
-    if (sphere == "") {
-        directionSelect.style.display = "none";
-    } else {
-        directionSelect.style.display = "block";
+    var option = document.createElement("option");
+    option.value = "";
+    option.textContent = "[ Выберите направление влияния ]";
+    directionSelect.appendChild(option);
 
-        var option = document.createElement("option");
-        option.value = "";
-        option.textContent = "[ Выберите направление влияния ]";
-        directionSelect.appendChild(option);
+    if (sphere == "") {
+        directionSelect.setAttribute("disabled","disabled");
+    } else {
 
         // Заполняем новый список направлений на основе выбранной сферы
         for (const direction in schemeSphereInfluence[sphere]) {
@@ -23,7 +22,39 @@ function updateDirections() {
             option.textContent = direction;
             directionSelect.appendChild(option);
         }
+        
+        directionSelect.removeAttribute("disabled");
     }
+}
+
+function trackInput(_this){
+    clear_input_error(_this);
+
+    if(_this.id=='wish'){
+        if(_this.value==''){
+            setMsgToUser('select','Введите желание!');
+        }
+		else{
+
+            var symvol_text = document.getElementById("symvol_text").value;
+
+            if(symvol_text!=''){
+                symvol_text = ' для ' + symvol_text;
+            }
+            setMsgToUser('write',"Я желаю чтобы " + _this.value + symvol_text);
+        }
+    }
+    else if(_this.id=='symvol_text'){
+        if(_this.value==''){
+            setMsgToUser('select','Опишите для чего ваше желание!');
+        }
+		else{
+            var wish = document.getElementById("wish").value;
+
+            setMsgToUser('write',"Я желаю чтобы " + wish + ' для ' + _this.value);
+        }
+    }
+
 }
 
 function check_unselected(){
@@ -54,48 +85,106 @@ function check_unselected(){
 	return '';
 }
 
+function escapeHtml(text) {
+    return text
+        .replace(/&/g, "&amp;")
+        .replace(/</g, "&lt;")
+        .replace(/>/g, "&gt;")
+        .replace(/"/g, "&quot;")
+        .replace(/'/g, "&#039;");
+  }
+
+function dolgyDescription() {
+
+
+    var kolvoDolgov = calculateDolgy();
+
+    if(kolvoDolgov==0){
+        return '';
+    }
+
+    let description = '<hr>У вас долги на такие карты: ';
+
+    ukladvariants.forEach(option => {
+        var resultSet = getCardsBetweenMultiple(option.value);
+        var cardsList = resultSet.length > 0 ? resultSet : ['нет'];
+        
+        description += `${option.text} (`;
+
+        cardsList.forEach((card, index) => {
+            if (card !== 'нет') {
+                description += '<a class="card-link" href="#" onclick="otrabotatDolg(\'' + option.value +'\',\'' + card +'\');">' + card + '</a>';
+            } else {
+                description += card;
+            }
+
+            if (index < cardsList.length - 1) {
+                description += ', ';
+            }
+        });
+
+        description += '), ';
+    });
+
+    description = description.slice(0, -2) + '. Кликнув по карте долга вы создадите расклад отработки.';
+    // Удаляем последнюю запятую и пробел
+    return description;
+}
+
 // Функция для получения карты
-function getCard() {
+function getCard(clearMatrix=false) {
 	
-    if (document.getElementById("button").innerHTML == "Завершить расклад") {
-		
+    if (document.getElementById("button").innerHTML == "Уклад полностью проработан") {
+
+        var uklad = document.getElementById("uklad").value;
+
+        if(uklad==''){
+            clear_input_error(document.getElementById("uklad"));
+            return;
+        }
+
+        savecardUkladyToCookies(getCookie('wishcardUklady'),uklad);
+        saveUkladGroupsToCookies(uklad,getCookie("symvol_text"), getCookie("endCard"));
+
         document.getElementById("startCard").value = getCookie("endCard");
-        document.getElementById("result").innerHTML = "Ваша последняя карта: " + getCookie("endCard"); // Очистить предыдущий результат
         document.getElementById("button").innerHTML = "Получить расклад";
 
-        document.cookie = "startCard=; max-age=-1";
-        document.cookie = "needType=; max-age=-1";
-        document.cookie = "wish=; max-age=-1";
+        setMsgToUser('select',"Ваша последняя карта: " + getCookie("endCard") + '.');
+        
+        setCookie('startCard','');
+        setCookie('needType','');
+        setCookie('wish','');
+        setCookie('wishcardUklady','');
+        setCookie('symvol_text','');
+        setCookie('disableDolgType','');
 		
-		
-		document.getElementById("direction").style.display = "none";
+		document.getElementById("direction").setAttribute("disabled","disabled");
         document.getElementById("wish").value = "";
 		document.getElementById("symvol_text").value = "";
+        document.getElementById("uklad").style.display = 'none';
 
         clear_input_error(document.getElementById("startCard"), true, false,false);
         clear_input_error(document.getElementById("sphere"), true, true,false);
         clear_input_error(document.getElementById("direction"), true, true,false);
         clear_input_error(document.getElementById("needType"), true, true,false);
+        clear_input_error(document.getElementById("uklad"), true, true,false);
 
         document.getElementById("selectForm").style.display = "block";
 
-        var checkMatrix = findMatrix();
+        if(!clearMatrix){
+            var checkMatrix = findMatrix();
 
-        if (checkMatrix.cellsLeft === 0) {
-            openModal();
+            if (checkMatrix.cellsLeft === 0 && calculateDolgy()==0) {
+                openModal();
+            }
         }
+        
 
         return;
     }
-
-    const resultDiv = document.getElementById("result");
-    resultDiv.style.display = "block";
-    resultDiv.innerHTML = "Загрузка..."; // Очистить предыдущий результат
-
-    resultDiv.scrollIntoView({
-        behavior: "smooth", // Плавная прокрутка
-        block: "start", // Начало элемента будет у верхнего края окна
-    });
+    else{
+    
+    setMsgToUser('select','Инициация...',true);
 
     var wish = document.getElementById("wish").value;
     var startCard = document.getElementById("startCard").value;
@@ -106,70 +195,74 @@ function getCard() {
     var symvol_text = document.getElementById("symvol_text").value;
 
     if (gender === "") {
-        resultDiv.innerHTML = "Выберите ваш пол!";
+        setMsgToUser('select','Выберите ваш пол!');
         document.getElementById("gender").classList.add("alert_input");
         return;
     }
 
     if (startCard === "") {
-        resultDiv.innerHTML = "Выберите последнюю карту! Если это ваша первая игра, то: 8";
+        setMsgToUser('select','Выберите последнюю карту! Если это ваша первая игра, то: 8.');
         document.getElementById("startCard").classList.add("alert_input");
         return;
     }
     if (wish === "") {
-        resultDiv.innerHTML = "Введите желание!";
+        setMsgToUser('select','Введите желание!');
         document.getElementById("wish").classList.add("alert_input");
         return;
     }
     if (sphere === "") {
-        resultDiv.innerHTML = "Выберите сферу влияния!";
+        setMsgToUser('select','Выберите сферу влияния!');
         document.getElementById("sphere").classList.add("alert_input");
         return;
     }
     if (direction === "") {
-        resultDiv.innerHTML = "Выберите направление влияния!";
+        setMsgToUser('select','Выберите направление влияния!');
         document.getElementById("direction").classList.add("alert_input");
         return;
     }
     if (needType === "") {
-        resultDiv.innerHTML = "Выберите тип необходимости!";
+        setMsgToUser('select','Выберите тип необходимости!');
         document.getElementById("needType").classList.add("alert_input");
         return;
     }
     if (symvol_text === "") {
-        resultDiv.innerHTML = "Опишите для чего ваше желание!";
+        setMsgToUser('select','Опишите для чего ваше желание!');
         document.getElementById("symvol_text").classList.add("alert_input");
         return;
     }
 
     var endCard = schemeSphereInfluence[sphere][direction];
 
-    wish = wish.toLowerCase() + ' для ' + symvol_text.toLowerCase();
+    symvol_text = symvol_text.toLowerCase();
+
+    wish = wish.toLowerCase() + ' для ' + symvol_text;
 
     if (startCard === endCard) {
-        resultDiv.innerHTML = "Выбранное направление сходно с направлением последней карты, смените!";
+        setMsgToUser('select','Выбранное направление сходно с направлением последней карты, смените!');
         return;
     }
 
     if (endCard === "Т" && needType === "п-р-з") {
-        resultDiv.innerHTML = "Выбранный тип не применим для выбранного направления, смените!";
+        setMsgToUser('select','Выбранный тип не применим для выбранного направления, смените!');
         return;
     }
 
-    set_result(gender, startCard, endCard, needType, wish, true);
+      set_result(gender, startCard, endCard, needType, wish, symvol_text, true);
+    }
+    
 }
 
-function clear_input_error(_this, isSelect = false, restore = false,alarm=true) {
+function clear_input_error(_this, isSelect = false, restore = false,alarm=true,msg=true) {
     if (!restore && alarm) {
         if (_this.value != "") {
             _this.classList.remove("alert_input");
 			
-			if(isSelect){
+			if(isSelect && msg){
 				if(check_unselected()==''){
-					document.getElementById("result").innerHTML = "У вас всё заполнено, можете нажать на кнопку получения расклада!";
+                    setMsgToUser('select',"У вас всё заполнено, можете нажать на кнопку получения расклада!");
 				}
 				else{
-					document.getElementById("result").innerHTML = "Продолжайте заполнение!";
+                    setMsgToUser('select',"Продолжайте заполнение!");
 				}
 				
 			}
@@ -200,6 +293,21 @@ function clear_input_error(_this, isSelect = false, restore = false,alarm=true) 
 }
 
 function getCookie(name) {
+
+if(name == 'cardGroups' || name == 'ukladGroups' || name == 'cardUklady'){
+    var cookieValue = document.cookie
+        .split("; ")
+        .find((row) => row.startsWith(name+"="))
+        ?.split("=")[1];
+
+    if (cookieValue) {
+        // Десериализуем данные обратно в объект
+        return JSON.parse(decodeURIComponent(cookieValue));
+    } else {
+        return {};
+    }
+}
+else{
     var matches = document.cookie.match(new RegExp("(?:^|; )" + name.replace(/([\.$?*|{}\(\)\[\]\\\/\+^])/g, "\\$1") + "=([^;]*)"));
 
     if (matches) {
@@ -216,6 +324,8 @@ function getCookie(name) {
         return undefined;
     }
 }
+    
+}
 
 function formatDate() {
     var date = new Date();
@@ -229,13 +339,27 @@ function formatDate() {
     var yy = date.getFullYear() % 100;
     if (yy < 10) yy = "0" + yy;
 
-    return dd + "/" + mm + "/" + yy;
+    var hh = date.getHours();
+    if (hh < 10) hh = "0" + hh;
+
+    var min = date.getMinutes();
+    if (min < 10) min = "0" + min;
+
+    var ss = date.getSeconds();
+    if (ss < 10) ss = "0" + ss;
+
+    return dd + "/" + mm + "/" + yy + " " + hh + ":" + min + ":" + ss;
 }
 
-function set_result(gender, startCard, endCard, needType, wish, generation = false) {
-    const resultDiv = document.getElementById("result");
-    resultDiv.style.display = "block";
-    resultDiv.innerHTML = "Формирование результата..."; // Очистить предыдущий результат
+function set_result(gender, startCard, endCard, needType, wish, symvol_text, generation = false) {
+
+    
+    if (generation == true) {
+        setMsgToUser('formirovanie','Создание цепочки событий...');
+    }
+
+    blockUklad = document.getElementById("uklad");
+    blockUklad.style.display = 'block';
 
     // Определяем масть карты на основе выбранного пола и направления
 
@@ -245,12 +369,27 @@ function set_result(gender, startCard, endCard, needType, wish, generation = fal
         currentMast = ar_replace_mast_female;
     }
 
-    let output = `Желание: желаю чтобы ${wish}.<br><br>Расклад: `;
+    var typeoutput = '';
+
+    if(getCookie('disableDolgType') == undefined){
+        typeoutput = 'Желание';
+    }
+    else{
+        typeoutput = 'Отработка долга (' + ukladvariantsStatus[getCookie('disableDolgType')] + ')';
+    }
+
+    let output = `${typeoutput}: желаю чтобы ${wish}.<br><br>Расклад: `;
     let output2 = "";
 
     const result2 = findBalancedPathWithSpecificEndTransition(startCard, endCard, needType);
 
     if (result2) {
+        
+        if (generation == true) {
+            var wishcardUklady = formatDate() + " | желаю чтобы " + wish;
+            setCookie('wishcardUklady',wishcardUklady);
+        }
+
         result2.path.forEach((card, i) => {
             let mastNow = currentMast[result2.transitions[i]];
 
@@ -264,7 +403,7 @@ function set_result(gender, startCard, endCard, needType, wish, generation = fal
                 output2 += card + mastNow + ": я желаю от своей бдилки " + schemeSuitsDaysWeek[new Date().getDay()][mastNow] + " " + schemeСardAssignments[card][mastNow] + " чтобы " + wish + "<br><br>";
 
                 if (generation == true) {
-                    saveCardGroupsToCookies(formatDate() + " | желаю чтобы " + wish, card + mastNow);
+                    saveCardGroupsToCookies(wishcardUklady, card + mastNow);
                 }
             }
         });
@@ -272,23 +411,31 @@ function set_result(gender, startCard, endCard, needType, wish, generation = fal
         if (output2 != "") {
             output2 = "<hr>МАНТРЫ на " + days[new Date().getDay()] + ":<br><br>" + output2 + '<button id="button2" class="open-modal-btn" onclick="updateDayNow()">Обновить день недели</button>';
         }
+        
+        setCookie('startCard',startCard);
+        setCookie('endCard',endCard);
+        setCookie('needType',needType);
+        setCookie('gender',gender);
+        setCookie('wish',wish);
+        setCookie('symvol_text',symvol_text);
 
-        document.cookie = "startCard=" + startCard + ";expires=" + oneYearInSeconds;
-        document.cookie = "endCard=" + endCard + ";expires=" + oneYearInSeconds;
-        document.cookie = "needType=" + needType + ";expires=" + oneYearInSeconds;
-        document.cookie = "gender=" + gender + ";expires=" + oneYearInSeconds;
-        document.cookie = "wish=" + wish + ";expires=" + oneYearInSeconds;
-
-        document.getElementById("button").innerHTML = "Завершить расклад";
+        document.getElementById("button").innerHTML = "Уклад полностью проработан";
         document.getElementById("selectForm").style.display = "none";
 
-        document.getElementById("wish").value = "";
-		document.getElementById("symvol_text").value = "";
+        if(getCookie('disableDolgType')!=undefined){
+            blockUklad.value = getCookie('disableDolgType');
+            blockUklad.setAttribute("disabled","disabled");
+            clear_input_error(blockUklad, true, false,false);
+        }
+        else{
+            blockUklad.removeAttribute("disabled");
+        }
+
     } else {
         output += "не найден.";
     }
 
-    resultDiv.innerHTML = output + output2;
+    setMsgToUser('formirovanie',output + output2);
 }
 
 // Функция для поиска сбалансированного пути
@@ -356,6 +503,16 @@ function findBalancedPathWithSpecificEndTransition(startCard, endCard, lastTrans
     return null;
 }
 
+function getcardUklad(name){
+    if(cardUklady[name] == undefined){
+        return '';
+    }
+    else if(ukladvariantsStatus[cardUklady[name]]==undefined){
+        return '';
+    }
+    return ukladvariantsStatus[cardUklady[name]];
+}
+
 // Функция для выбора карт из разных раскладов
 function createCardIterator() {
     return function () {
@@ -372,12 +529,22 @@ function createCardIterator() {
                 var currentGroupName = groupsNames[currentGroupIndexWiew];
 
                 var li = document.createElement("li");
-                li.textContent = `${currentGroupName}: ${cardGroups[currentGroupName].join(" → ")}`;
+                var cardUkladSymvol = '';
+                if(getcardUklad(groupsNames[currentGroupIndexWiew])!=''){
+                    cardUkladSymvol = ' (' + getcardUklad(groupsNames[currentGroupIndexWiew]) + ')';
+                }
+
+                li.textContent = `${currentGroupName}${cardUkladSymvol}: ${cardGroups[currentGroupName].join(" → ")}`;
                 cardListElement.appendChild(li);
             }
 
             if (currentCardIndex < currentGroup.length) {
-                return currentGroup[currentCardIndex++];
+                var currentCardIndexNext = currentCardIndex + 1;
+                var cardUkladSymvol = '';
+                if(currentGroup.length == currentCardIndexNext && getcardUklad(groupsNames[currentGroupIndexWiew])!=''){
+                    cardUkladSymvol = '<br>' + getcardUklad(groupsNames[currentGroupIndexWiew]);
+                }
+                return currentGroup[currentCardIndex++] + cardUkladSymvol;
             } else {
                 currentCardIndex = 0;
                 currentGroupIndex++;
@@ -491,7 +658,7 @@ function highlightSequence(matrix) {
 
             if (cardNext !== null) {
                 td.classList.add("highlight");
-                td.textContent = cardNext;
+                td.innerHTML = cardNext;
             }
         }, index * 50); // Задержка, чтобы подсветка происходила поочередно
     });
@@ -542,24 +709,42 @@ function saveCardGroupsToCookies(groupName, card) {
     // Сериализуем объект в строку
     var serializedData = JSON.stringify(cardGroups);
 
-    // Сохраняем данные в куки с временем действия 1 год
-
-    document.cookie = `cardGroups=${encodeURIComponent(serializedData)};max-age=${oneYearInSeconds}`;
+    setCookie('cardGroups',encodeURIComponent(serializedData));
 }
 
-// Функция для извлечения данных из куки
-function getCardGroupsFromCookies() {
-    const cookieValue = document.cookie
-        .split("; ")
-        .find((row) => row.startsWith("cardGroups="))
-        ?.split("=")[1];
+// Функция для сохранения данных в куки
+function saveUkladGroupsToCookies(ukladCode,ukladName, card) {
+    // Добавляем карту в указанную группу или создаем новую группу, если она не существует
 
-    if (cookieValue) {
-        // Десериализуем данные обратно в объект
-        return JSON.parse(decodeURIComponent(cookieValue));
-    } else {
-        return {};
+    if (!ukladGroups[ukladCode]) {
+        ukladGroups[ukladCode] = {}; // Создаем объект, если он не существует
+        ukladGroups[ukladCode]['name'] = ukladName;
+        ukladGroups[ukladCode]['cards'] = [];
     }
+    else{
+        if(ukladName.length > ukladGroups[ukladCode]['name'].length){
+            ukladGroups[ukladCode]['name'] = ukladName;
+        }
+    }
+
+
+    ukladGroups[ukladCode]['cards'].push(card); // Добавляем карту в группу
+    // Сериализуем объект в строку
+    var serializedData = JSON.stringify(ukladGroups);
+
+    setCookie('ukladGroups',encodeURIComponent(serializedData));
+    
+}
+// Функция для сохранения данных в куки
+function savecardUkladyToCookies(wishcardUklady,ukladType) {
+    
+    cardUklady[wishcardUklady] = ukladType;
+
+    // Сериализуем объект в строку
+    var serializedData = JSON.stringify(cardUklady);
+
+    setCookie('cardUklady',encodeURIComponent(serializedData));
+    
 }
 
 // Функция для удаления куки
@@ -567,12 +752,13 @@ function deleteCardGroupsCookies() {
     var isDelete = confirm("Точно хотите удалить всю историю?");
 
     if (isDelete == true) {
-        if (document.getElementById("button").innerHTML == "Завершить расклад") {
-            getCard();
+
+        destroyHistory();
+
+        if (document.getElementById("button").innerHTML == "Уклад полностью проработан") {
+            getCard(true);
         }
 
-        document.cookie = "cardGroups=;max-age=-1";
-        cardGroups = {};
         openModal();
     }
 }
@@ -584,7 +770,7 @@ function openModal() {
     var matrix = fillSpiral(checkMatrix.matrix);
     renderMatrix(matrix);
 
-    if (getCookie("startCard") === undefined && checkMatrix.cellsLeft === 0) {
+    if (getCookie("startCard") === undefined && checkMatrix.cellsLeft === 0 && calculateDolgy()==0) {
         document.getElementById("cardListContainer").style.display = "none";
         document.getElementById("button3").style.display = "none";
         document.getElementById("button5").style.display = "block";
@@ -608,12 +794,24 @@ function closeModal() {
 }
 
 function updateDayNow() {
-    set_result(getCookie("gender"), getCookie("startCard"), getCookie("endCard"), getCookie("needType"), getCookie("wish"));
+    set_result(getCookie("gender"), getCookie("startCard"), getCookie("endCard"), getCookie("needType"), getCookie("wish"), getCookie("symvol_text"));
+}
+
+function destroyHistory(){
+
+    cardGroups = {};
+    ukladGroups = {};
+    cardUklady = {};
+
+    setCookie('cardGroups','');
+    setCookie('ukladGroups','');
+    setCookie('cardUklady','');
+
 }
 
 function freeMartix() {
-    document.cookie = "cardGroups=;max-age=-1";
-    cardGroups = {};
+
+    destroyHistory();
 
     closeModal();
 
@@ -660,24 +858,59 @@ function loadScript(src, onLoadCallback, onErrorCallback) {
     document.head.appendChild(script);
 }
 
+function setMsgToUser(type,text,scroll = false){
+    var msg = text;
+    if(type=='select' || type=='write'){
+        msg = msg + dolgyDescription();
+    }
+
+
+    var blockResult = document.getElementById('result');
+
+    blockResult.innerHTML = msg;
+    blockResult.style.display = 'block';
+
+    if(scroll){
+        blockResult.scrollIntoView({
+            behavior: "smooth", // Плавная прокрутка
+            block: "start", // Начало элемента будет у верхнего края окна
+        });
+    }
+}
+
 // Настройка после загрузки страницы
 function setupOnLoad() {
+
+    cardGroups = getCookie('cardGroups');
+    ukladGroups = getCookie('ukladGroups');
+    cardUklady = getCookie('cardUklady');
+
+    var selectUklad = document.getElementById('uklad');
+
+    ukladvariants.forEach(option => {
+        var optionElement = document.createElement('option');
+        optionElement.value = option.value;
+        optionElement.textContent = option.text;
+        selectUklad.appendChild(optionElement);
+    });
+
     if (getCookie("startCard") != undefined) {
-        set_result(getCookie("gender"), getCookie("startCard"), getCookie("endCard"), getCookie("needType"), getCookie("wish"));
+        set_result(getCookie("gender"), getCookie("startCard"), getCookie("endCard"), getCookie("needType"), getCookie("wish"), getCookie("symvol_text"));
     } else {
+        document.getElementById("selectForm").style.display = "block";
         if (getCookie("endCard") != undefined) {
             document.getElementById("startCard").value = getCookie("endCard");
-            document.getElementById("result").innerHTML = "Ваша последняя карта: " + getCookie("endCard"); // Очистить предыдущий результат
+
+            setMsgToUser('select',"Ваша последняя карта: " + getCookie("endCard") + '.');
+        }
+        else{
+            setMsgToUser('start','Пасьянс Медичи помогает в сложных ситуациях, а Бдилка выявляет скрытые желания. Перед вами инструмент настоящей свободы в мире, где ваши границы сознания станут как спасением, так и ловушкой. Если это первый расклад, то ставьте последней картой: 8. Полную инструкцию смотрите на <br /><a class="a_info" href="https://github.com/botogame/botogame/blob/main/freedom/interaction/vigil/README.md">сайте разработчика</a>');
         }
 
         if (getCookie("gender") != undefined) {
             document.getElementById("gender").value = getCookie("gender");
         }
     }
-	
-	document.getElementById("result").style.display = 'block';
-
-    cardGroups = getCardGroupsFromCookies();
 
     // Инициализация списка направлений при загрузке страницы
     updateDirections();
@@ -689,4 +922,96 @@ function setupOnLoad() {
 	
     clear_input_error(document.getElementById("startCard"), true, false,false);
     clear_input_error(document.getElementById("gender"), true, false,false);
+
+    document.getElementById("button").style.display = 'block';
+
+}
+
+function getCardsBetweenMultiple(ukladCode) {
+
+    const resultSet = new Set();
+
+    if(ukladGroups[ukladCode]==undefined){
+        return [];
+    }
+
+    var selectedCards = ukladGroups[ukladCode]['cards'];
+
+    // Sort selectedCards based on the order in cards
+    selectedCards.sort((a, b) => cards.indexOf(a) - cards.indexOf(b));
+
+    for (let i = 0; i < selectedCards.length - 1; i++) {
+        const card1 = selectedCards[i];
+        const card2 = selectedCards[i + 1];
+
+        const index1 = cards.indexOf(card1);
+        const index2 = cards.indexOf(card2);
+
+        if (index1 === -1 || index2 === -1) {
+            return [];
+        }
+
+        if (index1 !== index2) {
+            const start = Math.min(index1, index2) + 1;
+            const end = Math.max(index1, index2);
+            for (let j = start; j < end; j++) {
+                resultSet.add(cards[j]);
+            }
+        }
+    }
+
+    // Convert the set to an array and sort it based on the original card order
+    return Array.from(resultSet).sort((a, b) => cards.indexOf(a) - cards.indexOf(b));
+}
+
+function calculateDolgy() {
+    let totalCards = 0;
+
+    ukladvariants.forEach(option => {
+        var resultSet = getCardsBetweenMultiple(option.value);
+        totalCards += resultSet.length;
+    });
+
+    return totalCards;
+}
+
+function setCookie(name,value) {
+    if(value==''){
+        document.cookie = name+ "=;SameSite=None;Secure;max-age=-1";
+    }else{
+        document.cookie = name + '=' + value +';SameSite=None;Secure;max-age=' + oneYearInSeconds;
+    }
+    
+}
+
+function otrabotatDolg(dolgType,cardSet){
+
+    var startCard = document.getElementById("startCard").value;
+    var gender = document.getElementById("gender").value;
+
+    if (gender === "") {
+        setMsgToUser('select','Выберите ваш пол!');
+        document.getElementById("gender").classList.add("alert_input");
+        return;
+    }
+
+    if (startCard === "") {
+        setMsgToUser('select','Выберите последнюю карту!');
+        document.getElementById("startCard").classList.add("alert_input");
+        return;
+    }
+    
+    if (startCard === cardSet) {
+        setMsgToUser('select','Выбранная карта сходна с направлением последней карты, создайте свой расклад для смены последней карты или выберите другую карту отработки!');
+        return;
+    }
+    
+    var needType = "п-р-з";
+    var symvol_text = ukladGroups[dolgType]['name'];
+    var wish = ukladvariantsMsg[dolgType] + ' для ' + symvol_text;
+
+    setCookie('disableDolgType',dolgType);
+
+    set_result(gender, startCard, cardSet, needType, wish, symvol_text, true);
+
 }
