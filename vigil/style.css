@@ -212,8 +212,8 @@ input {
 
  box-sizing: border-box;
 }
-#direction {
- display: none;
+#uklad{
+    display:none;
 }
 .alert_input {
  border: 2px solid #ff0000; /* Красная граница при ошибке */
@@ -262,12 +262,27 @@ button:hover {
  text-shadow: 0 0 5px #00ff00, 0 0 15px #00eaff; /* Неоновое свечение текста */
  letter-spacing: 1px; /* Увеличиваем межбуквенный интервал для лучшего восприятия */
  transition: all 0.3s ease-in-out; /* Плавный переход для всех свойств */
- display: none;
  font-size: 1.2rem;
  color: #00ff00;
  margin: 15px 0 5px;
  font-weight: bold; /* Делаем текст жирным */
  text-align:center;
+}
+
+
+select:disabled {
+    background-color: #e0e0e0; /* Светло-серый фон */
+    color: #6c757d; /* Серый цвет текста */
+    border: 1px solid #ccc; /* Светло-серая рамка */
+    cursor: not-allowed; /* Указатель мыши в виде запрещающего знака */
+}
+
+#selectForm{
+    display: none;
+}
+
+#button{
+    display: none;
 }
 
 /* Эффект при наведении на #result */
@@ -284,6 +299,28 @@ a {
 
 a:hover {
  text-shadow: 0 0 10px #00eaff;
+}
+
+
+.card-link {
+    display: inline-block;
+    padding: 10px;
+    margin: 0px;
+    border: 1px solid #000;
+    border-radius: 8px;
+    background-color: #fff;
+    text-decoration: none;
+    color: #000;
+    font-weight: bold;
+    text-align: center;
+    width: 21px;
+    height: 10px;
+    line-height: 10px;
+    box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.3);
+    cursor: pointer;
+}
+.card-link:hover {
+    background-color: #f0f0f0;
 }
 
 .modal {
@@ -334,7 +371,7 @@ a:hover {
   background: none;
   border-radius: 0px;
   box-shadow: none;
-  margin: ;
+
   /* Центрируем с помощью отступов */
  }
 
