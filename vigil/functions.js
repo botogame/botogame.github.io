@@ -400,7 +400,11 @@ function set_result(gender, startCard, endCard, needType, wish, symvol_text, gen
             }
 
             if (mastNow != "") {
-                output2 += card + mastNow + ": я желаю от своей бдилки " + schemeSuitsDaysWeek[new Date().getDay()][mastNow] + " " + schemeСardAssignments[card][mastNow] + " чтобы " + wish + "<br><br>";
+
+                var weekId = new Date().getDay();
+                var mantraText = "я желаю от своей бдилки " + schemeSuitsDaysWeek[weekId][mastNow] + " " + schemeСardAssignments[card][mastNow] + " чтобы " + wish;
+
+                output2 += '<a class="card-link card-link2" onclick="showPopupMantra(\'mantraId' + i + '\','+weekId+',\'' + weekId + mastNow + '\',\'' + card + mastNow + '\')" href="#">' + card + mastNow + '</a> <text id="mantraId' + i +'">' + mantraText + "</text><br><br>";
 
                 if (generation == true) {
                     saveCardGroupsToCookies(wishcardUklady, card + mastNow);
@@ -1014,4 +1018,16 @@ function otrabotatDolg(dolgType,cardSet){
 
     set_result(gender, startCard, cardSet, needType, wish, symvol_text, true);
 
+}
+
+
+function showPopupMantra(blockId,weekId,week,doit) {
+    document.getElementById('popupMantra').style.display = 'flex';
+    document.getElementById('textMantra').innerHTML = ''+days2[weekId]+' ' + doit +'<br><b class="h3_text">' + document.getElementById(blockId).innerHTML + '</b>';
+    document.getElementById('weekMantra').src = './taro/week/' + week +'.jpg';
+    document.getElementById('doitMantra').src = './taro/doit/' + doit +'.jpg';
+}
+
+function closePopupMantra() {
+    document.getElementById('popupMantra').style.display = 'none';
 }
