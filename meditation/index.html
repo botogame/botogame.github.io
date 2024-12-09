@@ -16,7 +16,7 @@
   }
 
   .container {
-    max-width: 400px;
+    max-width: 600px;
     margin: 0 auto;
     text-align: center;
   }
@@ -24,8 +24,20 @@
   select, button {
     margin: 10px 0;
     font-size: 16px;
-    padding: 5px;
+    padding: 10px;
     width: 100%;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+  }
+
+  button {
+    background-color: #4CAF50;
+    color: white;
+    cursor: pointer;
+  }
+
+  button:hover {
+    background-color: #45a049;
   }
 
   .instructions {
@@ -33,7 +45,7 @@
     text-align: left;
     font-size: 14px;
     background: #e8f6e8;
-    padding: 10px;
+    padding: 15px;
     border-radius: 5px;
   }
 
@@ -76,7 +88,7 @@
   .posture-tips {
     margin-top: 30px;
     background: #f9f9e0;
-    padding: 10px;
+    padding: 15px;
     border-radius: 5px;
     text-align: left;
     font-size: 14px;
@@ -118,6 +130,10 @@
     <option value="energy">Бодрость (2-0-2)</option>
     <option value="balance">Баланс (5-5-5)</option>
     <option value="even">Равномерное дыхание (5-5, без задержки)</option>
+    <option value="nadiShodhana">Нади Шодхана (Альтернативное дыхание)</option>
+    <option value="boxBreathing">Квадратное дыхание (Box Breathing)</option>
+    <option value="ujjayi">Уджайи Дыхание</option>
+    <option value="sitali">Ситали Дыхание (Охлаждающее)</option>
   </select>
   <button id="startBtn">Начать</button>
 
@@ -133,11 +149,24 @@
     Выберите состояние и нажмите «Начать». Следуйте за анимацией и обратным отсчётом внутри круга. Прогресс по циклам отображается точками вокруг.
   </div>
 
-  <div class="posture-tips">
+  <div class="posture-tips" id="postureTips">
     <strong>Рекомендации:</strong><br>
-    Сядьте прямо, расслабьте плечи. Дышите через нос.  
-    Сосредоточьтесь на круге и цифрах, а также на точках прогресса, синхронизируя дыхание с фазами.  
-    Если почувствуете дискомфорт, вернитесь к обычному дыханию.
+    Сядьте прямо, расслабьте плечи. Дышите через нос.<br>
+    Сосредоточьтесь на круге и цифрах, а также на точках прогресса, синхронизируя дыхание с фазами.<br>
+    Если почувствуете дискомфорт, вернитесь к обычному дыханию.<br><br>
+    <strong>Что дает каждая практика:</strong>
+    <ul>
+      <li><strong>Расслабление:</strong> Снижает уровень стресса и тревожности, улучшает концентрацию.</li>
+      <li><strong>Концентрация:</strong> Повышает фокусировку и ясность ума.</li>
+      <li><strong>Подготовка ко сну:</strong> Успокаивает нервную систему, помогает быстрее заснуть.</li>
+      <li><strong>Бодрость:</strong> Повышает уровень энергии и тонуса.</li>
+      <li><strong>Баланс:</strong> Балансирует нервную систему, улучшает эмоциональное состояние.</li>
+      <li><strong>Равномерное дыхание:</strong> Стабилизирует дыхание и нервную систему.</li>
+      <li><strong>Нади Шодхана:</strong> Балансирует деятельность полушарий мозга, улучшает концентрацию.</li>
+      <li><strong>Квадратное дыхание:</strong> Повышает концентрацию и снижает стресс.</li>
+      <li><strong>Уджайи Дыхание:</strong> Увеличивает внутреннюю энергию и улучшает концентрацию.</li>
+      <li><strong>Ситали Дыхание:</strong> Охлаждает тело и ум, снижает уровень стресса.</li>
+    </ul>
   </div>
 </div>
 
@@ -149,6 +178,7 @@
   const stateSelect = document.getElementById('stateSelect');
   const countdownText = document.getElementById('countdownText');
   const progressRing = document.getElementById('progressRing');
+  const postureTips = document.getElementById('postureTips');
 
   let inhaleTime = 5;   // по умолчанию для relax
   let holdTime = 5;
@@ -167,7 +197,11 @@
     sleep: "Теперь ты спокоен и готов ко сну",
     energy: "Теперь ты бодр",
     balance: "Теперь ты в равновесии",
-    even: "Теперь ты уравновешен"
+    even: "Теперь ты уравновешен",
+    nadiShodhana: "Теперь ты уравновешен и сбалансирован",
+    boxBreathing: "Теперь ты сосредоточен и спокоен",
+    ujjayi: "Теперь ты наполнен энергией и сосредоточен",
+    sitali: "Теперь ты охладил тело и успокоил ум"
   };
 
   const states = {
@@ -176,42 +210,80 @@
       inhale: 5,
       hold: 5,
       exhale: 7,
-      instructions: "Вдох:5с (зелёный), Задержка:5с (синий), Выдох:7с (коричневый)."
+      instructions: "Вдох:5с (зелёный), Задержка:5с (синий), Выдох:7с (коричневый).",
+      type: "cycle"
     },
     focus: {
       name: "Концентрация",
       inhale: 4,
       hold: 4,
       exhale: 4,
-      instructions: "Ритм 4-4-4. Помогает сосредоточиться."
+      instructions: "Ритм 4-4-4. Помогает сосредоточиться.",
+      type: "cycle"
     },
     sleep: {
       name: "Подготовка ко сну",
       inhale: 4,
       hold: 7,
       exhale: 8,
-      instructions: "Ритм 4-7-8. Успокаивает перед сном."
+      instructions: "Ритм 4-7-8. Успокаивает перед сном.",
+      type: "cycle"
     },
     energy: {
       name: "Бодрость",
       inhale: 2,
       hold: 0,
       exhale: 2,
-      instructions: "2с вдох - 2с выдох. Лёгкий подъём тонуса."
+      instructions: "2с вдох - 2с выдох. Лёгкий подъём тонуса.",
+      type: "cycle"
     },
     balance: {
       name: "Баланс",
       inhale: 5,
       hold: 5,
       exhale: 5,
-      instructions: "Ритм 5-5-5. Уравновешивает ум и тело."
+      instructions: "Ритм 5-5-5. Уравновешивает ум и тело.",
+      type: "cycle"
     },
     even: {
       name: "Равномерное дыхание",
       inhale: 5,
       hold: 0,
       exhale: 5,
-      instructions: "5с вдох - 5с выдох без задержки. Стабилизирует состояние."
+      instructions: "5с вдох - 5с выдох без задержки. Стабилизирует состояние.",
+      type: "cycle"
+    },
+    nadiShodhana: {
+      name: "Нади Шодхана (Альтернативное дыхание)",
+      inhale: 4,
+      hold: 4,
+      exhale: 4,
+      instructions: "Вдох через левую ноздрю на 4с, выдох через правую на 4с и наоборот.",
+      type: "alternate"
+    },
+    boxBreathing: {
+      name: "Квадратное дыхание (Box Breathing)",
+      inhale: 4,
+      hold: 4,
+      exhale: 4,
+      instructions: "Вдох:4с, Задержка:4с, Выдох:4с, Задержка:4с.",
+      type: "cycle"
+    },
+    ujjayi: {
+      name: "Уджайи Дыхание",
+      inhale: 5,
+      hold: 0,
+      exhale: 5,
+      instructions: "Вдыхайте и выдыхайте через нос, слегка сжимая горло для создания шипящего звука.",
+      type: "cycle"
+    },
+    sitali: {
+      name: "Ситали Дыхание (Охлаждающее)",
+      inhale: 5,
+      hold: 0,
+      exhale: 5,
+      instructions: "Сожмите губы как будто свистите, вдыхайте через них на 5с, выдыхайте через нос на 5с.",
+      type: "cycle"
     }
   };
 
@@ -231,6 +303,9 @@
     countdownText.textContent = "0";
     cycleCount = 0;
     clearProgressDots();
+    if (states[currentState].type === "alternate") {
+      alternateNostril = 'левую'; // Сброс ноздри для альтернативного дыхания
+    }
   }
 
   updateInstructions();
@@ -245,13 +320,20 @@
     startCycle();
   });
 
+  let alternateNostril = 'левую'; // Начинаем с левой ноздрю для альтернативного дыхания
+
   function startCycle() {
     // Если достигли 10 циклов, завершаем
     if (cycleCount >= totalCycles) {
       showFinalMessage();
       return;
     }
-    doInhale();
+
+    if (states[currentState].type === "alternate") {
+      doAlternateInhale();
+    } else {
+      doInhale();
+    }
   }
 
   function doInhale() {
@@ -286,6 +368,31 @@
     
     startCountdown(exhaleTime, () => {
       // Завершён один цикл
+      cycleCount++;
+      fillProgressDot(cycleCount);
+      startCycle(); // Запускаем следующий
+    });
+  }
+
+  function doAlternateInhale() {
+    phaseText.textContent = `Вдох через ${alternateNostril} ноздрю`;
+    circle.style.transition = `transform ${inhaleTime}s linear, background-color ${inhaleTime}s linear`;
+    circle.style.transform = "scale(1.5)";
+    circle.style.background = "green";
+    startCountdown(inhaleTime, () => {
+      doAlternateExhale();
+    });
+  }
+
+  function doAlternateExhale() {
+    phaseText.textContent = `Выдох через ${alternateNostril === 'левую' ? 'правую' : 'левую'} ноздрю`;
+    circle.style.transition = `transform ${exhaleTime}s linear, background-color ${exhaleTime}s linear`;
+    circle.style.transform = "scale(1)";
+    circle.style.background = "#8B4513"; // коричневый
+    
+    startCountdown(exhaleTime, () => {
+      // Переключаем ноздрю для следующего цикла
+      alternateNostril = alternateNostril === 'левую' ? 'правую' : 'левую';
       cycleCount++;
       fillProgressDot(cycleCount);
       startCycle(); // Запускаем следующий
@@ -344,6 +451,7 @@
     circle.style.background = "#2e8b57"; // спокойный зелёный цвет
     countdownText.textContent = finalMessages[currentState] || "Готово!";
     phaseText.textContent = "Завершено";
+    isRunning = false;
   }
 
 </script>
