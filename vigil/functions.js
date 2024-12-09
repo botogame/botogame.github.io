@@ -377,9 +377,11 @@ function set_result(gender, startCard, endCard, needType, wish, symvol_text, gen
     else{
         typeoutput = 'Отработка долга (' + ukladvariantsStatus[getCookie('disableDolgType')] + ')';
     }
-
-    let output = `${typeoutput}: желаю чтобы ${wish}.<br><br>Расклад: `;
-    let output2 = "";
+    
+    var weekId = new Date().getDay();
+    var monthId = new Date().getMonth();
+    
+    var output = 'Месяц ' + schemeMonth[monthId] + '<br><div class="image-backgroundMonth"><img src="./month/'+ monthId+'.jpg"></div><button id="button2" class="open-modal-btn" onclick="updateDayNow()">Обновить текущее время</button><br><br>' + typeoutput + ': желаю чтобы '+ wish +'. Уклад на ' + days[weekId] +':<br><br>';
 
     const result2 = findBalancedPathWithSpecificEndTransition(startCard, endCard, needType);
 
@@ -394,26 +396,30 @@ function set_result(gender, startCard, endCard, needType, wish, symvol_text, gen
             let mastNow = currentMast[result2.transitions[i]];
 
             let cardWithMast = card + mastNow;
-            output += cardWithMast;
-            if (i < result2.path.length - 1) {
-                output += ` → `;
-            }
-
             if (mastNow != "") {
 
-                var weekId = new Date().getDay();
                 var mantraText = "я желаю от своей бдилки " + schemeSuitsDaysWeek[weekId][mastNow] + " " + schemeСardAssignments[card][mastNow] + " чтобы " + wish;
 
-                output2 += '<a class="card-link card-link2" onclick="showPopupMantra(\'mantraId' + i + '\','+weekId+',\'' + weekId + mastNow + '\',\'' + card + mastNow + '\')" href="#">' + card + mastNow + '</a> <text id="mantraId' + i +'">' + mantraText + "</text><br><br>";
+                output += '<a class="card-link card-link2" onclick="showPopupMantra(\'mantraId' + i + '\','+weekId+',\'' + weekId + mastNow + '\',\'' + cardWithMast + '\')" href="#">' + cardWithMast + '</a><text class="none" id="mantraId' + i +'">' + mantraText + "</text>";
 
                 if (generation == true) {
                     saveCardGroupsToCookies(wishcardUklady, card + mastNow);
                 }
             }
+            else{
+
+                output += cardWithMast;
+            }
+
+            if (i < result2.path.length - 1) {
+                output += ` → `;
+            }
+
+            
         });
 
-        if (output2 != "") {
-            output2 = "<hr>МАНТРЫ на " + days[new Date().getDay()] + ":<br><br>" + output2 + '<button id="button2" class="open-modal-btn" onclick="updateDayNow()">Обновить день недели</button>';
+        if (output != "") {
+            output = output + '<br><br>Нажмите по карте для её проработки.';
         }
         
         setCookie('startCard',startCard);
@@ -439,7 +445,7 @@ function set_result(gender, startCard, endCard, needType, wish, symvol_text, gen
         output += "не найден.";
     }
 
-    setMsgToUser('formirovanie',output + output2);
+    setMsgToUser('formirovanie',output);
 }
 
 // Функция для поиска сбалансированного пути
