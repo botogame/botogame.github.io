@@ -467,6 +467,11 @@ a:hover {
             align-items: center;
         }
 
+        .image-backgroundMonth img {
+            width: 100%;
+            clip-path:inset(20px 20px 20px 20px round 50px);
+        }
+
         .image-backgroundMantra img {
             width: 35%;
             border: 3px solid #00ff00;
@@ -536,7 +541,9 @@ a:hover {
             background-color: #732d91;
         }
 
-
+.none{
+    display: none;
+}
         
 /* Медиазапрос для мобильных устройств */
 @media only screen and (max-width: 768px) {
