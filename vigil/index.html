@@ -8,7 +8,7 @@
         <meta name="description" content="Пасьянс Медичи помогает в сложных ситуациях, а Бдилка выявляет скрытые желания. Перед вами инструмент настоящей свободы в мире, где ваши границы сознания станут как спасением, так и ловушкой." />
         <link rel="icon" type="image/x-icon" href="./favicon.png" />
         <link rel="stylesheet" href="./style.css?v=08.12.2024_18:56" />
-        <script src="./functions.js?v=08.12.2024_18:56"></script>
+        <script src="./functions.js?v=10.12.2024_1"></script>
         <script src="./config.js?v=08.12.2024_18:56"></script>
         <style></style>
     </head>
@@ -17,7 +17,7 @@
         <div class="container">
             <div id="overlay"><b>Cпасибо!</b></div>
 
-            <h1>ПМ [<a title="Показать матрицу" onclick="openModal()" id="star" href="#" class="sparkling-label">✵</a>] Бдилка</h1>
+            <h1>ПМ [<a title="Показать матрицу" onclick="openModal()" id="star" href="#" class="sparkling-label">🍄</a>] Бдилка</h1>
 
             <div id="selectForm">
                 <select id="gender" onchange="clear_input_error(this,true);" data-selected="Ваш пол">
@@ -87,7 +87,7 @@
             <br />
             <p>
                 <center>
-                    Версия 3-08.12.2024
+                    Версия 4-10.12.2024
                     <span class="separator">|</span>
                     <a class="a_info2" href="https://github.com/botogame/botogame/blob/main/freedom/interaction/vigil/README.md">сайт разработчика</a>
                 </center>
@@ -99,10 +99,10 @@
             <div class="modal-content">
                 <span class="close" onclick="closeModal()">&times;</span>
                 <div class="modal-header">
-                    Матрица
+                    Грибница
                 </div>
                 <table id="matrix"></table>
-                <button id="button5" class="open-modal-btn" onclick="freeMartix()">Освободить матрицу</button>
+                <button id="button5" class="open-modal-btn" onclick="freeMartix()">Освободить грибницу</button>
                 <!-- Миниатюрный листинг раскладов -->
                 <div id="cardListContainer">
                     <ul id="cardList" class="card-list"></ul>
@@ -115,9 +115,9 @@
             <div class="popup-contentMantra">
                 <div class="image-backgroundMantra">
                     <div class="text-overlayMantra">
-                    <p id="textMantra">я желаю от своей бдилки осмысленного чередования чтобы у всех был бизнес для женского влечения ко мне </p>
-                    <img id="weekMantra" src="./taro/week/0♠.jpg">
-                    <img id="doitMantra" src="./taro/doit/К♠.jpg">
+                    <p id="textMantra"></p>
+                    <img id="weekMantra" src="">
+                    <img id="doitMantra" src="">
                     <button class="close-btnMantra" onclick="closePopupMantra()">Готово</button>
                     </div>
                 </div>
