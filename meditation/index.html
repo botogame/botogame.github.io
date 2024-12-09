@@ -1,0 +1,352 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Дыхательная анимация</title>
+<style>
+  body {
+    font-family: sans-serif;
+    margin: 20px;
+    background: #f0f9f0; /* Светлый, природный оттенок */
+  }
+
+  h1, h2 {
+    text-align: center;
+  }
+
+  .container {
+    max-width: 400px;
+    margin: 0 auto;
+    text-align: center;
+  }
+
+  select, button {
+    margin: 10px 0;
+    font-size: 16px;
+    padding: 5px;
+    width: 100%;
+  }
+
+  .instructions {
+    margin-top: 20px;
+    text-align: left;
+    font-size: 14px;
+    background: #e8f6e8;
+    padding: 10px;
+    border-radius: 5px;
+  }
+
+  .circle-container {
+    margin: 40px auto;
+    width: 250px;
+    height: 250px;
+    position: relative;
+  }
+
+  .circle {
+    width: 200px;
+    height: 200px;
+    border-radius: 50%;
+    background: green; /* Цвет при вдохе */
+    transition: all linear;
+    position: absolute;
+    top: 25px;
+    left: 25px;
+  }
+
+  /* Обратный отсчёт в центре круга */
+  #countdownText {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    font-size: 32px;
+    color: #fff;
+    text-shadow: 1px 1px 2px #000;
+    z-index: 3;
+  }
+
+  .phase-text {
+    margin-top: 10px;
+    font-size: 18px;
+    font-weight: bold;
+  }
+
+  .posture-tips {
+    margin-top: 30px;
+    background: #f9f9e0;
+    padding: 10px;
+    border-radius: 5px;
+    text-align: left;
+    font-size: 14px;
+  }
+
+  /* Прогресс индикатор – 10 точек вокруг круга */
+  .progress-ring {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 250px;
+    height: 250px;
+    pointer-events: none;
+  }
+
+  .progress-dot {
+    width: 10px;
+    height: 10px;
+    background: #ccc;
+    border-radius: 50%;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform-origin: center center;
+    transform: translate(-50%, -50%);
+  }
+</style>
+</head>
+<body>
+
+<h1>Дыхательные практики</h1>
+
+<div class="container">
+  <h2>Выберите состояние</h2>
+  <select id="stateSelect">
+    <option value="relax" selected>Расслабление (Вдох:5с, Задержка:5с, Выдох:7с)</option>
+    <option value="focus">Концентрация (Вдох:4с, Задержка:4с, Выдох:4с)</option>
+    <option value="sleep">Подготовка ко сну (4-7-8)</option>
+    <option value="energy">Бодрость (2-0-2)</option>
+    <option value="balance">Баланс (5-5-5)</option>
+    <option value="even">Равномерное дыхание (5-5, без задержки)</option>
+  </select>
+  <button id="startBtn">Начать</button>
+
+  <div class="circle-container">
+    <!-- Прогресс-ринг -->
+    <div class="progress-ring" id="progressRing"></div>
+    <div class="circle" id="circle"></div>
+    <div id="countdownText">0</div>
+  </div>
+  <div class="phase-text" id="phaseText">Готов?</div>
+
+  <div class="instructions" id="instructions">
+    Выберите состояние и нажмите «Начать». Следуйте за анимацией и обратным отсчётом внутри круга. Прогресс по циклам отображается точками вокруг.
+  </div>
+
+  <div class="posture-tips">
+    <strong>Рекомендации:</strong><br>
+    Сядьте прямо, расслабьте плечи. Дышите через нос.  
+    Сосредоточьтесь на круге и цифрах, а также на точках прогресса, синхронизируя дыхание с фазами.  
+    Если почувствуете дискомфорт, вернитесь к обычному дыханию.
+  </div>
+</div>
+
+<script>
+  const circle = document.getElementById('circle');
+  const phaseText = document.getElementById('phaseText');
+  const instructions = document.getElementById('instructions');
+  const startBtn = document.getElementById('startBtn');
+  const stateSelect = document.getElementById('stateSelect');
+  const countdownText = document.getElementById('countdownText');
+  const progressRing = document.getElementById('progressRing');
+
+  let inhaleTime = 5;   // по умолчанию для relax
+  let holdTime = 5;
+  let exhaleTime = 7;
+  let currentState = 'relax';
+  let isRunning = false;
+
+  let countdownInterval = null;
+  let cycleCount = 0;
+  const totalCycles = 10; // Всего 10 циклов
+
+  // Итоговые сообщения по состоянию
+  const finalMessages = {
+    relax: "Теперь ты расслаблен",
+    focus: "Теперь ты сфокусирован",
+    sleep: "Теперь ты спокоен и готов ко сну",
+    energy: "Теперь ты бодр",
+    balance: "Теперь ты в равновесии",
+    even: "Теперь ты уравновешен"
+  };
+
+  const states = {
+    relax: {
+      name: "Расслабление",
+      inhale: 5,
+      hold: 5,
+      exhale: 7,
+      instructions: "Вдох:5с (зелёный), Задержка:5с (синий), Выдох:7с (коричневый)."
+    },
+    focus: {
+      name: "Концентрация",
+      inhale: 4,
+      hold: 4,
+      exhale: 4,
+      instructions: "Ритм 4-4-4. Помогает сосредоточиться."
+    },
+    sleep: {
+      name: "Подготовка ко сну",
+      inhale: 4,
+      hold: 7,
+      exhale: 8,
+      instructions: "Ритм 4-7-8. Успокаивает перед сном."
+    },
+    energy: {
+      name: "Бодрость",
+      inhale: 2,
+      hold: 0,
+      exhale: 2,
+      instructions: "2с вдох - 2с выдох. Лёгкий подъём тонуса."
+    },
+    balance: {
+      name: "Баланс",
+      inhale: 5,
+      hold: 5,
+      exhale: 5,
+      instructions: "Ритм 5-5-5. Уравновешивает ум и тело."
+    },
+    even: {
+      name: "Равномерное дыхание",
+      inhale: 5,
+      hold: 0,
+      exhale: 5,
+      instructions: "5с вдох - 5с выдох без задержки. Стабилизирует состояние."
+    }
+  };
+
+  stateSelect.addEventListener('change', (e) => {
+    currentState = e.target.value;
+    updateInstructions();
+  });
+
+  function updateInstructions() {
+    inhaleTime = states[currentState].inhale;
+    holdTime = states[currentState].hold;
+    exhaleTime = states[currentState].exhale;
+    instructions.textContent = states[currentState].instructions;
+    phaseText.textContent = "Готов?";
+    circle.style.transform = "scale(1)";
+    circle.style.background = "green";
+    countdownText.textContent = "0";
+    cycleCount = 0;
+    clearProgressDots();
+  }
+
+  updateInstructions();
+
+  // Создаём 10 точек по кругу
+  createProgressDots();
+
+  startBtn.addEventListener('click', () => {
+    if (isRunning) return; // уже идёт
+    isRunning = true;
+    phaseText.textContent = "Начинаем...";
+    startCycle();
+  });
+
+  function startCycle() {
+    // Если достигли 10 циклов, завершаем
+    if (cycleCount >= totalCycles) {
+      showFinalMessage();
+      return;
+    }
+    doInhale();
+  }
+
+  function doInhale() {
+    phaseText.textContent = "Вдох";
+    circle.style.transition = `transform ${inhaleTime}s linear, background-color ${inhaleTime}s linear`;
+    circle.style.transform = "scale(1.5)";
+    circle.style.background = "green";
+    startCountdown(inhaleTime, () => {
+      if (holdTime > 0) {
+        doHold();
+      } else {
+        doExhale();
+      }
+    });
+  }
+
+  function doHold() {
+    phaseText.textContent = "Задержка";
+    // Размер круга не меняем, только цвет
+    circle.style.transition = `background-color ${holdTime}s linear`;
+    circle.style.background = "blue";
+    startCountdown(holdTime, () => {
+      doExhale();
+    });
+  }
+
+  function doExhale() {
+    phaseText.textContent = "Выдох";
+    circle.style.transition = `transform ${exhaleTime}s linear, background-color ${exhaleTime}s linear`;
+    circle.style.transform = "scale(1)";
+    circle.style.background = "#8B4513"; // коричневый
+    
+    startCountdown(exhaleTime, () => {
+      // Завершён один цикл
+      cycleCount++;
+      fillProgressDot(cycleCount);
+      startCycle(); // Запускаем следующий
+    });
+  }
+
+  function startCountdown(time, callback) {
+    let t = time;
+    countdownText.textContent = t;
+    clearInterval(countdownInterval);
+    countdownInterval = setInterval(() => {
+      t--;
+      countdownText.textContent = t;
+      if (t <= 0) {
+        clearInterval(countdownInterval);
+        callback();
+      }
+    }, 1000);
+  }
+
+  function createProgressDots() {
+    const angleStep = 360 / totalCycles;
+    for (let i = 0; i < totalCycles; i++) {
+      const dot = document.createElement('div');
+      dot.classList.add('progress-dot');
+      // Расположим точки по окружности
+      const angle = angleStep * i - 90; // стартуем сверху (-90 градусов)
+      const radius = 110; // радиус от центра
+      const x = Math.cos(angle * Math.PI/180) * radius;
+      const y = Math.sin(angle * Math.PI/180) * radius;
+      dot.style.transform = `translate(-50%, -50%) translate(${x}px, ${y}px)`;
+      dot.setAttribute('data-index', i);
+      progressRing.appendChild(dot);
+    }
+  }
+
+  function clearProgressDots() {
+    // Сброс цвета точек
+    const dots = progressRing.querySelectorAll('.progress-dot');
+    dots.forEach(dot => {
+      dot.style.background = '#ccc';
+    });
+  }
+
+  function fillProgressDot(index) {
+    // index - номер законченного цикла
+    // Точки нумеруются с 0, а цикл - с 1. Соответственно, нам надо покрасить точку с индексом index-1
+    const dot = progressRing.querySelector(`.progress-dot[data-index="${index-1}"]`);
+    if (dot) {
+      dot.style.background = 'green'; // или другой цвет, символизирующий выполненный цикл
+    }
+  }
+
+  function showFinalMessage() {
+    // Выводим итоговое сообщение в центре круга
+    circle.style.background = "#2e8b57"; // спокойный зелёный цвет
+    countdownText.textContent = finalMessages[currentState] || "Готово!";
+    phaseText.textContent = "Завершено";
+  }
+
+</script>
+
+</body>
+</html>
