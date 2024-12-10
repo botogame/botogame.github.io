@@ -468,6 +468,10 @@ a:hover {
         }
 
         .image-backgroundMonth img {
+		filter: drop-shadow(0 0 20px rgba(0, 255, 0, 0.7)) drop-shadow(0 0 40px rgba(0, 255, 0, 0.5));
+        }
+
+        .image-backgroundMonth img {
             width: 100%;
             clip-path: inset(5px 5px 5px 5px round 30px);
         }
