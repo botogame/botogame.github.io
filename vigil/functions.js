@@ -632,7 +632,7 @@ function renderMatrix(matrix) {
     if (countAllCards() > 0) {
         document.getElementById("button3").style.display = "block";
     } else {
-        cardListElement.innerHTML = '<br><br><b style="float:right;text-align:center;width:100%;">Здесь будет хранится история ваших желаний. Вы можете её очистить (ниже кнопка). Или подождать когда соберётся грибница в квадатуру (5x5,7x7 и т.д.), чтобы её освободить (об этом вы будете уведомлены)!</b>';
+        cardListElement.innerHTML = '<br><br><b style="float:right;text-align:center;width:100%;">Здесь будет хранится история ваших желаний. Вы можете её очистить (ниже будет кнопка). Или подождать когда соберётся грибница в квадатуру (5x5,7x7 и т.д.), чтобы её освободить (об этом вы будете уведомлены)!</b>';
         document.getElementById("button3").style.display = "none";
     }
 }
