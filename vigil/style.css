@@ -469,7 +469,7 @@ a:hover {
 
         .image-backgroundMonth img {
             width: 100%;
-            clip-path:inset(20px 20px 20px 20px round 50px);
+            clip-path: inset(5px 5px 5px 5px round 30px);
         }
 
         .image-backgroundMantra img {
