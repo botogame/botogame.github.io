@@ -1033,12 +1033,15 @@ function showPopupMantra(blockId,weekId,week,doit) {
 
     if(gender == 'female'){
         var textClose = 'Я прошла';
+        var textMantraPovtoryate = 'другой';
     }
     else{
         var textClose = 'Я прошёл';
+        var textMantraPovtoryate = 'другим';
     }
-
+    
     document.getElementById('textCloseMantra').innerHTML = textClose;
+    document.getElementById('textMantraPovtoryate').innerHTML = textMantraPovtoryate;
     document.getElementById('popupMantra').style.display = 'flex';
     document.getElementById('textMantra').innerHTML = ''+days2[weekId]+' ' + doit +'<br><b class="h3_text">' + document.getElementById(blockId).innerHTML + '</b>';
     document.getElementById('weekMantra').src = './taro/week/' + week +'.jpg';
