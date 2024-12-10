@@ -381,7 +381,7 @@ function set_result(gender, startCard, endCard, needType, wish, symvol_text, gen
     var weekId = new Date().getDay();
     var monthId = new Date().getMonth();
     
-    var output = 'Месяц ' + schemeMonth[monthId] + '<br><div class="image-backgroundMonth"><img src="./month/'+ monthId+'.jpg"></div><button id="button2" class="open-modal-btn" onclick="updateDayNow()">Обновить текущее время</button><br><br>' + typeoutput + ': желаю чтобы '+ wish +'. Уклад на ' + days[weekId] +':<br><br>';
+    var output = 'Месяц ' + schemeMonth[monthId] + '<br><div class="image-backgroundMonth"><img src="./month/'+ monthId+'.jpg"></div><button id="button2" class="open-modal-btn" onclick="updateDayNow()">Обновить месяц и день недели</button><br><br>' + typeoutput + ': желаю чтобы '+ wish +'. Уклад на ' + days[weekId] +':<br><br>';
 
     const result2 = findBalancedPathWithSpecificEndTransition(startCard, endCard, needType);
 
@@ -1028,6 +1028,17 @@ function otrabotatDolg(dolgType,cardSet){
 
 
 function showPopupMantra(blockId,weekId,week,doit) {
+    
+    var gender = document.getElementById('gender').value;
+
+    if(gender == 'female'){
+        var textClose = 'Я прошла';
+    }
+    else{
+        var textClose = 'Я прошёл';
+    }
+
+    document.getElementById('textCloseMantra').innerHTML = textClose;
     document.getElementById('popupMantra').style.display = 'flex';
     document.getElementById('textMantra').innerHTML = ''+days2[weekId]+' ' + doit +'<br><b class="h3_text">' + document.getElementById(blockId).innerHTML + '</b>';
     document.getElementById('weekMantra').src = './taro/week/' + week +'.jpg';
