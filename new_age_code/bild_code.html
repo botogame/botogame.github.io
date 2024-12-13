@@ -1,0 +1,301 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Вложенный список</title>
+    <style>
+        ul {
+            list-style-type: none;
+        }
+        textarea {
+            width: 100%;
+            height: 150px;
+            margin-top: 20px;
+        }
+        li {
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+    <div>
+        <select id="itemType">
+            <option value="teg">Тэг</option>
+            <option value="atribut">Атрибут</option>
+            <option value="reflex">Рефлексия</option>
+            <option value="function">Функционал</option>
+        </select>
+        <input type="text" id="itemName" placeholder="Значение">
+        <select id="parentId">
+            <option value="">body</option>
+        </select>
+        <button id="addItem" style="display:inline;" onclick="addItem()">Добавить элемент</button>
+        <button id="updateItem" style="display:none;" onclick="updateItem()">Сохранить элемент</button>
+        <button id="deleteItem" style="display:none;" onclick="deleteItem()">Удалить элемент</button>
+    </div>
+    <div id="nested-list"></div>
+    <textarea id="output" readonly></textarea>
+
+    <script>
+        class NestedArrayBuilder {
+            constructor() {
+                this.items = [];
+                this.color = {
+				'teg':'#39ff14',
+				'atribut':'#121313',
+				'reflex':'#5555ff',
+				'function':'#ff073a',
+				};
+                this.selectedItemId = null;
+                this.previousState = null;
+            }
+
+            addItem(id, name, type, parentId = null) {
+                const newItem = { id, name, type, children: [] };
+                if (parentId === null) {
+                    this.items.push(newItem);
+                } else {
+                    const parent = this.findItemById(this.items, parentId);
+                    if (parent) {
+                        parent.children.push(newItem);
+                    } else {
+                        console.error(`Parent with ID ${parentId} not found.`);
+                    }
+                }
+            }
+
+            updateItem(id, name, type, newParentId = null) {
+                const item = this.findItemById(this.items, id);
+                if (!item) {
+                    console.error(`Item with ID ${id} not found.`);
+                    return;
+                }
+
+                // Save state for undo
+                this.saveState();
+
+                // Update name and type
+                item.name = name;
+                item.type = type;
+
+                // Handle parentId change
+                const currentParent = this.findParentById(this.items, id);
+                if ((currentParent && currentParent.id !== newParentId) || (!currentParent && newParentId !== null)) {
+                    // Remove item from current parent
+                    if (currentParent) {
+                        currentParent.children = currentParent.children.filter(child => child.id !== id);
+                    } else {
+                        // If no parent, remove from root
+                        this.items = this.items.filter(rootItem => rootItem.id !== id);
+                    }
+
+                    // Add item to the new parent or root
+                    if (newParentId === null) {
+                        this.items.push(item);
+                    } else {
+                        const newParent = this.findItemById(this.items, newParentId);
+                        if (newParent) {
+                            newParent.children.push(item);
+                        } else {
+                            console.error(`New parent with ID ${newParentId} not found.`);
+                        }
+                    }
+                }
+            }
+
+            deleteItem(id) {
+                // Save state for undo
+                this.saveState();
+
+                const currentParent = this.findParentById(this.items, id);
+                if (currentParent) {
+                    currentParent.children = currentParent.children.filter(child => child.id !== id);
+                } else {
+                    this.items = this.items.filter(item => item.id !== id);
+                }
+            }
+
+            saveState() {
+                this.previousState = JSON.parse(JSON.stringify(this.items));
+            }
+
+            undo() {
+                if (this.previousState) {
+                    this.items = this.previousState;
+                    this.previousState = null;
+                } else {
+                    console.warn('No previous state to undo.');
+                }
+            }
+
+            findItemById(items, id) {
+                for (const item of items) {
+                    if (item.id === id) {
+                        return item;
+                    }
+                    const found = this.findItemById(item.children, id);
+                    if (found) {
+                        return found;
+                    }
+                }
+                return null;
+            }
+
+            findParentById(items, childId) {
+                for (const item of items) {
+                    if (item.children.some(child => child.id === childId)) {
+                        return item;
+                    }
+                    const found = this.findParentById(item.children, childId);
+                    if (found) {
+                        return found;
+                    }
+                }
+                return null;
+            }
+
+            getItems() {
+                return this.items;
+            }
+
+            renderList(items, parentElement) {
+                const ul = document.createElement('ul');
+                items.forEach(item => {
+                    const li = document.createElement('li');
+                    li.innerHTML = `<b style="background-color: ${this.color[item.type]};color:white;">${item.name} (ID: ${item.id}, Тип: ${item.type})<\/b>`;
+                    li.onclick = (event) => {
+                        event.stopPropagation();
+                        this.selectItem(item.id);
+                    };
+                    ul.appendChild(li);
+                    if (item.children.length > 0) {
+                        this.renderList(item.children, li);
+                    }
+                });
+                parentElement.appendChild(ul);
+            }
+
+            updateParentOptions(selectElement) {
+                selectElement.innerHTML = '<option value="">body</option>';
+                this.addOptions(selectElement, this.items);
+            }
+
+            addOptions(selectElement, items, prefix = '--') {
+                items.forEach(item => {
+                    const option = document.createElement('option');
+                    option.value = item.id;
+                    option.textContent = `${prefix}${item.name}`;
+                    selectElement.appendChild(option);
+                    if (item.children.length > 0) {
+                        this.addOptions(selectElement, item.children, `${prefix}--`);
+                    }
+                });
+            }
+
+            generateOutput() {
+                return JSON.stringify(this.items, null, 2);
+            }
+
+            selectItem(id) {
+    if (this.selectedItemId === id) {
+        // Если элемент уже выбран, снимаем выделение
+        this.selectedItemId = null;
+
+        // Сбрасываем форму и возвращаем в режим добавления
+        document.getElementById('addItem').style.display = 'inline';
+        document.getElementById('updateItem').style.display = 'none';
+        document.getElementById('deleteItem').style.display = 'none';
+        document.getElementById('itemName').value = '';
+        document.getElementById('parentId').value = '';
+        document.getElementById('itemType').value = 'тэг';
+    } else {
+        // Если элемент не выбран, выделяем его
+        this.selectedItemId = id;
+        const item = this.findItemById(this.items, id);
+        if (item) {
+            document.getElementById('addItem').style.display = 'none';
+            document.getElementById('updateItem').style.display = 'inline';
+            document.getElementById('deleteItem').style.display = 'inline';
+            document.getElementById('itemName').value = item.name;
+            document.getElementById('itemType').value = item.type;
+            const parent = this.findParentById(this.items, id);
+            document.getElementById('parentId').value = parent ? parent.id : '';
+        }
+    }
+}
+
+
+        }
+
+        const builder = new NestedArrayBuilder();
+        let currentId = 1;
+
+        function addItem() {
+            const itemName = document.getElementById('itemName').value;
+            const itemType = document.getElementById('itemType').value;
+            const parentId = document.getElementById('parentId').value || null;
+
+            if (itemName.trim() === '') {
+                alert('Пожалуйста, введите название элемента.');
+                return;
+            }
+
+            builder.addItem(currentId, itemName, itemType, parentId ? parseInt(parentId) : null);
+            currentId++;
+
+            render();
+        }
+
+        function updateItem() {
+            if (builder.selectedItemId === null) {
+                alert('Пожалуйста, выберите элемент для изменения.');
+                return;
+            }
+
+            document.getElementById('addItem').style.display = 'inline';
+            document.getElementById('updateItem').style.display = 'none';
+            document.getElementById('deleteItem').style.display = 'none';
+
+            const itemName = document.getElementById('itemName').value;
+            const itemType = document.getElementById('itemType').value;
+            const parentId = document.getElementById('parentId').value || null;
+
+            builder.updateItem(builder.selectedItemId, itemName, itemType, parentId ? parseInt(parentId) : null);
+            builder.selectedItemId = null;
+
+            render();
+        }
+
+        function deleteItem() {
+            if (builder.selectedItemId === null) {
+                alert('Пожалуйста, выберите элемент для удаления.');
+                return;
+            }
+            builder.deleteItem(builder.selectedItemId);
+            builder.selectedItemId = null;
+            render();
+        }
+
+        function undo() {
+            builder.undo();
+            render();
+        }
+function render() {
+    const nestedListContainer = document.getElementById('nested-list');
+    nestedListContainer.innerHTML = '';
+    builder.renderList(builder.getItems(), nestedListContainer);
+
+    builder.updateParentOptions(document.getElementById('parentId'));
+
+    document.getElementById('output').value = builder.generateOutput();
+
+    // Сбрасываем форму при обновлении
+    document.getElementById('itemName').value = '';
+    document.getElementById('parentId').value = '';
+}
+
+
+    </script>
+</body>
+</html>
