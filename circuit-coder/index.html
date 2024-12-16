@@ -102,13 +102,16 @@
          #function:checked + label { background-color: #ff073a; }
          a {color:gray;}
          b {color:gray;}
+		 .highlight {
+    background-color: #ff0;
+}
       </style>
    </head>
    <body>
       <div>
          <h2>Схемокодер</h2>
          <div class="button-group">
-            <input type="radio" id="teg" name="itemType" value="teg">
+            <input type="radio" id="teg" name="itemType" value="teg" checked="checked">
             <label for="teg">Контейнер</label>
             <input type="radio" id="atribut" name="itemType" value="atribut">
             <label for="atribut">Атрибут</label>
@@ -126,8 +129,17 @@
          <button id="deleteItem" style="display:none;" onclick="deleteItem()">Удалить элемент</button>
       </div>
       <div id="nested-list"></div>
-      <textarea id="output" readonly>Здесь пока формируется только массив кода, без итоговой реализации!</textarea>
-      <b>v.1-13.12.2024 | </b><a target="_blank" href="https://github.com/botogame/botogame/blob/main/freedom/distribution/business_code_constructor/README.md">страница разработчика</a>
+	  <hr>
+	  Запуск включает в себя:<br>
+	  1. последовательно проходит по элементам.<br>
+	  2. понимает команду для рефлекса: перейти на {id: N}<br>
+	  3. понимает команду для контейнера: TEXT / для запуска рефлексом<br>
+	  4. понимает команду для рефлекса: выполнить {id: N}
+	  <button id="runButton" onclick="runSequence()">Запустить</button>
+	  <hr>
+	  Здесь пока формируется только массив последовательности схемы, без итоговой реализации в программу:
+      <textarea id="output" readonly>...</textarea>
+      <b>v.1-16.12.2024 | </b><a target="_blank" href="https://github.com/botogame/botogame/blob/main/freedom/distribution/business_code_constructor/README.md">страница разработчика</a>
       <script>
          class NestedArrayBuilder {
              constructor() {
@@ -299,7 +311,19 @@
          document.getElementById('deleteItem').style.display = 'none';
          document.getElementById('itemName').value = '';
          document.getElementById('parentId').value = '';
-         document.querySelector('input[name="itemType"]:checked').value = 'тэг';
+		 
+		 			 // Получаем все элементы input с именем itemType
+const itemTypeInputs = document.querySelectorAll('input[name="itemType"]');
+
+// Проходим по каждому элементу и устанавливаем checked в зависимости от значения
+itemTypeInputs.forEach(input => {
+    if (input.value === 'teg') {
+        input.checked = true; // Устанавливаем checked для элемента с value 'teg'
+    } else {
+        input.checked = false; // Убираем checked для всех остальных
+    }
+});
+		 
          } else {
          // Если элемент не выбран, выделяем его
          this.selectedItemId = id;
@@ -309,9 +333,21 @@
              document.getElementById('updateItem').style.display = 'inline';
              document.getElementById('deleteItem').style.display = 'inline';
              document.getElementById('itemName').value = item.name;
-             document.querySelector('input[name="itemType"]:checked').value = item.type;
              const parent = this.findParentById(this.items, id);
              document.getElementById('parentId').value = parent ? parent.id : '';
+			 
+			 // Получаем все элементы input с именем itemType
+const itemTypeInputs = document.querySelectorAll('input[name="itemType"]');
+
+// Проходим по каждому элементу и устанавливаем checked в зависимости от значения
+itemTypeInputs.forEach(input => {
+    if (input.value === item.type) {
+        input.checked = true; // Устанавливаем checked для элемента с value 'teg'
+    } else {
+        input.checked = false; // Убираем checked для всех остальных
+    }
+});
+			 
          }
          }
          }
@@ -391,6 +427,204 @@
          document.getElementById('itemName').value = '';
          document.getElementById('parentId').value = '';
          }
+		 
+
+		 function runSequence() {
+    if (document.getElementById('runButton').innerHTML == 'Остановить') {
+        document.getElementById('runButton').innerHTML = 'Останавливается..';
+        return;
+    }
+
+    const listItems = document.querySelectorAll('#nested-list li');
+    let index = 0;
+    let relocation_index = false;
+    let doit_index_out = false;
+    let doit_index = false;
+    let doit_index_exists = false;
+    let index_out = false;
+	
+    let doit_index2 = false;
+    let doit_index_exists2 = false;
+    let doit_index_out2 = false;
+	let doit_index_out2see = false;
+	
+    let doit_index3 = false;
+    let doit_index_exists3 = false;
+    let doit_index_out3 = false;
+	let doit_index_out3see = false;
+
+    function highlightNext() {
+        if (document.getElementById('runButton').innerHTML == 'Останавливается..') {
+            if (index > 0) { listItems[index - 1].classList.remove('highlight'); }
+            if (relocation_index !== false) { listItems[relocation_index].classList.remove('highlight'); }
+            if (index_out !== false) { listItems[index_out].classList.remove('highlight'); }
+            document.getElementById('runButton').innerHTML = 'Запустить';
+            return;
+        }
+
+        let relocation_exists = false;
+        if (index > 0) {
+            listItems[index - 1].classList.remove('highlight');
+        }
+        if (relocation_index !== false) {
+            listItems[relocation_index].classList.remove('highlight');
+            relocation_index = false;
+            relocation_exists = true;
+        }
+        if (index_out !== false) {
+            listItems[index_out].classList.remove('highlight');
+            index_out = false;
+        }
+        if (index < listItems.length) {
+		
+		console.log('set index: ' + index);
+		
+            const currentItem = listItems[index];
+            const itemData = currentItem.querySelector('b');
+
+		console.log('check start reflex teg: relocation_exists-' + relocation_exists + '|doit_index_exists-'+doit_index_exists);
+		
+            if (!relocation_exists && (doit_index_exists===false || (doit_index_exists!=index))) {
+			
+		console.log('checked start reflex teg');
+			doit_index_exists = false;
+                const isTegWithPhrase = itemData.classList.contains('teg') && itemData.textContent.includes(' / для запуска рефлексом');
+
+                if (isTegWithPhrase) {
+				
+		console.log('in start reflex teg');
+                    const countIn = currentItem.querySelectorAll('b').length;
+                    for (let i = 1; i <= countIn; i += 1) {
+                        index++;
+                    }
+                    setTimeout(highlightNext, 0);
+                    return;
+                }
+            }
+
+            currentItem.classList.add('highlight');
+
+            let relocation = false;
+            if (itemData.classList.contains('reflex')) {
+                relocation = itemData.textContent.match(/перейти на \{id: (\d+)\}/);
+            }
+
+            let doit = false;
+            if (itemData.classList.contains('reflex')) {
+                doit = itemData.textContent.match(/выполнить \{id: (\d+)\}/);
+            }
+
+if (doit_index_out3 !== false && doit_index_out3 === index) {
+		console.log('doit_index_out3 check: ' + doit_index_out3);
+				
+                index_out = doit_index_out3;
+                doit_index_out3 = false;
+                index = doit_index3;
+                doit_index3 = false;
+				doit_index_out3see = index;
+            }
+			else if (doit_index_out2 !== false && doit_index_out2 === index) {
+		console.log('doit_index_out2 check: ' + doit_index_out2);
+				
+                index_out = doit_index_out2;
+                doit_index_out2 = false;
+                index = doit_index2;
+                doit_index2 = false;
+				doit_index_out2see = index;
+            } 
+			else if ((!doit || (doit_index_out3see===false && doit_index_out2see === index) ||  doit_index_out3see === index) && doit_index_out !== false && doit_index_out === index) {
+		console.log('doit_index_out check: ' + doit_index_out);
+				
+				doit_index_out2see = false;
+                index_out = doit_index_out;
+                doit_index_out = false;
+                index = doit_index;
+                doit_index = false;
+                index++;
+            }
+			else if(doit_index_out2see == index){
+                index++;
+			}
+			else if(doit_index_out3see == index){
+                index++;
+			}
+            else if (doit) {
+                const targetId = parseInt(doit[1]);
+		console.log('doit check: ' + targetId);
+                const targetIndex = Array.from(listItems).findIndex(item => {
+                    const itemIdMatch = item.querySelector('b').textContent.match(/\[id: (\d+)\]/);
+                    return itemIdMatch && parseInt(itemIdMatch[1]) === targetId;
+                });
+
+                if (targetIndex !== -1) {
+                    var doit_index_reload = index;
+                    index = targetIndex;
+
+                    if(doit_index_out==false){
+					doit_index = doit_index_reload;
+                    doit_index_exists = index;
+                    doit_index_out = targetIndex;
+                    const countIn = listItems[index].querySelectorAll('b').length;
+                    for (let i = 1; i < countIn; i += 1) {
+                        doit_index_out++;
+                    }
+					}
+					else if(doit_index_out2==false){
+					doit_index2 = doit_index_reload;
+                    doit_index_exists2 = index;
+                    relocation_index = doit_index2;
+                    doit_index_out2 = targetIndex;
+                    const countIn = listItems[index].querySelectorAll('b').length;
+                    for (let i = 1; i < countIn; i += 1) {
+                        doit_index_out2++;
+                    }
+					}
+					else if(doit_index_out3==false){
+					doit_index3 = doit_index_reload;
+                    doit_index_exists3 = index;
+                    relocation_index = doit_index3;
+                    doit_index_out3 = targetIndex;
+                    const countIn = listItems[index].querySelectorAll('b').length;
+                    for (let i = 1; i < countIn; i += 1) {
+                        doit_index_out3++;
+                    }
+					}
+
+                } else {
+                    index++;
+                }
+            }
+			 else if (relocation) {
+                const targetId = parseInt(relocation[1]);
+		console.log('relocation check: ' + targetId);
+                const targetIndex = Array.from(listItems).findIndex(item => {
+                    const itemIdMatch = item.querySelector('b').textContent.match(/\[id: (\d+)\]/);
+                    return itemIdMatch && parseInt(itemIdMatch[1]) === targetId;
+                });
+
+                if (targetIndex !== -1) {
+                    relocation_index = index;
+                    index = targetIndex;
+                } else {
+                    index++;
+                }
+            }
+			else {
+		console.log('++ check');
+                index++;
+            }
+
+            setTimeout(highlightNext, 1000);
+        } else {
+            document.getElementById('runButton').innerHTML = 'Запустить';
+        }
+    }
+
+    document.getElementById('runButton').innerHTML = 'Остановить';
+
+    highlightNext();
+}
+
          
          
       </script>
