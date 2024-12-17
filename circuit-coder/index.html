@@ -10,7 +10,7 @@
          body {
          background: url(./background.webp) repeat #2e2e2e;
 		 backdrop-filter: blur(5px);
-         color: #ffffff; /* Белый текст для контраста */
+         color: #B8B8B8; /* Белый текст для контраста */
          font-family: Arial, sans-serif;
          margin: 0;
          padding: 20px;
@@ -89,6 +89,10 @@
          .button-group input[type="radio"] {
          display: none;
          }
+		 
+         .button-group label{
+         color: #ffffff;
+         }
          .button-group label {
          padding: 10px 20px;
          border-radius: 5px;
@@ -106,6 +110,10 @@
          a {color:gray;}
          b {color:gray;}
 		 .highlight {
+    text-shadow: 0 0 15px #FFFFFF, 0 0 20px #FFFFFF, 0 0 35px #FFFFFF;
+         background-color: #FFFFFF;
+}
+		 .highlight2 {
     text-shadow: 0 0 15px #FFFFFF, 0 0 20px #FFFFFF, 0 0 35px #FFFFFF;
 }
       </style>
@@ -648,12 +656,12 @@ if (doit_index_out3 !== false && doit_index_out3 === index) {
 
             setTimeout(highlightNext, 1000);
         } else {
-		    document.getElementById('runButton').classList.remove('highlight');
+		    document.getElementById('runButton').classList.remove('highlight2');
             document.getElementById('runButton').innerHTML = 'Запустить';
         }
     }
 
-    document.getElementById('runButton').classList.add('highlight');
+    document.getElementById('runButton').classList.add('highlight2');
     document.getElementById('runButton').innerHTML = 'Остановить';
 
     highlightNext();
