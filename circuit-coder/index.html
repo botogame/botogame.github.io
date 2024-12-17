@@ -146,6 +146,33 @@
 	  <br><br>
       <b>v.1-17.12.2024 | </b><a target="_blank" href="https://github.com/botogame/botogame/blob/main/freedom/distribution/business_code_constructor/README.md">страница разработчика</a>
       <script>
+	  
+	      window.onload = function() {
+        const itemTypes = ['teg', 'atribut', 'reflex', 'function'];
+        let currentIndex = 0;
+
+        function selectNext() {
+            // Убираем checked у текущего элемента
+            document.getElementById(itemTypes[currentIndex]).checked = false;
+
+            // Переходим к следующему элементу
+            currentIndex = (currentIndex + 1) % itemTypes.length;
+
+            // Устанавливаем checked для нового элемента
+            document.getElementById(itemTypes[currentIndex]).checked = true;
+
+            // Если текущий элемент 'teg', останавливаемся
+            if (itemTypes[currentIndex] === 'teg') {
+                return;
+            }
+
+            // Продолжаем цикл
+            setTimeout(selectNext, 500); // Задержка 500 мс для визуального эффекта
+        }
+
+        setTimeout(selectNext, 1000);
+    };
+	  
          class NestedArrayBuilder {
              constructor() {
                  this.items = [];
