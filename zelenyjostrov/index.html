@@ -1,0 +1,198 @@
+<html><head><base href="https://www.zelenyjostrov.ru/"><title>Авторизация - Зеленый остров</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<script src="https://telegram.org/js/telegram-web-app.js"></script>
+<style>
+:root {
+    --tg-theme-bg-color: #ffffff;
+    --tg-theme-text-color: #000000;
+    --tg-theme-button-color: #4CAF50;
+    --tg-theme-button-text-color: #ffffff;
+}
+
+body {
+    background-color: var(--tg-theme-bg-color);
+    color: var(--tg-theme-text-color);
+}
+
+.auth-container {
+    max-width: 400px;
+    margin: 50px auto;
+    padding: 30px;
+    border-radius: 10px;
+    box-shadow: 0 0 20px rgba(0,0,0,0.1);
+    background: linear-gradient(145deg, var(--tg-theme-bg-color), #f5f5f5);
+}
+
+.auth-form {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.form-group {
+    position: relative;
+}
+
+.form-group input, .auth-btn {
+    width: 100%;
+    padding: 12px 15px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    font-size: 16px;
+    transition: all 0.3s ease;
+    box-sizing: border-box;
+    background-color: var(--tg-theme-bg-color);
+    color: var(--tg-theme-text-color);
+}
+
+.form-group input:focus {
+    border-color: var(--tg-theme-button-color);
+    outline: none;
+    box-shadow: 0 0 5px rgba(76,175,80,0.3);
+}
+
+.auth-btn {
+    background: var(--tg-theme-button-color);
+    color: var(--tg-theme-button-text-color);
+    border: none;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.auth-btn:hover {
+    opacity: 0.9;
+    transform: translateY(-2px);
+}
+
+.auth-btn:active {
+    transform: translateY(0);
+}
+
+.error-message {
+    color: #f44336;
+    font-size: 14px;
+    margin-top: 5px;
+    display: none;
+}
+
+.success-message {
+    color: var(--tg-theme-button-color);
+    font-size: 14px;
+    margin-top: 5px;
+    display: none;
+}
+
+.loading {
+    display: none;
+    position: absolute;
+    right: 10px;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 20px;
+    height: 20px;
+    border: 2px solid #f3f3f3;
+    border-top: 2px solid var(--tg-theme-button-color);
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+    0% { transform: translateY(-50%) rotate(0deg); }
+    100% { transform: translateY(-50%) rotate(360deg); }
+}
+</style>
+</head>
+<body>
+
+<div class="auth-container">
+    <form class="auth-form" id="authForm">
+        <div class="form-group">
+            <input type="text" id="login" name="login" placeholder="Email или логин" required>
+            <div class="loading" id="loadingLogin"></div>
+        </div>
+        <div class="form-group">
+            <input type="password" id="password" name="password" placeholder="Пароль" required>
+            <div class="loading" id="loadingPassword"></div>
+        </div>
+        <button type="submit" class="auth-btn">Войти</button>
+        <div class="error-message" id="errorMessage">Неверный логин или пароль</div>
+        <div class="success-message" id="successMessage">Успешная авторизация</div>
+    </form>
+</div>
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script>
+$(document).ready(function() {
+    // Initialize Telegram WebApp
+    const tg = window.Telegram.WebApp;
+    tg.ready();
+    
+    // Expand the WebApp to full height
+    tg.expand();
+    
+    // Enable closing confirmation
+    tg.enableClosingConfirmation();
+
+    // Apply Telegram theme colors
+    document.documentElement.style.setProperty('--tg-theme-bg-color', tg.themeParams.bg_color);
+    document.documentElement.style.setProperty('--tg-theme-text-color', tg.themeParams.text_color);
+    document.documentElement.style.setProperty('--tg-theme-button-color', tg.themeParams.button_color);
+    document.documentElement.style.setProperty('--tg-theme-button-text-color', tg.themeParams.button_text_color);
+
+    $('#authForm').on('submit', function(e) {
+        e.preventDefault();
+        
+        const login = $('#login').val();
+        const password = $('#password').val();
+        
+        // Hide previous messages
+        $('#errorMessage').hide();
+        $('#successMessage').hide();
+        
+        // Show loading indicators
+        $('.loading').show();
+        $('.auth-btn').prop('disabled', true);
+        
+        $.ajax({
+            url: 'https://www.zelenyjostrov.ru/personal/telegram_auth.php',
+            method: 'POST',
+            data: {
+                login: login,
+                password: password,
+                telegram_id: tg.initDataUnsafe?.user?.id || ''
+            },
+            success: function(response) {
+                $('.loading').hide();
+                $('.auth-btn').prop('disabled', false);
+                
+                if (response === 'true') {
+                    $('#successMessage').show();
+                    tg.showAlert('Авторизация успешна!');
+                    // Close the WebApp after successful login
+                    setTimeout(function() {
+                        tg.close();
+                    }, 1500);
+                } else {
+                    $('#errorMessage').show();
+                    tg.showAlert('Ошибка авторизации. Проверьте введенные данные.');
+                }
+            },
+            error: function() {
+                $('.loading').hide();
+                $('.auth-btn').prop('disabled', false);
+                $('#errorMessage').text('Ошибка соединения. Попробуйте позже.').show();
+                tg.showAlert('Ошибка соединения. Попробуйте позже.');
+            }
+        });
+    });
+    
+    // Clear error messages when user starts typing
+    $('input').on('input', function() {
+        $('#errorMessage').hide();
+        $('#successMessage').hide();
+    });
+});
+</script>
+
+</body></html>
