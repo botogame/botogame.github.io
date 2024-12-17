@@ -116,21 +116,46 @@
 		 .highlight2 {
     text-shadow: 0 0 15px #FFFFFF, 0 0 20px #FFFFFF, 0 0 35px #FFFFFF;
 }
+
+
+    .button-group {
+        display: flex;
+        flex-wrap: wrap;
+        align-items: center;
+    }
+
+    .button-group h2 {
+        display: flex;
+        flex-wrap: wrap;
+        align-items: center;
+        margin: 0;
+    }
+
+    .button-group input[type="radio"],
+    .button-group label {
+        margin-right: 10px;
+        margin-top: 3px;
+    }
+
       </style>
    </head>
    <body>
       <div>
          
-         <div class="button-group"><h2>Чистый код { <input type="radio" id="teg" name="itemType" value="teg" checked="checked">
-            <label for="teg">Контейнер</label>
-            <input type="radio" id="atribut" name="itemType" value="atribut">
-            <label for="atribut">Атрибут</label>
-            <input type="radio" id="reflex" name="itemType" value="reflex">
-            <label for="reflex">Рефлекс</label>
-            <input type="radio" id="function" name="itemType" value="function">
-            <label for="function">Функционал</label> } Схемокодер</h2>
-            
-         </div>
+         <div class="button-group">
+    <h2>Чистый код {&nbsp;
+        <input type="radio" id="teg" name="itemType" value="teg" checked="checked">
+        <label for="teg">Контейнер</label>
+        <input type="radio" id="atribut" name="itemType" value="atribut">
+        <label for="atribut">Атрибут</label>
+        <input type="radio" id="reflex" name="itemType" value="reflex">
+        <label for="reflex">Рефлекс</label>
+        <input type="radio" id="function" name="itemType" value="function">
+        <label for="function">Функционал</label>
+		
+        } Схемокодер
+    </h2>
+</div>
          <input type="text" id="itemName" autocomplete="off" placeholder="Значение">
          <select id="parentId">
             <option value="">Корень программы</option>
@@ -178,7 +203,7 @@
             setTimeout(selectNext, 500); // Задержка 500 мс для визуального эффекта
         }
 
-        setTimeout(selectNext, 1000);
+        //setTimeout(selectNext, 1000);
     };
 	  
          class NestedArrayBuilder {
