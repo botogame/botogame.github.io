@@ -169,10 +169,10 @@
 	  p.s. рефлексы "подключить {id: N}" вложенные друг в друга могут сработать максимум до третьего уровня (без включения 3-го уровня).
 	  
 	  <hr>
-	  Ниже будет формироваться страница, которая пока отображает любые тэги формата "<mark>table</mark>" (в контейнерах), задает текст в тэге "<mark>innerHTML: TEXT</mark>" (в атрибутах) и задат любой стиль тэгам формата "<mark>color: green</mark>" (в атрибутах):
+	  Ниже будет формироваться страница, которая пока отображает любые тэги формата "<mark>table</mark>" (в контейнерах), задает текст в тэге "<mark>innerText: TEXT</mark>" (в атрибутах) и задат любой стиль тэгам формата "<mark>color: green</mark>" (в атрибутах):
       <textarea id="output" readonly>...</textarea>
 	  <br><br>
-      <b>v.2-18.12.2024 | </b><a target="_blank" href="https://github.com/botogame/botogame/blob/main/freedom/distribution/business_code_constructor/README.md">страница разработчика</a>
+      <b>v.19.12.2024-1 | </b><a target="_blank" href="https://github.com/botogame/botogame/blob/main/freedom/distribution/business_code_constructor/README.md">страница разработчика</a>
       <script>
 	  
 	      window.onload = function() {
@@ -521,13 +521,13 @@ itemTypeInputs.forEach(input => {
             function createElement(node) {
                 if (node.type === 'teg') {
                     let attributes = ' id="' + node.id + '"';
-                    let innerHTML = '';
+                    let innerText = '';
                     let styles = '';
 
                     node.children.forEach(child => {
                         if (child.type === 'atribut') {
-                            if (child.name.startsWith('innerHTML:')) {
-                                innerHTML = child.name.split(":")[1].trim();
+                            if (child.name.startsWith('innerText:')) {
+                                innerText = child.name.split(":")[1].trim();
                             } else {
                                 styles += child.name + '; ';
                             }
@@ -543,7 +543,7 @@ itemTypeInputs.forEach(input => {
                         .map(createElement)
                         .join('');
 
-                    return '<' + node.name + '' + attributes + '>' + innerHTML + '' + childrenHtml + '</' + node.name + '>';
+                    return '<' + node.name + '' + attributes + '>' + innerText + '' + childrenHtml + '</' + node.name + '>';
                 }
                 return '';
             }
@@ -563,8 +563,8 @@ itemTypeInputs.forEach(input => {
 		 
 
 		 function runSequence() {
-    if (document.getElementById('runButton').innerHTML == 'Остановить') {
-        document.getElementById('runButton').innerHTML = 'Останавливается..';
+    if (document.getElementById('runButton').innerText == 'Остановить') {
+        document.getElementById('runButton').innerText = 'Останавливается..';
         return;
     }
 
@@ -587,11 +587,11 @@ itemTypeInputs.forEach(input => {
 	let doit_index_out3see = false;
 
     function highlightNext() {
-        if (document.getElementById('runButton').innerHTML == 'Останавливается..') {
+        if (document.getElementById('runButton').innerText == 'Останавливается..') {
             if (index > 0) { listItems[index - 1].classList.remove('highlight'); }
             if (relocation_index !== false) { listItems[relocation_index].classList.remove('highlight'); }
             if (index_out !== false) { listItems[index_out].classList.remove('highlight'); }
-            document.getElementById('runButton').innerHTML = 'Запустить';
+            document.getElementById('runButton').innerText = 'Запустить';
             return;
         }
 
@@ -754,12 +754,12 @@ if (doit_index_out3 !== false && doit_index_out3 === index) {
             setTimeout(highlightNext, 1000);
         } else {
 		    document.getElementById('runButton').classList.remove('highlight2');
-            document.getElementById('runButton').innerHTML = 'Запустить';
+            document.getElementById('runButton').innerText = 'Запустить';
         }
     }
 
     document.getElementById('runButton').classList.add('highlight2');
-    document.getElementById('runButton').innerHTML = 'Остановить';
+    document.getElementById('runButton').innerText = 'Остановить';
 
     highlightNext();
 }
