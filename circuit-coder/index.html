@@ -162,11 +162,11 @@
 	  <button id="runButton" onclick="runSequence()">Тестовый запуск</button><br>
 	  Тестовый запуск пока включает в себя:<br>
 	  1. последовательный проход по элементам.<br>
-	  2. понимает команду "продолжить с другого элемента" для рефлекса: <mark>перейти на {id: N}</mark><br>
-	  3. понимает команду "игнорировать автозапуск" для контейнера: <mark>TAG_NAME игнорировать</mark><br>
-	  4. понимает команду "принудительно запустить элемент со вложением" для рефлекса: <mark>выполнить {id: N}</mark><br>
-	  p.s. значение N заменять на число, например: выполнить {id: 23}<br>
-	  p.s. рефлексы "выполнить {id: N}" вложенные друг в друга могут сработать максимум до третьего уровня (без включения 3-го уровня).
+	  2. для рефлекса понимает команду "продолжить с другого элемента": <mark>перейти на {id: N}</mark><br>
+	  3. для контейнера понимает команду "игнорировать при автопроходе": <mark>TAG_NAME модульный</mark><br>
+	  4. для рефлекса понимает команду "принудительно запустить элемент со вложением": <mark>подключить {id: N}</mark><br>
+	  p.s. значение N заменять на число, например: подключить {id: 23}<br>
+	  p.s. рефлексы "подключить {id: N}" вложенные друг в друга могут сработать максимум до третьего уровня (без включения 3-го уровня).
 	  
 	  <hr>
 	  Ниже будет формироваться страница, которая пока отображает любые тэги формата "<mark>table</mark>" (в контейнерах), задает текст в тэге "<mark>innerHTML: TEXT</mark>" (в атрибутах) и задат любой стиль тэгам формата "<mark>color: green</mark>" (в атрибутах):
@@ -617,7 +617,7 @@ itemTypeInputs.forEach(input => {
             if (!relocation_exists && (doit_index_exists===false || (doit_index_exists!==index))) {
 			
 			doit_index_exists = false;
-                const isTegWithPhrase = itemData.classList.contains('teg') && itemData.textContent.includes(' игнорировать');
+                const isTegWithPhrase = itemData.classList.contains('teg') && itemData.textContent.includes(' модульный');
 
                 if (isTegWithPhrase) {
 				
@@ -640,7 +640,7 @@ itemTypeInputs.forEach(input => {
 
             let doit = false;
             if (itemData.classList.contains('reflex')) {
-                doit = itemData.textContent.match(/выполнить \{id: (\d+)\}/);
+                doit = itemData.textContent.match(/подключить \{id: (\d+)\}/);
             }
 
 if (doit_index_out3 !== false && doit_index_out3 === index) {
