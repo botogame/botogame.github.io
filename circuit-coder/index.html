@@ -159,17 +159,19 @@
 	  <hr>
       <div id="nested-list">Собираться схема будет здесь.</div>
 	  <hr>
-	  <button id="runButton" onclick="runSequence()">Запустить</button><br>
-	  Запуск включает в себя:<br>
-	  1. последовательно проходит по элементам.<br>
-	  2. понимает команду для рефлекса: перейти на {id: N}<br>
-	  3. понимает команду для контейнера: TEXT / для запуска рефлексом<br>
-	  4. понимает команду для рефлекса: выполнить {id: N}
+	  <button id="runButton" onclick="runSequence()">Тестовый запуск</button><br>
+	  Тестовый запуск пока включает в себя:<br>
+	  1. последовательный проход по элементам.<br>
+	  2. понимает команду "продолжить с другого элемента" для рефлекса: перейти на {id: N}<br>
+	  3. понимает команду "игнорировать автозапуск" для контейнера: TAG_NAME игнорировать<br>
+	  4. понимает команду "принудительно запустить элемент со вложением" для рефлекса: выполнить {id: N}<br>
+	  p.s. пока выполнение происходит только для максимум двух команд.
+	  
 	  <hr>
-	  Здесь пока формируется только массив последовательности схемы, без итоговой реализации в программу:
+	  Здесь формируется страница, которая пока отображает тэги (в контейнерах), задает текст "innerHTML: TEXT" (в атрибутах) и любые стили формата "color: green" (в атрибутах):
       <textarea id="output" readonly>...</textarea>
 	  <br><br>
-      <b>v.1-18.12.2024 | </b><a target="_blank" href="https://github.com/botogame/botogame/blob/main/freedom/distribution/business_code_constructor/README.md">страница разработчика</a>
+      <b>v.2-18.12.2024 | </b><a target="_blank" href="https://github.com/botogame/botogame/blob/main/freedom/distribution/business_code_constructor/README.md">страница разработчика</a>
       <script>
 	  
 	      window.onload = function() {
@@ -501,7 +503,57 @@ itemTypeInputs.forEach(input => {
          
          builder.updateParentOptions(document.getElementById('parentId'));
          
-         document.getElementById('output').value = builder.generateOutput();
+         document.getElementById('output').value = `<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Страница схемокодера<\/title>
+<\/head>
+<body>
+    <script>
+
+        const schema = ${builder.generateOutput()};
+
+
+         function schemaToHtml(schema) {
+            function createElement(node) {
+                if (node.type === 'teg') {
+                    let attributes = ' id="' + node.id + '"';
+                    let innerHTML = '';
+                    let styles = '';
+
+                    node.children.forEach(child => {
+                        if (child.type === 'atribut') {
+                            if (child.name.startsWith('innerHTML:')) {
+                                innerHTML = child.name.split(":")[1].trim();
+                            } else {
+                                styles += child.name + '; ';
+                            }
+                        }
+                    });
+
+                    if (styles) {
+                        attributes += ' style="' + styles.trim() + '"';
+                    }
+
+                    let childrenHtml = node.children
+                        .filter(child => child.type !== 'atribut')
+                        .map(createElement)
+                        .join('');
+
+                    return '<' + node.name + '' + attributes + '>' + innerHTML + '' + childrenHtml + '</' + node.name + '>';
+                }
+                return '';
+            }
+
+            return schema.map(createElement).join('');
+        }
+
+        document.body.innerHTML = schemaToHtml(schema);
+    <\/script>
+<\/body>
+<\/html>`;
          
          // Сбрасываем форму при обновлении
          document.getElementById('itemName').value = '';
@@ -557,22 +609,18 @@ itemTypeInputs.forEach(input => {
         }
         if (index < listItems.length) {
 		
-		console.log('set index: ' + index);
-		
             const currentItem = listItems[index];
             const itemData = currentItem.querySelector('b');
 
-		console.log('check start reflex teg: relocation_exists-' + relocation_exists + '|doit_index_exists-'+doit_index_exists);
 		
-            if (!relocation_exists && (doit_index_exists===false || (doit_index_exists!=index))) {
+            if (!relocation_exists && (doit_index_exists===false || (doit_index_exists!==index))) {
 			
-		console.log('checked start reflex teg');
 			doit_index_exists = false;
-                const isTegWithPhrase = itemData.classList.contains('teg') && itemData.textContent.includes(' / для запуска рефлексом');
+                const isTegWithPhrase = itemData.classList.contains('teg') && itemData.textContent.includes(' игнорировать');
 
                 if (isTegWithPhrase) {
 				
-		console.log('in start reflex teg');
+		console.log('detect break run: ' + index);
                     const countIn = currentItem.querySelectorAll('b').length;
                     for (let i = 1; i <= countIn; i += 1) {
                         index++;
@@ -595,7 +643,7 @@ itemTypeInputs.forEach(input => {
             }
 
 if (doit_index_out3 !== false && doit_index_out3 === index) {
-		console.log('doit_index_out3 check: ' + doit_index_out3);
+		console.log('detect out 3 level run: ' + index);
 				
                 index_out = doit_index_out3;
                 doit_index_out3 = false;
@@ -604,7 +652,7 @@ if (doit_index_out3 !== false && doit_index_out3 === index) {
 				doit_index_out3see = index;
             }
 			else if (doit_index_out2 !== false && doit_index_out2 === index) {
-		console.log('doit_index_out2 check: ' + doit_index_out2);
+		console.log('detect out 2 level run: ' + index);
 				
                 index_out = doit_index_out2;
                 doit_index_out2 = false;
@@ -613,24 +661,29 @@ if (doit_index_out3 !== false && doit_index_out3 === index) {
 				doit_index_out2see = index;
             } 
 			else if ((!doit || (doit_index_out3see===false && doit_index_out2see === index) ||  doit_index_out3see === index) && doit_index_out !== false && doit_index_out === index) {
-		console.log('doit_index_out check: ' + doit_index_out);
+		
+		console.log('detect out 1 level run: ' + index);
 				
 				doit_index_out2see = false;
                 index_out = doit_index_out;
                 doit_index_out = false;
                 index = doit_index;
                 doit_index = false;
+				
+		console.log('detect default item on out 1 level run: ' + index);
                 index++;
             }
-			else if(doit_index_out2see == index){
+			else if(doit_index_out2see === index){
+		console.log('detect default item on out 2 level run: ' + index);
                 index++;
 			}
-			else if(doit_index_out3see == index){
+			else if(doit_index_out3see === index){
+		console.log('detect default item on out 3 level run: ' + index);
+		console.log('detect default item: ' + index);
                 index++;
 			}
             else if (doit) {
                 const targetId = parseInt(doit[1]);
-		console.log('doit check: ' + targetId);
                 const targetIndex = Array.from(listItems).findIndex(item => {
                     const itemIdMatch = item.querySelector('b').textContent.match(/\[id: (\d+)\]/);
                     return itemIdMatch && parseInt(itemIdMatch[1]) === targetId;
@@ -641,6 +694,7 @@ if (doit_index_out3 !== false && doit_index_out3 === index) {
                     index = targetIndex;
 
                     if(doit_index_out==false){
+		console.log('detect in 1 level run: ' + index);
 					doit_index = doit_index_reload;
                     doit_index_exists = index;
                     doit_index_out = targetIndex;
@@ -650,6 +704,7 @@ if (doit_index_out3 !== false && doit_index_out3 === index) {
                     }
 					}
 					else if(doit_index_out2==false){
+		console.log('detect in 2 level run: ' + index);
 					doit_index2 = doit_index_reload;
                     doit_index_exists2 = index;
                     relocation_index = doit_index2;
@@ -660,6 +715,7 @@ if (doit_index_out3 !== false && doit_index_out3 === index) {
                     }
 					}
 					else if(doit_index_out3==false){
+		console.log('detect in 3 level run: ' + index);
 					doit_index3 = doit_index_reload;
                     doit_index_exists3 = index;
                     relocation_index = doit_index3;
@@ -675,8 +731,8 @@ if (doit_index_out3 !== false && doit_index_out3 === index) {
                 }
             }
 			 else if (relocation) {
+		console.log('detect relocation: ' + index);
                 const targetId = parseInt(relocation[1]);
-		console.log('relocation check: ' + targetId);
                 const targetIndex = Array.from(listItems).findIndex(item => {
                     const itemIdMatch = item.querySelector('b').textContent.match(/\[id: (\d+)\]/);
                     return itemIdMatch && parseInt(itemIdMatch[1]) === targetId;
@@ -690,7 +746,7 @@ if (doit_index_out3 !== false && doit_index_out3 === index) {
                 }
             }
 			else {
-		console.log('++ check');
+		console.log('detect default item: ' + index);
                 index++;
             }
 
