@@ -10,7 +10,7 @@
          body {
          background: url(./background.webp) repeat #2e2e2e;
 		 backdrop-filter: blur(5px);
-         color: #B8B8B8; /* Белый текст для контраста */
+         color: #B8B8B8;
          font-family: Arial, sans-serif;
          margin: 0;
          padding: 20px;
@@ -125,15 +125,14 @@
     }
 
     .button-group h2 {
-        display: flex;
-        flex-wrap: wrap;
+	display: inline-block;
         align-items: center;
         margin: 0;
     }
 
-    .button-group input[type="radio"],
-    .button-group label {
-        margin-right: 10px;
+    #dynamic-content label {
+	display: inline-block;
+        margin: 10px;
         margin-top: 3px;
     }
 
@@ -143,17 +142,10 @@
       <div>
          
          <div class="button-group">
-    <h2>Чистый код {&nbsp;
-        <input type="radio" id="teg" name="itemType" value="teg" checked="checked">
-        <label for="teg">Контейнер</label>
-        <input type="radio" id="atribut" name="itemType" value="atribut">
-        <label for="atribut">Атрибут</label>
-        <input type="radio" id="reflex" name="itemType" value="reflex">
-        <label for="reflex">Рефлекс</label>
-        <input type="radio" id="function" name="itemType" value="function">
-        <label for="function">Функционал</label>
-		
-        } Схемокодер
+    <h2>Чистый&nbsp;код&nbsp;{
+        <b id="placeholder">...</b>
+        <span id="dynamic-content"></span>
+		}&nbsp;Схемокодер
     </h2>
 </div>
          <input type="text" id="itemName" autocomplete="off" placeholder="Значение">
@@ -177,33 +169,56 @@
 	  Здесь пока формируется только массив последовательности схемы, без итоговой реализации в программу:
       <textarea id="output" readonly>...</textarea>
 	  <br><br>
-      <b>v.1-17.12.2024 | </b><a target="_blank" href="https://github.com/botogame/botogame/blob/main/freedom/distribution/business_code_constructor/README.md">страница разработчика</a>
+      <b>v.1-18.12.2024 | </b><a target="_blank" href="https://github.com/botogame/botogame/blob/main/freedom/distribution/business_code_constructor/README.md">страница разработчика</a>
       <script>
 	  
 	      window.onload = function() {
-        const itemTypes = ['teg', 'atribut', 'reflex', 'function'];
+        const itemTypes = [
+            { id: 'teg', label: 'Контейнер' },
+            { id: 'atribut', label: 'Атрибут' },
+            { id: 'reflex', label: 'Рефлекс' },
+            { id: 'function', label: 'Функционал' }
+        ];
+        const dynamicContent = document.getElementById('dynamic-content');
+        const placeholder = document.getElementById('placeholder');
         let currentIndex = 0;
 
-        function selectNext() {
-            // Убираем checked у текущего элемента
-            document.getElementById(itemTypes[currentIndex]).checked = false;
-
-            // Переходим к следующему элементу
-            currentIndex = (currentIndex + 1) % itemTypes.length;
-
-            // Устанавливаем checked для нового элемента
-            document.getElementById(itemTypes[currentIndex]).checked = true;
-
-            // Если текущий элемент 'teg', останавливаемся
-            if (itemTypes[currentIndex] === 'teg') {
-                return;
+        function showNextInput() {
+            if (currentIndex > 0) {
+                // Снимаем checked с предыдущего элемента
+                document.getElementById(itemTypes[currentIndex - 1].id).checked = false;
             }
+			else{
+			placeholder.style.display = 'none';
+			}
 
-            // Продолжаем цикл
-            setTimeout(selectNext, 500); // Задержка 500 мс для визуального эффекта
+            if (currentIndex < itemTypes.length) {
+                // Создаем новый input и label
+                const input = document.createElement('input');
+                input.type = 'radio';
+                input.id = itemTypes[currentIndex].id;
+                input.name = 'itemType';
+                input.value = itemTypes[currentIndex].id;
+                input.checked = true; // Устанавливаем checked
+
+                const label = document.createElement('label');
+                label.htmlFor = itemTypes[currentIndex].id;
+                label.textContent = itemTypes[currentIndex].label;
+
+                // Добавляем их в документ
+                dynamicContent.appendChild(input);
+                dynamicContent.appendChild(label);
+
+                currentIndex++;
+                setTimeout(showNextInput, 500); // Задержка 1000 мс между элементами
+            }
+			else{
+			document.getElementById(itemTypes[0].id).checked = true;
+			}
         }
 
-        setTimeout(selectNext, 1000);
+        // Начинаем замену через 1 секунду после загрузки страницы
+        setTimeout(showNextInput, 500);
     };
 	  
          class NestedArrayBuilder {
