@@ -1,510 +1,539 @@
-
 <!DOCTYPE html>
 <html lang="en">
-   <head>
-      <meta charset="UTF-8">
-      <meta name="viewport" content="width=device-width, initial-scale=1.0">
-      <title>Чистый код. Схемокодер</title>
-	  <link rel="icon" href="./favicon.png" type="image/x-icon">
-      <style>
-         body {
-         background: url(./background.webp) repeat #2e2e2e;
-		 backdrop-filter: blur(5px);
-         color: #B8B8B8;
-         font-family: Arial, sans-serif;
-         margin: 0;
-         padding: 20px;
-         box-sizing: border-box;
-         height: 110vh;
-         }
-         ul {
-         list-style-type: none;
-         padding: 0;
-         }
-         textarea {
-         width: 100%;
-         height: 50%;
-         margin-top: 20px;
-         background-color: #1e1e1e;
-         color: #ffffff;
-         border: none;
-         padding: 10px;
-         box-sizing: border-box;
-         }
-         li {
-         cursor: pointer;
-         margin: 10px;
-         border-radius: 5px;
-         transition: background-color 0.3s;
-         }
-         select, input, button {
-         margin: 5px 0;
-         padding: 10px;
-         border: none;
-         border-radius: 5px;
-         box-sizing: border-box;
-         width: 100%;
-         max-width: 100%;
-         }
-         button {
-         background-color: #121313;
-         color: #ffffff;
-         cursor: pointer;
-         transition: background-color 0.3s;
-         }
-         .teg {
-         cursor: pointer;
-         padding: 3px;
-         color: #39ff14;
-         transition: background-color 0.3s;
-         box-shadow: inset 0px 0px 81px 17px rgba(57, 255, 20, 0.5), 0px 0px 20px 4px rgba(57, 255, 20, 0.5);
-         }
-         .atribut {
-         cursor: pointer;
-         padding: 3px;
-         color: #bc13fe;
-         transition: background-color 0.3s;
-         box-shadow: inset 0px 0px 81px 17px rgba(188,19,254, 0.5), 0px 0px 20px 4px rgba(188,19,254, 0.5);
-         }
-         .reflex {
-         cursor: pointer;
-         padding: 3px;
-         color: #5555ff;
-         transition: background-color 0.3s;
-         box-shadow: inset 0px 0px 81px 17px rgba(85, 85, 255, 0.5), 0px 0px 20px 4px rgba(85, 85, 255, 0.5);
-         }
-         .function {
-         cursor: pointer;
-         padding: 3px;
-         color: #fe019a;
-         transition: background-color 0.3s;
-         box-shadow: inset 0px 0px 81px 17px rgba(254,1,154, 0.5), 0px 0px 20px 4px rgba(254,1,154, 0.5);
-         }
-         .button-group {
-         flex-wrap: wrap;
-         gap: 10px;
-         margin-bottom: 20px;
-         text-align: center;
-         }
-         .button-group input[type="radio"] {
-         display: none;
-         }
-		 
-         .button-group label{
-         color: #ffffff;
-         }
-         .button-group label {
-         padding: 10px 20px;
-         border-radius: 5px;
-         cursor: pointer;
-         transition: background-color 0.3s, box-shadow 0.3s;
-         background-color: #121313;
-         }
-         .button-group input[type="radio"]:checked + label {
-         box-shadow: 0px 0px 10px 2px rgba(255, 255, 255, 0.5);
-         }
-         #teg:checked + label { background-color: #39ff14; }
-         #atribut:checked + label { background-color: #bc13fe; }
-         #reflex:checked + label { background-color: #5555ff; }
-         #function:checked + label { background-color: #fe019a; }
-         a {color:gray;}
-         b {color:gray;}
-		 .highlight {
-    text-shadow: 0 0 15px #FFFFFF, 0 0 20px #FFFFFF, 0 0 35px #FFFFFF;
-         background-color: #FFFFFF;
-}
-		 .highlight2 {
-    text-shadow: 0 0 15px #FFFFFF, 0 0 20px #FFFFFF, 0 0 35px #FFFFFF;
-}
-
-
-    .button-group {
-        display: flex;
-        flex-wrap: wrap;
-        align-items: center;
-    }
-
-    .button-group h2 {
-	display: inline-block;
-        align-items: center;
-        margin: 0;
-    }
-
-    #dynamic-content label {
-	display: inline-block;
-        margin: 10px;
-        margin-top: 3px;
-    }
-
-      </style>
-   </head>
-   <body>
-      <div>
-         
-         <div class="button-group">
-    <h2>Чистый&nbsp;код&nbsp;{
-        <b id="placeholder">...</b>
-        <span id="dynamic-content"></span>
-		}&nbsp;Схемокодер
-    </h2>
-</div>
-         <input type="text" id="itemName" autocomplete="off" placeholder="Команда">
-         <select id="parentId">
-            <option value="">Корень программы</option>
-         </select>
-         <button id="addItem" style="display:inline;" onclick="addItem()">Добавить элемент</button>
-         <button id="updateItem" style="display:none;" onclick="updateItem()">Сохранить элемент</button>
-         <button id="deleteItem" style="display:none;" onclick="deleteItem()">Удалить элемент</button>
-      </div>
-	  <hr>
-      <div id="nested-list">Собираться схема будет здесь.</div>
-	  <hr>
-	  <button id="runButton" onclick="runSequence()">Тестовый запуск</button><br>
-	  Тестовый запуск пока включает в себя:<br>
-	  1. последовательный проход по элементам.<br>
-	  2. для рефлекса понимает команду "продолжить с другого элемента": <mark>перейти на {id: N}</mark><br>
-	  3. для контейнера понимает команду "игнорировать при автопроходе": <mark>TAG_NAME модульный</mark><br>
-	  4. для рефлекса понимает команду "принудительно запустить элемент со вложением": <mark>подключить {id: N}</mark><br>
-	  p.s. значение N заменять на число, например: подключить {id: 23}<br>
-	  p.s. рефлексы "подключить {id: N}" вложенные друг в друга могут сработать максимум до третьего уровня (без включения 3-го уровня).
-	  
-	  <hr>
-	  Ниже будет формироваться страница, которая пока отображает любые тэги например "<mark>table</mark>", "<mark>tr</mark>", "<mark>td</mark>" (в контейнерах), задает текст в тэге "<mark>innerText: TEXT</mark>" (в атрибутах) и задат любой стиль тэгам например "<mark>color: green</mark>", "<mark>text-shadow: 0 0 15px red</mark>" (в атрибутах):
-      <textarea id="output" readonly>...</textarea>
-	  <br><br>
-      <b>v.19.12.2024-1 | </b><a target="_blank" href="https://github.com/botogame/botogame/blob/main/freedom/distribution/business_code_constructor/README.md">страница разработчика</a>
-      <script>
-	  
-	      window.onload = function() {
-        const itemTypes = [
-            { id: 'teg', label: 'Контейнер' },
-            { id: 'atribut', label: 'Атрибут' },
-            { id: 'reflex', label: 'Рефлекс' },
-            { id: 'function', label: 'Функционал' }
-        ];
-        const dynamicContent = document.getElementById('dynamic-content');
-        const placeholder = document.getElementById('placeholder');
-        let currentIndex = 0;
-
-        function showNextInput() {
-            if (currentIndex > 0) {
-                // Снимаем checked с предыдущего элемента
-                document.getElementById(itemTypes[currentIndex - 1].id).checked = false;
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Чистый код. Схемокодер</title>
+        <link rel="icon" href="./favicon.png" type="image/x-icon" />
+        <style>
+            body {
+                background: url(./background.webp) repeat #2e2e2e;
+                backdrop-filter: blur(5px);
+                color: #b8b8b8;
+                font-family: Arial, sans-serif;
+                margin: 0;
+                padding: 20px;
+                box-sizing: border-box;
+                height: 110vh;
             }
-			else{
-			placeholder.style.display = 'none';
-			}
-
-            if (currentIndex < itemTypes.length) {
-                // Создаем новый input и label
-                const input = document.createElement('input');
-                input.type = 'radio';
-                input.id = itemTypes[currentIndex].id;
-                input.name = 'itemType';
-                input.value = itemTypes[currentIndex].id;
-                input.checked = true; // Устанавливаем checked
-
-                const label = document.createElement('label');
-                label.htmlFor = itemTypes[currentIndex].id;
-                label.textContent = itemTypes[currentIndex].label;
-
-                // Добавляем их в документ
-                dynamicContent.appendChild(input);
-                dynamicContent.appendChild(label);
-
-                currentIndex++;
-                setTimeout(showNextInput, 500); // Задержка 1000 мс между элементами
+            ul {
+                list-style-type: none;
+                padding: 0;
             }
-			else{
-			document.getElementById(itemTypes[0].id).checked = true;
-			}
+            textarea {
+                width: 100%;
+                height: 50%;
+                margin-top: 20px;
+                background-color: #1e1e1e;
+                color: #ffffff;
+                border: none;
+                padding: 10px;
+                box-sizing: border-box;
+            }
+            li {
+                cursor: pointer;
+                margin: 10px;
+                border-radius: 5px;
+                transition: background-color 0.3s;
+            }
+            select,
+            input,
+            button {
+                margin: 5px 0;
+                padding: 10px;
+                border: none;
+                border-radius: 5px;
+                box-sizing: border-box;
+                width: 100%;
+                max-width: 100%;
+            }
+            button {
+                background-color: #121313;
+                color: #ffffff;
+                cursor: pointer;
+                transition: background-color 0.3s;
+            }
+            .teg {
+                cursor: pointer;
+                padding: 3px;
+                color: #39ff14;
+                transition: background-color 0.3s;
+                box-shadow: inset 0px 0px 81px 17px rgba(57, 255, 20, 0.5), 0px 0px 20px 4px rgba(57, 255, 20, 0.5);
+            }
+            .atribut {
+                cursor: pointer;
+                padding: 3px;
+                color: #bc13fe;
+                transition: background-color 0.3s;
+                box-shadow: inset 0px 0px 81px 17px rgba(188, 19, 254, 0.5), 0px 0px 20px 4px rgba(188, 19, 254, 0.5);
+            }
+            .reflex {
+                cursor: pointer;
+                padding: 3px;
+                color: #5555ff;
+                transition: background-color 0.3s;
+                box-shadow: inset 0px 0px 81px 17px rgba(85, 85, 255, 0.5), 0px 0px 20px 4px rgba(85, 85, 255, 0.5);
+            }
+            .function {
+                cursor: pointer;
+                padding: 3px;
+                color: #fe019a;
+                transition: background-color 0.3s;
+                box-shadow: inset 0px 0px 81px 17px rgba(254, 1, 154, 0.5), 0px 0px 20px 4px rgba(254, 1, 154, 0.5);
+            }
+            .button-group {
+                flex-wrap: wrap;
+                gap: 10px;
+                margin-bottom: 20px;
+                text-align: center;
+            }
+            .button-group input[type="radio"] {
+                display: none;
+            }
+
+            .button-group label {
+                color: #ffffff;
+            }
+            .button-group label {
+                padding: 10px 20px;
+                border-radius: 5px;
+                cursor: pointer;
+                transition: background-color 0.3s, box-shadow 0.3s;
+                background-color: #121313;
+            }
+            .button-group input[type="radio"]:checked + label {
+                box-shadow: 0px 0px 10px 2px rgba(255, 255, 255, 0.5);
+            }
+            #teg:checked + label {
+                background-color: #39ff14;
+            }
+            #atribut:checked + label {
+                background-color: #bc13fe;
+            }
+            #reflex:checked + label {
+                background-color: #5555ff;
+            }
+            #function:checked + label {
+                background-color: #fe019a;
+            }
+            a {
+                color: gray;
+            }
+            b {
+                color: gray;
+            }
+            .highlight {
+                text-shadow: 0 0 15px #ffffff, 0 0 20px #ffffff, 0 0 35px #ffffff;
+                background-color: #ffffff;
+            }
+            .highlight2 {
+                text-shadow: 0 0 15px #ffffff, 0 0 20px #ffffff, 0 0 35px #ffffff;
+            }
+
+            .button-group {
+                display: flex;
+                flex-wrap: wrap;
+                align-items: center;
+            }
+
+            .button-group h2 {
+                display: inline-block;
+                align-items: center;
+                margin: 0;
+            }
+
+            #dynamic-content label {
+                display: inline-block;
+                margin: 10px;
+                margin-top: 3px;
+            }
+        </style>
+    </head>
+    <body>
+        <div>
+            <div class="button-group">
+                <h2>
+                    Чистый&nbsp;код&nbsp;{
+                    <b id="placeholder">...</b>
+                    <span id="dynamic-content"></span>
+                    }&nbsp;Схемокодер
+                </h2>
+            </div>
+            <input type="text" id="itemName" autocomplete="off" placeholder="Команда" />
+            <select id="parentId">
+                <option value="">Корень программы</option>
+            </select>
+            <button id="addItem" style="display: inline;" onclick="addItem()">Добавить элемент</button>
+            <button id="updateItem" style="display: none;" onclick="updateItem()">Сохранить элемент</button>
+            <button id="deleteItem" style="display: none;" onclick="deleteItem()">Удалить элемент</button>
+        </div>
+        <hr />
+        <div id="nested-list">Собираться схема будет здесь.</div>
+        <hr />
+        <button id="runButton" onclick="runSequence()">Тестовый запуск</button><br />
+        Тестовый запуск пока включает в себя:<br />
+        1. последовательный проход по элементам.<br />
+        2. для рефлекса понимает команду "продолжить с другого элемента": <mark>перейти на {id: N}</mark><br />
+        3. для контейнера понимает команду "игнорировать при автопроходе": <mark>TAG_NAME модульный</mark><br />
+        4. для рефлекса понимает команду "принудительно запустить элемент со вложением": <mark>подключить {id: N}</mark><br />
+        p.s. значение N заменять на число, например: подключить {id: 23}<br />
+        p.s. рефлексы "подключить {id: N}" вложенные друг в друга могут сработать максимум до третьего уровня (без включения 3-го уровня).
+
+        <hr />
+        Ниже будет формироваться страница, которая пока отображает любые тэги например "<mark>table</mark>", "<mark>tr</mark>", "<mark>td</mark>" (в контейнерах), задает текст в тэге "<mark>innerText: TEXT</mark>" (в атрибутах) и задат
+        любой стиль тэгам например "<mark>color: green</mark>", "<mark>text-shadow: 0 0 15px red</mark>" (в атрибутах):
+        <textarea id="output" readonly>...</textarea>
+        <br />
+        <br />
+        <b>v.19.12.2024-1 | </b><a target="_blank" href="https://github.com/botogame/botogame/blob/main/freedom/distribution/business_code_constructor/README.md">страница разработчика</a>
+        <script>
+            window.onload = function () {
+                const itemTypes = [
+                    { id: "teg", label: "Контейнер" },
+                    { id: "atribut", label: "Атрибут" },
+                    { id: "reflex", label: "Рефлекс" },
+                    { id: "function", label: "Функционал" },
+                ];
+                const dynamicContent = document.getElementById("dynamic-content");
+                const placeholder = document.getElementById("placeholder");
+                let currentIndex = 0;
+
+                function showNextInput() {
+                    if (currentIndex > 0) {
+                        // Снимаем checked с предыдущего элемента
+                        document.getElementById(itemTypes[currentIndex - 1].id).checked = false;
+                    } else {
+                        placeholder.style.display = "none";
+                    }
+
+                    if (currentIndex < itemTypes.length) {
+                        // Создаем новый input и label
+                        const input = document.createElement("input");
+                        input.type = "radio";
+                        input.id = itemTypes[currentIndex].id;
+                        input.name = "itemType";
+                        input.value = itemTypes[currentIndex].id;
+                        input.checked = true; // Устанавливаем checked
+
+                        const label = document.createElement("label");
+                        label.htmlFor = itemTypes[currentIndex].id;
+                        label.textContent = itemTypes[currentIndex].label;
+
+                        // Добавляем их в документ
+                        dynamicContent.appendChild(input);
+                        dynamicContent.appendChild(label);
+
+                        currentIndex++;
+                        setTimeout(showNextInput, 500); // Задержка 1000 мс между элементами
+                    } else {
+                        document.getElementById(itemTypes[0].id).checked = true;
+                    }
+                }
+
+                // Начинаем замену через 1 секунду после загрузки страницы
+                setTimeout(showNextInput, 500);
+            };
+
+            class NestedArrayBuilder {
+                constructor() {
+                    this.items = [];
+                    this.color = {
+                        teg: "#39ff14",
+                        atribut: "#121313",
+                        reflex: "#5555ff",
+                        function: "#ff073a",
+                    };
+                    this.selectedItemId = null;
+                    this.previousState = null;
+                }
+
+                addItem_old(id, name, type, parentId = null) {
+                    const newItem = { id, name, type, children: [] };
+                    if (parentId === null) {
+                        this.items.push(newItem);
+                    } else {
+                        const parent = this.findItemById(this.items, parentId);
+                        if (parent) {
+                            parent.children.push(newItem);
+                        } else {
+                            console.error(`Parent with ID ${parentId} not found.`);
+                        }
+                    }
+                }
+				
+				
+                addItem(id, name, type, parentId = null) {
+    const newItem = { id, name, type, children: [] };
+    const insertItem = (list) => {
+        const lastAtributIndex = list.map(item => item.type).lastIndexOf('atribut');
+        if (type === 'atribut') {
+            lastAtributIndex !== -1 ? list.splice(lastAtributIndex + 1, 0, newItem) : list.unshift(newItem);
+        } else {
+            list.push(newItem);
         }
-
-        // Начинаем замену через 1 секунду после загрузки страницы
-        setTimeout(showNextInput, 500);
     };
-	  
-         class NestedArrayBuilder {
-             constructor() {
-                 this.items = [];
-                 this.color = {
-         'teg':'#39ff14',
-         'atribut':'#121313',
-         'reflex':'#5555ff',
-         'function':'#ff073a',
-         };
-                 this.selectedItemId = null;
-                 this.previousState = null;
-             }
-         
-             addItem(id, name, type, parentId = null) {
-                 const newItem = { id, name, type, children: [] };
-                 if (parentId === null) {
-                     this.items.push(newItem);
-                 } else {
-                     const parent = this.findItemById(this.items, parentId);
-                     if (parent) {
-                         parent.children.push(newItem);
-                     } else {
-                         console.error(`Parent with ID ${parentId} not found.`);
-                     }
-                 }
-             }
-         
-             updateItem(id, name, type, newParentId = null) {
-                 const item = this.findItemById(this.items, id);
-                 if (!item) {
-                     console.error(`Item with ID ${id} not found.`);
-                     return;
-                 }
-         
-                 // Save state for undo
-                 this.saveState();
-         
-                 // Update name and type
-                 item.name = name;
-                 item.type = type;
-         
-                 // Handle parentId change
-                 const currentParent = this.findParentById(this.items, id);
-                 if ((currentParent && currentParent.id !== newParentId) || (!currentParent && newParentId !== null)) {
-                     // Remove item from current parent
-                     if (currentParent) {
-                         currentParent.children = currentParent.children.filter(child => child.id !== id);
-                     } else {
-                         // If no parent, remove from root
-                         this.items = this.items.filter(rootItem => rootItem.id !== id);
-                     }
-         
-                     // Add item to the new parent or root
-                     if (newParentId === null) {
-                         this.items.push(item);
-                     } else {
-                         const newParent = this.findItemById(this.items, newParentId);
-                         if (newParent) {
-                             newParent.children.push(item);
-                         } else {
-                             console.error(`New parent with ID ${newParentId} not found.`);
-                         }
-                     }
-                 }
-             }
-         
-             deleteItem(id) {
-                 // Save state for undo
-                 this.saveState();
-         
-                 const currentParent = this.findParentById(this.items, id);
-                 if (currentParent) {
-                     currentParent.children = currentParent.children.filter(child => child.id !== id);
-                 } else {
-                     this.items = this.items.filter(item => item.id !== id);
-                 }
-             }
-         
-             saveState() {
-                 this.previousState = JSON.parse(JSON.stringify(this.items));
-             }
-         
-             undo() {
-                 if (this.previousState) {
-                     this.items = this.previousState;
-                     this.previousState = null;
-                 } else {
-                     console.warn('No previous state to undo.');
-                 }
-             }
-         
-             findItemById(items, id) {
-                 for (const item of items) {
-                     if (item.id === id) {
-                         return item;
-                     }
-                     const found = this.findItemById(item.children, id);
-                     if (found) {
-                         return found;
-                     }
-                 }
-                 return null;
-             }
-         
-             findParentById(items, childId) {
-                 for (const item of items) {
-                     if (item.children.some(child => child.id === childId)) {
-                         return item;
-                     }
-                     const found = this.findParentById(item.children, childId);
-                     if (found) {
-                         return found;
-                     }
-                 }
-                 return null;
-             }
-         
-             getItems() {
-                 return this.items;
-             }
-         
-             renderList(items, parentElement) {
-                 const ul = document.createElement('ul');
-                 items.forEach(item => {
-                     const li = document.createElement('li');
-                     li.innerHTML = `<b class="${item.type}">${item.name} [id: ${item.id}]<\/b>`;
-                     li.onclick = (event) => {
-                         event.stopPropagation();
-                         this.selectItem(item.id);
-                     };
-                     ul.appendChild(li);
-                     if (item.children.length > 0) {
-                         this.renderList(item.children, li);
-                     }
-                 });
-                 parentElement.appendChild(ul);
-             }
-         
-             updateParentOptions(selectElement) {
-                 selectElement.innerHTML = '<option value="">Корень программы</option>';
-                 this.addOptions(selectElement, this.items);
-             }
-         
-             addOptions(selectElement, items, prefix = '--') {
-                 items.forEach(item => {
-                     const option = document.createElement('option');
-                     option.value = item.id;
-                     option.textContent = `${prefix}${item.name} [id: ${item.id}]`;
-                     selectElement.appendChild(option);
-                     if (item.children.length > 0) {
-                         this.addOptions(selectElement, item.children, `${prefix}--`);
-                     }
-                 });
-             }
-         
-             generateOutput() {
-                 return JSON.stringify(this.items, null, 2);
-             }
-         
-             selectItem(id) {
-         if (this.selectedItemId === id) {
-         // Если элемент уже выбран, снимаем выделение
-         this.selectedItemId = null;
-         
-         // Сбрасываем форму и возвращаем в режим добавления
-         document.getElementById('addItem').style.display = 'inline';
-         document.getElementById('updateItem').style.display = 'none';
-         document.getElementById('deleteItem').style.display = 'none';
-         document.getElementById('itemName').value = '';
-         document.getElementById('parentId').value = '';
-		 
-		 			 // Получаем все элементы input с именем itemType
-const itemTypeInputs = document.querySelectorAll('input[name="itemType"]');
 
-// Проходим по каждому элементу и устанавливаем checked в зависимости от значения
-itemTypeInputs.forEach(input => {
-    if (input.value === 'teg') {
-        input.checked = true; // Устанавливаем checked для элемента с value 'teg'
+    if (parentId === null) {
+        insertItem(this.items);
     } else {
-        input.checked = false; // Убираем checked для всех остальных
+        const parent = this.findItemById(this.items, parentId);
+        if (parent) {
+            insertItem(parent.children);
+        } else {
+            console.error(`Parent with ID ${parentId} not found.`);
+        }
     }
-});
-		 
-         } else {
-         // Если элемент не выбран, выделяем его
-         this.selectedItemId = id;
-         const item = this.findItemById(this.items, id);
-         if (item) {
-             document.getElementById('addItem').style.display = 'none';
-             document.getElementById('updateItem').style.display = 'inline';
-             document.getElementById('deleteItem').style.display = 'inline';
-             document.getElementById('itemName').value = item.name;
-             const parent = this.findParentById(this.items, id);
-             document.getElementById('parentId').value = parent ? parent.id : '';
-			 
-			 // Получаем все элементы input с именем itemType
-const itemTypeInputs = document.querySelectorAll('input[name="itemType"]');
+}
 
-// Проходим по каждому элементу и устанавливаем checked в зависимости от значения
-itemTypeInputs.forEach(input => {
-    if (input.value === item.type) {
-        input.checked = true; // Устанавливаем checked для элемента с value 'teg'
-    } else {
-        input.checked = false; // Убираем checked для всех остальных
-    }
-});
-			 
-         }
-         }
-         }
-         
-         
-         }
-         
-         const builder = new NestedArrayBuilder();
-         let currentId = 1;
-         
-         function addItem() {
-         
-             if (document.querySelector('input[name="itemType"]:checked') == undefined) {
-                 alert('Пожалуйста, выберите тип элемента! Например: контейнер.');
-                 return;
-             }
-         
-             const itemName = document.getElementById('itemName').value;
-             const itemType = document.querySelector('input[name="itemType"]:checked').value;
-             const parentId = document.getElementById('parentId').value || null;
-         
-             if (itemName.trim() === '') {
-                 alert('Пожалуйста, введите значение элемента! Например: table.');
-                 return;
-             }
-         
-             builder.addItem(currentId, itemName, itemType, parentId ? parseInt(parentId) : null);
-             currentId++;
-         
-             render();
-         }
-         
-         function updateItem() {
-             if (builder.selectedItemId === null) {
-                 alert('Пожалуйста, выберите элемент для изменения! Например: корень программы.');
-                 return;
-             }
-         
-             document.getElementById('addItem').style.display = 'inline';
-             document.getElementById('updateItem').style.display = 'none';
-             document.getElementById('deleteItem').style.display = 'none';
-         
-             const itemName = document.getElementById('itemName').value;
-             const itemType = document.querySelector('input[name="itemType"]:checked').value;
-             const parentId = document.getElementById('parentId').value || null;
-         
-             builder.updateItem(builder.selectedItemId, itemName, itemType, parentId ? parseInt(parentId) : null);
-             builder.selectedItemId = null;
-         
-             render();
-         }
-         
-         function deleteItem() {
-             if (builder.selectedItemId === null) {
-                 alert('Пожалуйста, выберите элемент для удаления.');
-                 return;
-             }
-             builder.deleteItem(builder.selectedItemId);
-             builder.selectedItemId = null;
-             render();
-         }
-         
-         function undo() {
-             builder.undo();
-             render();
-         }
-         function render() {
-         const nestedListContainer = document.getElementById('nested-list');
-         nestedListContainer.innerHTML = '';
-         builder.renderList(builder.getItems(), nestedListContainer);
-         
-         builder.updateParentOptions(document.getElementById('parentId'));
-         
-         document.getElementById('output').value = `<!DOCTYPE html>
+                updateItem(id, name, type, newParentId = null) {
+                    const item = this.findItemById(this.items, id);
+                    if (!item) {
+                        console.error(`Item with ID ${id} not found.`);
+                        return;
+                    }
+
+                    // Save state for undo
+                    this.saveState();
+
+                    // Update name and type
+                    item.name = name;
+                    item.type = type;
+
+                    // Handle parentId change
+                    const currentParent = this.findParentById(this.items, id);
+                    if ((currentParent && currentParent.id !== newParentId) || (!currentParent && newParentId !== null)) {
+                        // Remove item from current parent
+                        if (currentParent) {
+                            currentParent.children = currentParent.children.filter((child) => child.id !== id);
+                        } else {
+                            // If no parent, remove from root
+                            this.items = this.items.filter((rootItem) => rootItem.id !== id);
+                        }
+
+                        // Add item to the new parent or root
+                        if (newParentId === null) {
+                            this.items.push(item);
+                        } else {
+                            const newParent = this.findItemById(this.items, newParentId);
+                            if (newParent) {
+                                newParent.children.push(item);
+                            } else {
+                                console.error(`New parent with ID ${newParentId} not found.`);
+                            }
+                        }
+                    }
+                }
+
+                deleteItem(id) {
+                    // Save state for undo
+                    this.saveState();
+
+                    const currentParent = this.findParentById(this.items, id);
+                    if (currentParent) {
+                        currentParent.children = currentParent.children.filter((child) => child.id !== id);
+                    } else {
+                        this.items = this.items.filter((item) => item.id !== id);
+                    }
+                }
+
+                saveState() {
+                    this.previousState = JSON.parse(JSON.stringify(this.items));
+                }
+
+                undo() {
+                    if (this.previousState) {
+                        this.items = this.previousState;
+                        this.previousState = null;
+                    } else {
+                        console.warn("No previous state to undo.");
+                    }
+                }
+
+                findItemById(items, id) {
+                    for (const item of items) {
+                        if (item.id === id) {
+                            return item;
+                        }
+                        const found = this.findItemById(item.children, id);
+                        if (found) {
+                            return found;
+                        }
+                    }
+                    return null;
+                }
+
+                findParentById(items, childId) {
+                    for (const item of items) {
+                        if (item.children.some((child) => child.id === childId)) {
+                            return item;
+                        }
+                        const found = this.findParentById(item.children, childId);
+                        if (found) {
+                            return found;
+                        }
+                    }
+                    return null;
+                }
+
+                getItems() {
+                    return this.items;
+                }
+
+                renderList(items, parentElement) {
+                    const ul = document.createElement("ul");
+                    items.forEach((item) => {
+                        const li = document.createElement("li");
+                        li.innerHTML = `<b class="${item.type}">${item.name} [id: ${item.id}]<\/b>`;
+                        li.onclick = (event) => {
+                            event.stopPropagation();
+                            this.selectItem(item.id);
+                        };
+                        ul.appendChild(li);
+                        if (item.children.length > 0) {
+                            this.renderList(item.children, li);
+                        }
+                    });
+                    parentElement.appendChild(ul);
+                }
+
+                updateParentOptions(selectElement) {
+                    selectElement.innerHTML = '<option value="">Корень программы</option>';
+                    this.addOptions(selectElement, this.items);
+                }
+
+                addOptions(selectElement, items, prefix = "--") {
+                    items.forEach((item) => {
+                        const option = document.createElement("option");
+                        option.value = item.id;
+                        option.textContent = `${prefix}${item.name} [id: ${item.id}]`;
+                        selectElement.appendChild(option);
+                        if (item.children.length > 0) {
+                            this.addOptions(selectElement, item.children, `${prefix}--`);
+                        }
+                    });
+                }
+
+                generateOutput() {
+                    return JSON.stringify(this.items, null, 2);
+                }
+
+                selectItem(id) {
+                    if (this.selectedItemId === id) {
+                        // Если элемент уже выбран, снимаем выделение
+                        this.selectedItemId = null;
+
+                        // Сбрасываем форму и возвращаем в режим добавления
+                        document.getElementById("addItem").style.display = "inline";
+                        document.getElementById("updateItem").style.display = "none";
+                        document.getElementById("deleteItem").style.display = "none";
+                        document.getElementById("itemName").value = "";
+                        document.getElementById("parentId").value = "";
+
+                        // Получаем все элементы input с именем itemType
+                        const itemTypeInputs = document.querySelectorAll('input[name="itemType"]');
+
+                        // Проходим по каждому элементу и устанавливаем checked в зависимости от значения
+                        itemTypeInputs.forEach((input) => {
+                            if (input.value === "teg") {
+                                input.checked = true; // Устанавливаем checked для элемента с value 'teg'
+                            } else {
+                                input.checked = false; // Убираем checked для всех остальных
+                            }
+                        });
+                    } else {
+                        // Если элемент не выбран, выделяем его
+                        this.selectedItemId = id;
+                        const item = this.findItemById(this.items, id);
+                        if (item) {
+                            document.getElementById("addItem").style.display = "none";
+                            document.getElementById("updateItem").style.display = "inline";
+                            document.getElementById("deleteItem").style.display = "inline";
+                            document.getElementById("itemName").value = item.name;
+                            const parent = this.findParentById(this.items, id);
+                            document.getElementById("parentId").value = parent ? parent.id : "";
+
+                            // Получаем все элементы input с именем itemType
+                            const itemTypeInputs = document.querySelectorAll('input[name="itemType"]');
+
+                            // Проходим по каждому элементу и устанавливаем checked в зависимости от значения
+                            itemTypeInputs.forEach((input) => {
+                                if (input.value === item.type) {
+                                    input.checked = true; // Устанавливаем checked для элемента с value 'teg'
+                                } else {
+                                    input.checked = false; // Убираем checked для всех остальных
+                                }
+                            });
+                        }
+                    }
+                }
+            }
+
+            const builder = new NestedArrayBuilder();
+            let currentId = 1;
+
+            function addItem() {
+                if (document.querySelector('input[name="itemType"]:checked') == undefined) {
+                    alert("Пожалуйста, выберите тип элемента! Например: контейнер.");
+                    return;
+                }
+
+                const itemName = document.getElementById("itemName").value;
+                const itemType = document.querySelector('input[name="itemType"]:checked').value;
+                const parentId = document.getElementById("parentId").value || null;
+
+                if (itemName.trim() === "") {
+                    alert("Пожалуйста, введите значение элемента! Например: table.");
+                    return;
+                }
+
+                builder.addItem(currentId, itemName, itemType, parentId ? parseInt(parentId) : null);
+                currentId++;
+
+                render();
+            }
+
+            function updateItem() {
+                if (builder.selectedItemId === null) {
+                    alert("Пожалуйста, выберите элемент для изменения! Например: корень программы.");
+                    return;
+                }
+
+                document.getElementById("addItem").style.display = "inline";
+                document.getElementById("updateItem").style.display = "none";
+                document.getElementById("deleteItem").style.display = "none";
+
+                const itemName = document.getElementById("itemName").value;
+                const itemType = document.querySelector('input[name="itemType"]:checked').value;
+                const parentId = document.getElementById("parentId").value || null;
+
+                builder.updateItem(builder.selectedItemId, itemName, itemType, parentId ? parseInt(parentId) : null);
+                builder.selectedItemId = null;
+
+                render();
+            }
+
+            function deleteItem() {
+                if (builder.selectedItemId === null) {
+                    alert("Пожалуйста, выберите элемент для удаления.");
+                    return;
+                }
+                builder.deleteItem(builder.selectedItemId);
+                builder.selectedItemId = null;
+                render();
+            }
+
+            function undo() {
+                builder.undo();
+                render();
+            }
+            function render() {
+                const nestedListContainer = document.getElementById("nested-list");
+                nestedListContainer.innerHTML = "";
+                builder.renderList(builder.getItems(), nestedListContainer);
+
+                builder.updateParentOptions(document.getElementById("parentId"));
+
+                document.getElementById("output").value = `<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -555,217 +584,204 @@ itemTypeInputs.forEach(input => {
     <\/script>
 <\/body>
 <\/html>`;
-         
-         // Сбрасываем форму при обновлении
-         document.getElementById('itemName').value = '';
-         document.getElementById('parentId').value = '';
-         }
-		 
 
-		 function runSequence() {
-    if (document.getElementById('runButton').innerText == 'Остановить') {
-        document.getElementById('runButton').innerText = 'Останавливается..';
-        return;
-    }
+                // Сбрасываем форму при обновлении
+                document.getElementById("itemName").value = "";
+                document.getElementById("parentId").value = "";
+            }
 
-    const listItems = document.querySelectorAll('#nested-list li');
-    let index = 0;
-    let relocation_index = false;
-    let doit_index_out = false;
-    let doit_index = false;
-    let doit_index_exists = false;
-    let index_out = false;
-	
-    let doit_index2 = false;
-    let doit_index_exists2 = false;
-    let doit_index_out2 = false;
-	let doit_index_out2see = false;
-	
-    let doit_index3 = false;
-    let doit_index_exists3 = false;
-    let doit_index_out3 = false;
-	let doit_index_out3see = false;
-
-    function highlightNext() {
-        if (document.getElementById('runButton').innerText == 'Останавливается..') {
-            if (index > 0) { listItems[index - 1].classList.remove('highlight'); }
-            if (relocation_index !== false) { listItems[relocation_index].classList.remove('highlight'); }
-            if (index_out !== false) { listItems[index_out].classList.remove('highlight'); }
-            document.getElementById('runButton').innerText = 'Запустить';
-            return;
-        }
-
-        let relocation_exists = false;
-        if (index > 0) {
-            listItems[index - 1].classList.remove('highlight');
-        }
-        if (relocation_index !== false) {
-            listItems[relocation_index].classList.remove('highlight');
-            relocation_index = false;
-            relocation_exists = true;
-        }
-        if (index_out !== false) {
-            listItems[index_out].classList.remove('highlight');
-            index_out = false;
-        }
-        if (index < listItems.length) {
-		
-            const currentItem = listItems[index];
-            const itemData = currentItem.querySelector('b');
-
-		
-            if (!relocation_exists && (doit_index_exists===false || (doit_index_exists!==index))) {
-			
-			doit_index_exists = false;
-                const isTegWithPhrase = itemData.classList.contains('teg') && itemData.textContent.includes(' модульный');
-
-                if (isTegWithPhrase) {
-				
-		console.log('detect break run: ' + index);
-                    const countIn = currentItem.querySelectorAll('b').length;
-                    for (let i = 1; i <= countIn; i += 1) {
-                        index++;
-                    }
-                    setTimeout(highlightNext, 0);
+            function runSequence() {
+                if (document.getElementById("runButton").innerText == "Остановить") {
+                    document.getElementById("runButton").innerText = "Останавливается..";
                     return;
                 }
-            }
 
-            currentItem.classList.add('highlight');
+                const listItems = document.querySelectorAll("#nested-list li");
+                let index = 0;
+                let relocation_index = false;
+                let doit_index_out = false;
+                let doit_index = false;
+                let doit_index_exists = false;
+                let index_out = false;
 
-            let relocation = false;
-            if (itemData.classList.contains('reflex')) {
-                relocation = itemData.textContent.match(/перейти на \{id: (\d+)\}/);
-            }
+                let doit_index2 = false;
+                let doit_index_exists2 = false;
+                let doit_index_out2 = false;
+                let doit_index_out2see = false;
 
-            let doit = false;
-            if (itemData.classList.contains('reflex')) {
-                doit = itemData.textContent.match(/подключить \{id: (\d+)\}/);
-            }
+                let doit_index3 = false;
+                let doit_index_exists3 = false;
+                let doit_index_out3 = false;
+                let doit_index_out3see = false;
 
-if (doit_index_out3 !== false && doit_index_out3 === index) {
-		console.log('detect out 3 level run: ' + index);
-				
-                index_out = doit_index_out3;
-                doit_index_out3 = false;
-                index = doit_index3;
-                doit_index3 = false;
-				doit_index_out3see = index;
-            }
-			else if (doit_index_out2 !== false && doit_index_out2 === index) {
-		console.log('detect out 2 level run: ' + index);
-				
-                index_out = doit_index_out2;
-                doit_index_out2 = false;
-                index = doit_index2;
-                doit_index2 = false;
-				doit_index_out2see = index;
-            } 
-			else if ((!doit || (doit_index_out3see===false && doit_index_out2see === index) ||  doit_index_out3see === index) && doit_index_out !== false && doit_index_out === index) {
-		
-		console.log('detect out 1 level run: ' + index);
-				
-				doit_index_out2see = false;
-                index_out = doit_index_out;
-                doit_index_out = false;
-                index = doit_index;
-                doit_index = false;
-				
-		console.log('detect default item on out 1 level run: ' + index);
-                index++;
-            }
-			else if(doit_index_out2see === index){
-		console.log('detect default item on out 2 level run: ' + index);
-                index++;
-			}
-			else if(doit_index_out3see === index){
-		console.log('detect default item on out 3 level run: ' + index);
-		console.log('detect default item: ' + index);
-                index++;
-			}
-            else if (doit) {
-                const targetId = parseInt(doit[1]);
-                const targetIndex = Array.from(listItems).findIndex(item => {
-                    const itemIdMatch = item.querySelector('b').textContent.match(/\[id: (\d+)\]/);
-                    return itemIdMatch && parseInt(itemIdMatch[1]) === targetId;
-                });
-
-                if (targetIndex !== -1) {
-                    var doit_index_reload = index;
-                    index = targetIndex;
-
-                    if(doit_index_out==false){
-		console.log('detect in 1 level run: ' + index);
-					doit_index = doit_index_reload;
-                    doit_index_exists = index;
-                    doit_index_out = targetIndex;
-                    const countIn = listItems[index].querySelectorAll('b').length;
-                    for (let i = 1; i < countIn; i += 1) {
-                        doit_index_out++;
+                function highlightNext() {
+                    if (document.getElementById("runButton").innerText == "Останавливается..") {
+                        if (index > 0) {
+                            listItems[index - 1].classList.remove("highlight");
+                        }
+                        if (relocation_index !== false) {
+                            listItems[relocation_index].classList.remove("highlight");
+                        }
+                        if (index_out !== false) {
+                            listItems[index_out].classList.remove("highlight");
+                        }
+                        document.getElementById("runButton").innerText = "Запустить";
+                        return;
                     }
-					}
-					else if(doit_index_out2==false){
-		console.log('detect in 2 level run: ' + index);
-					doit_index2 = doit_index_reload;
-                    doit_index_exists2 = index;
-                    relocation_index = doit_index2;
-                    doit_index_out2 = targetIndex;
-                    const countIn = listItems[index].querySelectorAll('b').length;
-                    for (let i = 1; i < countIn; i += 1) {
-                        doit_index_out2++;
-                    }
-					}
-					else if(doit_index_out3==false){
-		console.log('detect in 3 level run: ' + index);
-					doit_index3 = doit_index_reload;
-                    doit_index_exists3 = index;
-                    relocation_index = doit_index3;
-                    doit_index_out3 = targetIndex;
-                    const countIn = listItems[index].querySelectorAll('b').length;
-                    for (let i = 1; i < countIn; i += 1) {
-                        doit_index_out3++;
-                    }
-					}
 
-                } else {
-                    index++;
+                    let relocation_exists = false;
+                    if (index > 0) {
+                        listItems[index - 1].classList.remove("highlight");
+                    }
+                    if (relocation_index !== false) {
+                        listItems[relocation_index].classList.remove("highlight");
+                        relocation_index = false;
+                        relocation_exists = true;
+                    }
+                    if (index_out !== false) {
+                        listItems[index_out].classList.remove("highlight");
+                        index_out = false;
+                    }
+                    if (index < listItems.length) {
+                        const currentItem = listItems[index];
+                        const itemData = currentItem.querySelector("b");
+
+                        if (!relocation_exists && (doit_index_exists === false || doit_index_exists !== index)) {
+                            doit_index_exists = false;
+                            const isTegWithPhrase = itemData.classList.contains("teg") && itemData.textContent.includes(" модульный");
+
+                            if (isTegWithPhrase) {
+                                console.log("detect break run: " + index);
+                                const countIn = currentItem.querySelectorAll("b").length;
+                                for (let i = 1; i <= countIn; i += 1) {
+                                    index++;
+                                }
+                                setTimeout(highlightNext, 0);
+                                return;
+                            }
+                        }
+
+                        currentItem.classList.add("highlight");
+
+                        let relocation = false;
+                        if (itemData.classList.contains("reflex")) {
+                            relocation = itemData.textContent.match(/перейти на \{id: (\d+)\}/);
+                        }
+
+                        let doit = false;
+                        if (itemData.classList.contains("reflex")) {
+                            doit = itemData.textContent.match(/подключить \{id: (\d+)\}/);
+                        }
+
+                        if (doit_index_out3 !== false && doit_index_out3 === index) {
+                            console.log("detect out 3 level run: " + index);
+
+                            index_out = doit_index_out3;
+                            doit_index_out3 = false;
+                            index = doit_index3;
+                            doit_index3 = false;
+                            doit_index_out3see = index;
+                        } else if (doit_index_out2 !== false && doit_index_out2 === index) {
+                            console.log("detect out 2 level run: " + index);
+
+                            index_out = doit_index_out2;
+                            doit_index_out2 = false;
+                            index = doit_index2;
+                            doit_index2 = false;
+                            doit_index_out2see = index;
+                        } else if ((!doit || (doit_index_out3see === false && doit_index_out2see === index) || doit_index_out3see === index) && doit_index_out !== false && doit_index_out === index) {
+                            console.log("detect out 1 level run: " + index);
+
+                            doit_index_out2see = false;
+                            index_out = doit_index_out;
+                            doit_index_out = false;
+                            index = doit_index;
+                            doit_index = false;
+
+                            console.log("detect default item on out 1 level run: " + index);
+                            index++;
+                        } else if (doit_index_out2see === index) {
+                            console.log("detect default item on out 2 level run: " + index);
+                            index++;
+                        } else if (doit_index_out3see === index) {
+                            console.log("detect default item on out 3 level run: " + index);
+                            console.log("detect default item: " + index);
+                            index++;
+                        } else if (doit) {
+                            const targetId = parseInt(doit[1]);
+                            const targetIndex = Array.from(listItems).findIndex((item) => {
+                                const itemIdMatch = item.querySelector("b").textContent.match(/\[id: (\d+)\]/);
+                                return itemIdMatch && parseInt(itemIdMatch[1]) === targetId;
+                            });
+
+                            if (targetIndex !== -1) {
+                                var doit_index_reload = index;
+                                index = targetIndex;
+
+                                if (doit_index_out == false) {
+                                    console.log("detect in 1 level run: " + index);
+                                    doit_index = doit_index_reload;
+                                    doit_index_exists = index;
+                                    doit_index_out = targetIndex;
+                                    const countIn = listItems[index].querySelectorAll("b").length;
+                                    for (let i = 1; i < countIn; i += 1) {
+                                        doit_index_out++;
+                                    }
+                                } else if (doit_index_out2 == false) {
+                                    console.log("detect in 2 level run: " + index);
+                                    doit_index2 = doit_index_reload;
+                                    doit_index_exists2 = index;
+                                    relocation_index = doit_index2;
+                                    doit_index_out2 = targetIndex;
+                                    const countIn = listItems[index].querySelectorAll("b").length;
+                                    for (let i = 1; i < countIn; i += 1) {
+                                        doit_index_out2++;
+                                    }
+                                } else if (doit_index_out3 == false) {
+                                    console.log("detect in 3 level run: " + index);
+                                    doit_index3 = doit_index_reload;
+                                    doit_index_exists3 = index;
+                                    relocation_index = doit_index3;
+                                    doit_index_out3 = targetIndex;
+                                    const countIn = listItems[index].querySelectorAll("b").length;
+                                    for (let i = 1; i < countIn; i += 1) {
+                                        doit_index_out3++;
+                                    }
+                                }
+                            } else {
+                                index++;
+                            }
+                        } else if (relocation) {
+                            console.log("detect relocation: " + index);
+                            const targetId = parseInt(relocation[1]);
+                            const targetIndex = Array.from(listItems).findIndex((item) => {
+                                const itemIdMatch = item.querySelector("b").textContent.match(/\[id: (\d+)\]/);
+                                return itemIdMatch && parseInt(itemIdMatch[1]) === targetId;
+                            });
+
+                            if (targetIndex !== -1) {
+                                relocation_index = index;
+                                index = targetIndex;
+                            } else {
+                                index++;
+                            }
+                        } else {
+                            console.log("detect default item: " + index);
+                            index++;
+                        }
+
+                        setTimeout(highlightNext, 1000);
+                    } else {
+                        document.getElementById("runButton").classList.remove("highlight2");
+                        document.getElementById("runButton").innerText = "Запустить";
+                    }
                 }
+
+                document.getElementById("runButton").classList.add("highlight2");
+                document.getElementById("runButton").innerText = "Остановить";
+
+                highlightNext();
             }
-			 else if (relocation) {
-		console.log('detect relocation: ' + index);
-                const targetId = parseInt(relocation[1]);
-                const targetIndex = Array.from(listItems).findIndex(item => {
-                    const itemIdMatch = item.querySelector('b').textContent.match(/\[id: (\d+)\]/);
-                    return itemIdMatch && parseInt(itemIdMatch[1]) === targetId;
-                });
-
-                if (targetIndex !== -1) {
-                    relocation_index = index;
-                    index = targetIndex;
-                } else {
-                    index++;
-                }
-            }
-			else {
-		console.log('detect default item: ' + index);
-                index++;
-            }
-
-            setTimeout(highlightNext, 1000);
-        } else {
-		    document.getElementById('runButton').classList.remove('highlight2');
-            document.getElementById('runButton').innerText = 'Запустить';
-        }
-    }
-
-    document.getElementById('runButton').classList.add('highlight2');
-    document.getElementById('runButton').innerText = 'Остановить';
-
-    highlightNext();
-}
-
-         
-         
-      </script>
-   </body>
+        </script>
+    </body>
 </html>
