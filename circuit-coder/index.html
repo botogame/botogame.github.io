@@ -22,10 +22,16 @@
             }
             #output {
                 margin-top: 10px;
-                background-color: white;
+                background-color: #2e2e2e;
                 box-sizing: border-box;
                 width: 100%;
                 height: 500px;
+            }
+            #output2 {
+                background-color: #2e2e2e;
+                box-sizing: border-box;
+                width: 100%;
+                height: 300px;
             }
             li {
                 cursor: pointer;
@@ -169,7 +175,7 @@
         <hr />
         <button id="runButton" onclick="runSequence()">Тестовый запуск</button><br />
         Тестовый запуск пока включает в себя:<br />
-        1. последовательный проход по элементам.<br />
+        1. последовательный проход по элементам (игнор конструкций на 1-м уровне).<br />
         2. для рефлекса понимает команду "продолжить с другого элемента": <mark>перейти на {id: N}</mark><br />
         3. для контейнера понимает команду "игнорировать при автопроходе": <mark>TAG_NAME модульный</mark><br />
         4. для рефлекса понимает команду "запустить модульный контейнер": <mark>подключить {id: N}</mark><br />
@@ -180,7 +186,10 @@
         <hr />
         Ниже будет формироваться страница, которая пока отображает любые тэги например "<mark>table</mark>", "<mark>tr</mark>", "<mark>td</mark>" (контейнеров), задает текст тэгам "<mark>innerText: TEXT</mark>" (атрибутов) и задат любой
         стиль тэгам например "<mark>color: green</mark>", "<mark>text-shadow: 0 0 15px red</mark>" (атрибутов):
-        <iframe id="output"></iframe>
+        <iframe id="output" readonly></iframe>
+		<br><br>
+		Код сформированной страницы:
+        <textarea id="output2"></textarea>
         <br />
         <br />
         <b>v.19.12.2024-1 | </b><a target="_blank" href="https://github.com/botogame/botogame/blob/main/freedom/distribution/business_code_constructor/README.md">страница разработчика</a>
@@ -548,8 +557,7 @@
                 const iframe = document.getElementById("output");
                 const doc = iframe.contentDocument || iframe.contentWindow.document;
 
-                doc.open();
-                doc.write(`<!DOCTYPE html>
+                var html = `<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -562,7 +570,31 @@
         var schema = ${builder.generateOutput()};
 
          function schemaToHtml(schema) {
-            function createElement(node) {
+            function createElement(node, level = 1) {
+                if (node.type === 'teg' && level === 1) {
+                    return '';
+                }
+
+                if (node.type === 'reflex') {
+                    const refId = node.name.match(\/подключить {id: (\\d+)}\/);
+                    if (refId) {
+                        const referencedNode = schema.find(item => item.id === parseInt(refId[1]));
+                        if (referencedNode) {
+                            return createElement(referencedNode, level+1);
+                        }
+                    }
+                }
+
+                if (node.type === 'atribut' && level === 1) {
+                    const styleMatch = node.name.match(\/^([\\w-]+):\\s*(.*)$\/);
+                    if (styleMatch) {
+                        let currentStyle = document.body.getAttribute('style') || '';
+                        currentStyle += styleMatch[1] + ': ' + styleMatch[2] + ';';
+                        document.body.setAttribute('style', currentStyle.trim()); 
+                    }
+                    return ''; 
+                }
+
                 if (node.type === 'teg') {
                     let attributes = ' id="' + node.id + '"';
                     let innerText = '';
@@ -584,21 +616,27 @@
 
                     let childrenHtml = node.children
                         .filter(child => child.type !== 'atribut')
-                        .map(createElement)
+                        .map(child => createElement(child, level + 1))
                         .join('');
 
                     return '<' + node.name + '' + attributes + '>' + innerText + '' + childrenHtml + '</' + node.name + '>';
                 }
+
                 return '';
             }
 
-            return schema.map(createElement).join('');
+            var htmlContent = schema.map(node => createElement(node, 1)).join('');
+
+            return htmlContent;
         }
 
         document.body.innerHTML = schemaToHtml(schema);
     <\/script>
 <\/body>
-<\/html>`);
+<\/html>`;
+document.getElementById("output2").innerHTML = html;
+                doc.open();
+                doc.write(html);
                 doc.close();
 
                 // Сбрасываем форму при обновлении
