@@ -20,15 +20,12 @@
                 list-style-type: none;
                 padding: 0;
             }
-            textarea {
-                width: 100%;
-                height: 50%;
-                margin-top: 20px;
-                background-color: #1e1e1e;
-                color: #ffffff;
-                border: none;
-                padding: 10px;
+            #output {
+                margin-top: 10px;
+                background-color: white;
                 box-sizing: border-box;
+                width: 100%;
+                height: 500px;
             }
             li {
                 cursor: pointer;
@@ -175,14 +172,14 @@
         1. последовательный проход по элементам.<br />
         2. для рефлекса понимает команду "продолжить с другого элемента": <mark>перейти на {id: N}</mark><br />
         3. для контейнера понимает команду "игнорировать при автопроходе": <mark>TAG_NAME модульный</mark><br />
-        4. для рефлекса понимает команду "принудительно запустить элемент со вложением": <mark>подключить {id: N}</mark><br />
+        4. для рефлекса понимает команду "запустить модульный контейнер": <mark>подключить {id: N}</mark><br />
         p.s. значение N заменять на число, например: подключить {id: 23}<br />
-        p.s. рефлексы "подключить {id: N}" вложенные друг в друга могут сработать максимум до третьего уровня (без включения 3-го уровня).
+        p.s. рефлексы "подключить {id: N}" вложенные друг в друга могут сработать максимум до третьего уровня (без включения 3-го уровня).<br />
+        p.s. при добавлении контейнера в корень программы автоматически присваивается статус модульный
 
         <hr />
-        Ниже будет формироваться страница, которая пока отображает любые тэги например "<mark>table</mark>", "<mark>tr</mark>", "<mark>td</mark>" (в контейнерах), задает текст в тэге "<mark>innerText: TEXT</mark>" (в атрибутах) и задат
-        любой стиль тэгам например "<mark>color: green</mark>", "<mark>text-shadow: 0 0 15px red</mark>" (в атрибутах):
-        <textarea id="output" readonly>...</textarea>
+        Ниже будет формироваться страница, которая пока отображает любые тэги например "<mark>table</mark>", "<mark>tr</mark>", "<mark>td</mark>" (контейнеров), задает текст тэгам "<mark>innerText: TEXT</mark>" (атрибутов) и задат любой стиль тэгам например "<mark>color: green</mark>", "<mark>text-shadow: 0 0 15px red</mark>" (атрибутов):
+        <iframe id="output"></iframe>
         <br />
         <br />
         <b>v.19.12.2024-1 | </b><a target="_blank" href="https://github.com/botogame/botogame/blob/main/freedom/distribution/business_code_constructor/README.md">страница разработчика</a>
@@ -247,43 +244,28 @@
                     this.previousState = null;
                 }
 
-                addItem_old(id, name, type, parentId = null) {
+                addItem(id, name, type, parentId = null) {
                     const newItem = { id, name, type, children: [] };
+                    const insertItem = (list) => {
+                        const lastAtributIndex = list.map((item) => item.type).lastIndexOf("atribut");
+                        if (type === "atribut") {
+                            lastAtributIndex !== -1 ? list.splice(lastAtributIndex + 1, 0, newItem) : list.unshift(newItem);
+                        } else {
+                            list.push(newItem);
+                        }
+                    };
+
                     if (parentId === null) {
-                        this.items.push(newItem);
+                        insertItem(this.items);
                     } else {
                         const parent = this.findItemById(this.items, parentId);
                         if (parent) {
-                            parent.children.push(newItem);
+                            insertItem(parent.children);
                         } else {
                             console.error(`Parent with ID ${parentId} not found.`);
                         }
                     }
                 }
-				
-				
-                addItem(id, name, type, parentId = null) {
-    const newItem = { id, name, type, children: [] };
-    const insertItem = (list) => {
-        const lastAtributIndex = list.map(item => item.type).lastIndexOf('atribut');
-        if (type === 'atribut') {
-            lastAtributIndex !== -1 ? list.splice(lastAtributIndex + 1, 0, newItem) : list.unshift(newItem);
-        } else {
-            list.push(newItem);
-        }
-    };
-
-    if (parentId === null) {
-        insertItem(this.items);
-    } else {
-        const parent = this.findItemById(this.items, parentId);
-        if (parent) {
-            insertItem(parent.children);
-        } else {
-            console.error(`Parent with ID ${parentId} not found.`);
-        }
-    }
-}
 
                 updateItem(id, name, type, newParentId = null) {
                     const item = this.findItemById(this.items, id);
@@ -379,36 +361,52 @@
                     return this.items;
                 }
 
-                renderList(items, parentElement) {
+                renderList(items, parentElement, level = 1) {
                     const ul = document.createElement("ul");
                     items.forEach((item) => {
                         const li = document.createElement("li");
-                        li.innerHTML = `<b class="${item.type}">${item.name} [id: ${item.id}]<\/b>`;
+                        var name = item.name;
+                        if (item.type === "teg" && level == 1) {
+                            name = name + " модульный";
+                        }
+                        li.innerHTML = `<b class="${item.type}">${name} [id: ${item.id}]<\/b>`;
                         li.onclick = (event) => {
                             event.stopPropagation();
                             this.selectItem(item.id);
                         };
                         ul.appendChild(li);
                         if (item.children.length > 0) {
-                            this.renderList(item.children, li);
+                            level = level + 1;
+                            this.renderList(item.children, li, level);
                         }
                     });
                     parentElement.appendChild(ul);
                 }
 
                 updateParentOptions(selectElement) {
+                    var last_value = selectElement.value;
                     selectElement.innerHTML = '<option value="">Корень программы</option>';
                     this.addOptions(selectElement, this.items);
+                    selectElement.value = last_value;
                 }
 
-                addOptions(selectElement, items, prefix = "--") {
+                addOptions(selectElement, items, level = 1) {
                     items.forEach((item) => {
-                        const option = document.createElement("option");
-                        option.value = item.id;
-                        option.textContent = `${prefix}${item.name} [id: ${item.id}]`;
-                        selectElement.appendChild(option);
+                        if (item.type === "teg" || item.type === "atribut") {
+                            const option = document.createElement("option");
+                            option.value = item.id;
+                            var prefix = "&nbsp;".repeat(level * 2);
+                            var name = item.name;
+                            if (item.type === "teg" && level == 1) {
+                                name = name + " модульный";
+                            }
+                            option.innerHTML = `${prefix}[id: ${item.id}] ${name}`;
+                            selectElement.appendChild(option);
+                        }
+
                         if (item.children.length > 0) {
-                            this.addOptions(selectElement, item.children, `${prefix}--`);
+                            level = level + 1;
+                            this.addOptions(selectElement, item.children, level);
                         }
                     });
                 }
@@ -533,7 +531,11 @@
 
                 builder.updateParentOptions(document.getElementById("parentId"));
 
-                document.getElementById("output").value = `<!DOCTYPE html>
+                const iframe = document.getElementById("output");
+                const doc = iframe.contentDocument || iframe.contentWindow.document;
+
+                doc.open();
+                doc.write(`<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -543,8 +545,7 @@
 <body>
     <script>
 
-        const schema = ${builder.generateOutput()};
-
+        var schema = ${builder.generateOutput()};
 
          function schemaToHtml(schema) {
             function createElement(node) {
@@ -583,11 +584,11 @@
         document.body.innerHTML = schemaToHtml(schema);
     <\/script>
 <\/body>
-<\/html>`;
+<\/html>`);
+                doc.close();
 
                 // Сбрасываем форму при обновлении
                 document.getElementById("itemName").value = "";
-                document.getElementById("parentId").value = "";
             }
 
             function runSequence() {
