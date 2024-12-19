@@ -178,7 +178,8 @@
         p.s. при добавлении контейнера в корень программы автоматически присваивается статус модульный
 
         <hr />
-        Ниже будет формироваться страница, которая пока отображает любые тэги например "<mark>table</mark>", "<mark>tr</mark>", "<mark>td</mark>" (контейнеров), задает текст тэгам "<mark>innerText: TEXT</mark>" (атрибутов) и задат любой стиль тэгам например "<mark>color: green</mark>", "<mark>text-shadow: 0 0 15px red</mark>" (атрибутов):
+        Ниже будет формироваться страница, которая пока отображает любые тэги например "<mark>table</mark>", "<mark>tr</mark>", "<mark>td</mark>" (контейнеров), задает текст тэгам "<mark>innerText: TEXT</mark>" (атрибутов) и задат любой
+        стиль тэгам например "<mark>color: green</mark>", "<mark>text-shadow: 0 0 15px red</mark>" (атрибутов):
         <iframe id="output"></iframe>
         <br />
         <br />
@@ -211,6 +212,9 @@
                         input.name = "itemType";
                         input.value = itemTypes[currentIndex].id;
                         input.checked = true; // Устанавливаем checked
+                        input.onclick = function () {
+                            builder.updateParentOptions();
+                        };
 
                         const label = document.createElement("label");
                         label.htmlFor = itemTypes[currentIndex].id;
@@ -383,7 +387,9 @@
                     parentElement.appendChild(ul);
                 }
 
-                updateParentOptions(selectElement) {
+                updateParentOptions() {
+                    var selectElement = document.getElementById("parentId");
+
                     var last_value = selectElement.value;
                     selectElement.innerHTML = '<option value="">Корень программы</option>';
                     this.addOptions(selectElement, this.items);
@@ -392,7 +398,13 @@
 
                 addOptions(selectElement, items, level = 1) {
                     items.forEach((item) => {
-                        if (item.type === "teg" || item.type === "atribut") {
+                        if ((document.querySelector('input[name="itemType"]:checked').value === "reflex" && item.type === "atribut") || item.type === "teg") {
+                            var see = true;
+                        } else {
+                            var see = false;
+                        }
+
+                        if (see) {
                             const option = document.createElement("option");
                             option.value = item.id;
                             var prefix = "&nbsp;".repeat(level * 2);
@@ -402,11 +414,11 @@
                             }
                             option.innerHTML = `${prefix}[id: ${item.id}] ${name}`;
                             selectElement.appendChild(option);
-                        }
 
-                        if (item.children.length > 0) {
-                            level = level + 1;
-                            this.addOptions(selectElement, item.children, level);
+                            if (item.children.length > 0) {
+                                level = level + 1;
+                                this.addOptions(selectElement, item.children, level);
+                            }
                         }
                     });
                 }
@@ -461,6 +473,8 @@
                                     input.checked = false; // Убираем checked для всех остальных
                                 }
                             });
+
+                            builder.updateParentOptions();
                         }
                     }
                 }
@@ -529,7 +543,7 @@
                 nestedListContainer.innerHTML = "";
                 builder.renderList(builder.getItems(), nestedListContainer);
 
-                builder.updateParentOptions(document.getElementById("parentId"));
+                builder.updateParentOptions();
 
                 const iframe = document.getElementById("output");
                 const doc = iframe.contentDocument || iframe.contentWindow.document;
