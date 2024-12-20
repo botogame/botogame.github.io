@@ -157,6 +157,7 @@ function getCard(clearMatrix=false) {
         setCookie('wishcardUklady','');
         setCookie('symvol_text','');
         setCookie('disableDolgType','');
+        setCookie('position','');
 		
 		document.getElementById("direction").setAttribute("disabled","disabled");
         document.getElementById("wish").value = "";
@@ -436,6 +437,13 @@ function set_result(gender, startCard, endCard, needType, wish, symvol_text, gen
             setCookie('wishcardUklady',wishcardUklady);
         }
 
+        var position = getCookie('position');
+        var position_setted = '';
+
+        if(position===undefined){
+            position = 0;
+        }
+
         result2.path.forEach((card, i) => {
             let mastNow = currentMast[result2.transitions[i]];
 
@@ -444,7 +452,14 @@ function set_result(gender, startCard, endCard, needType, wish, symvol_text, gen
 
                 var mantraText = "я желаю от своей бдилки " + schemeSuitsDaysWeek[weekId][mastNow] + " " + schemeСardAssignments[card][mastNow] + " чтобы " + wish;
 
-                output += '<a class="card-link card-link2" onclick="showPopupMantra(\'mantraId' + i + '\','+weekId+',\'' + weekId + mastNow + '\',\'' + cardWithMast + '\')" href="#">' + cardWithMast + '</a><text class="none" id="mantraId' + i +'">' + mantraText + "</text>";
+                if(position>=i){
+                    position_setted = ' card-link3';
+                }
+                else{
+                    position_setted = '';
+                }
+
+                output += '<a id="cardButton' + i + '" class="card-link card-link2' + position_setted + '" onclick="showPopupMantra(\'mantraId' + i + '\','+weekId+',\'' + weekId + mastNow + '\',\'' + cardWithMast + '\',\'' + i + '\')" href="#">' + cardWithMast + '</a><text class="none" id="mantraId' + i +'">' + mantraText + "</text>";
 
                 if (generation == true) {
                     saveCardGroupsToCookies(wishcardUklady, card + mastNow);
@@ -840,6 +855,7 @@ function deleteCardGroupsCookies() {
         destroyHistory();
 
         if (document.getElementById("button").innerHTML == "Уклад полностью проработан") {
+            setCookie('position','');
             getCard(true);
         }
 
@@ -1107,7 +1123,7 @@ function otrabotatDolg(dolgType,cardSet){
 }
 
 
-function showPopupMantra(blockId,weekId,week,doit) {
+function showPopupMantra(blockId,weekId,week,doit,position) {
     
     var gender = document.getElementById('gender').value;
 
@@ -1120,6 +1136,7 @@ function showPopupMantra(blockId,weekId,week,doit) {
         var textMantraPovtoryate = 'другим';
     }
     
+    document.getElementById('buttonCloseMantra').onclick = () => {closePopupMantra(position); };
     document.getElementById('textCloseMantra').innerHTML = textClose;
     document.getElementById('textMantraPovtoryate').innerHTML = textMantraPovtoryate;
     document.getElementById('popupMantra').style.display = 'flex';
@@ -1128,6 +1145,10 @@ function showPopupMantra(blockId,weekId,week,doit) {
     document.getElementById('doitMantra').src = './taro/doit/' + doit +'.jpg';
 }
 
-function closePopupMantra() {
+function closePopupMantra(position=false) {
+    if(position){
+        document.getElementById('cardButton'+position).classList.add("card-link3");
+        setCookie('position', position);
+    }
     document.getElementById('popupMantra').style.display = 'none';
 }
