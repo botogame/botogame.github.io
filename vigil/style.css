@@ -532,6 +532,42 @@
    .card-link3 {
     background-color: gray;
 }
+
+#popupMantra::-webkit-scrollbar {
+    width: 10px;
+    background-color: #f9f9fd;
+  }
+  
+  #popupMantra::-webkit-scrollbar-thumb {
+    border-radius: 10px;
+    background-color: #18aaaa;
+  }
+  
+  #popupMantra::-webkit-scrollbar-track {
+    -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.2);
+    border-radius: 10px;
+    background-color: #f9f9fd;
+  }
+
+  /* width */
+  #popupMantra::-webkit-scrollbar {
+    width: 0.1px !important;
+  }
+  
+  /* Track */
+  #popupMantra::-webkit-scrollbar-track {
+    background: transparent !important; 
+  }
+   
+  /* Handle */
+  #popupMantra::-webkit-scrollbar-thumb {
+    background: transparent !important; 
+  }
+  
+  /* Handle on hover */
+  #popupMantra::-webkit-scrollbar-thumb:hover {
+    background: transparent !important; 
+  }
            
    /* Медиазапрос для мобильных устройств */
    @media only screen and (max-width: 768px) {
