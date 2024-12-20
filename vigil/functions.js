@@ -294,19 +294,63 @@ function clear_input_error(_this, isSelect = false, restore = false,alarm=true,m
 
 function getCookie(name) {
 
-if(name == 'cardGroups' || name == 'ukladGroups' || name == 'cardUklady'){
-    var cookieValue = document.cookie
-        .split("; ")
-        .find((row) => row.startsWith(name+"="))
-        ?.split("=")[1];
+    if(name == 'cardGroups'){
+        var cookieValue = document.cookie
+            .split("; ")
+            .find((row) => row.startsWith(name+"="))
+            ?.split("=")[1];
+    
+        if (cookieValue) {
+            // Десериализуем данные обратно в объект
+            var cardGroupsPre = JSON.parse(decodeURIComponent(cookieValue));
+            var cardGroupsPre2 = {};
+            for (let position in cardGroupsPre) {
+                // Восстанавливаем полное имя группы из отдельной куки
+                var cardGroupName = getCookie('cardGroupName'+position) || position;
+                cardGroupsPre2[cardGroupName] = cardGroupsPre[position];
+            }
 
-    if (cookieValue) {
-        // Десериализуем данные обратно в объект
-        return JSON.parse(decodeURIComponent(cookieValue));
-    } else {
-        return {};
+            return cardGroupsPre2;
+
+        } else {
+            return {};
+        }
+
     }
-}
+    else if(name == 'cardUklady'){
+        var cookieValue = document.cookie
+            .split("; ")
+            .find((row) => row.startsWith(name+"="))
+            ?.split("=")[1];
+    
+        if (cookieValue) {
+            // Десериализуем данные обратно в объект
+            var cardUkladyPre = JSON.parse(decodeURIComponent(cookieValue));
+            var cardUkladyPre2 = {};
+            for (let position in cardUkladyPre) {
+                // Восстанавливаем полное имя группы из отдельной куки
+                var cardGroupName = getCookie('cardGroupName'+position) || position;
+                cardUkladyPre2[cardGroupName] = cardUkladyPre[position];
+            }
+
+            return cardUkladyPre2;
+        } else {
+            return {};
+        }
+    }
+    else if(name == 'ukladGroups'){
+        var cookieValue = document.cookie
+            .split("; ")
+            .find((row) => row.startsWith(name+"="))
+            ?.split("=")[1];
+    
+        if (cookieValue) {
+            // Десериализуем данные обратно в объект
+            return JSON.parse(decodeURIComponent(cookieValue));
+        } else {
+            return {};
+        }
+    }
 else{
     var matches = document.cookie.match(new RegExp("(?:^|; )" + name.replace(/([\.$?*|{}\(\)\[\]\\\/\+^])/g, "\\$1") + "=([^;]*)"));
 
@@ -711,15 +755,56 @@ function countAllCards() {
 
 // Функция для сохранения данных в куки
 function saveCardGroupsToCookies(groupName, card) {
+
     // Добавляем карту в указанную группу или создаем новую группу, если она не существует
     if (!cardGroups[groupName]) {
         cardGroups[groupName] = []; // Если группа не существует, создаем её
     }
     cardGroups[groupName].push(card); // Добавляем карту в группу
+
+
+    var cardGroupsPre = {};
+    var position = 0;
+    for (let groupNamePre in cardGroups) {
+        position = position + 1;
+        cardGroupsPre[position] = cardGroups[groupNamePre];
+        setCookie('cardGroupName'+position, groupNamePre);
+    }
+
     // Сериализуем объект в строку
-    var serializedData = JSON.stringify(cardGroups);
+    var serializedData = JSON.stringify(cardGroupsPre);
 
     setCookie('cardGroups',encodeURIComponent(serializedData));
+}
+
+// Функция для сохранения данных в куки
+function savecardUkladyToCookies(groupName,ukladType) {
+    
+    cardUklady[groupName] = ukladType;
+
+    var cardUkladyPre = {};
+    var position = 0;
+    var groupNamePre2 = '';
+    for (let groupNamePre in cardGroups) {
+        position = position + 1;
+
+        if(cardUklady[groupNamePre]!==undefined){
+            if(getCookie('cardGroupName'+position)!==undefined){
+                groupNamePre2 = position;
+            }
+            else{
+                groupNamePre2 = groupNamePre;
+            }
+
+            cardUkladyPre[groupNamePre2] = cardUklady[groupNamePre];
+        }
+    }
+
+    // Сериализуем объект в строку
+    var serializedData = JSON.stringify(cardUkladyPre);
+
+    setCookie('cardUklady',encodeURIComponent(serializedData));
+    
 }
 
 // Функция для сохранения данных в куки
@@ -743,17 +828,6 @@ function saveUkladGroupsToCookies(ukladCode,ukladName, card) {
     var serializedData = JSON.stringify(ukladGroups);
 
     setCookie('ukladGroups',encodeURIComponent(serializedData));
-    
-}
-// Функция для сохранения данных в куки
-function savecardUkladyToCookies(wishcardUklady,ukladType) {
-    
-    cardUklady[wishcardUklady] = ukladType;
-
-    // Сериализуем объект в строку
-    var serializedData = JSON.stringify(cardUklady);
-
-    setCookie('cardUklady',encodeURIComponent(serializedData));
     
 }
 
@@ -808,6 +882,12 @@ function updateDayNow() {
 }
 
 function destroyHistory(){
+
+    var position = 0;
+    for (let groupNamePre in cardGroups) {
+        position = position + 1;
+        setCookie('cardGroupName'+position, '');
+    }
 
     cardGroups = {};
     ukladGroups = {};
