@@ -732,18 +732,7 @@ function countAllCards() {
     return totalCards;
 }
 
-// Функция для сохранения данных в куки
-function old_saveCardGroupsToCookies(groupName, card) {
-    // Добавляем карту в указанную группу или создаем новую группу, если она не существует
-    if (!cardGroups[groupName]) {
-        cardGroups[groupName] = []; // Если группа не существует, создаем её
-    }
-    cardGroups[groupName].push(card); // Добавляем карту в группу
-    // Сериализуем объект в строку
-    var serializedData = JSON.stringify(cardGroups);
 
-    setCookie('cardGroups',encodeURIComponent(serializedData));
-}
 function saveCardGroupsToCookies(groupName, card) {
 	
     // Уникальный идентификатор для группы (groupNameId) как номер записи в cardGroups
@@ -753,14 +742,14 @@ function saveCardGroupsToCookies(groupName, card) {
 	
 	groupNameId = groupNameId + 1;
 	
-	groupNameId = '#'+groupNameId;
+	groupNameId = 'num'+groupNameId;
 	
     // Сохраняем полное имя группы в отдельной куке
     setCookie(`groupName_${groupNameId}`, groupName);
 		
 	}
 	else{
-		groupNameId = '#'+groupNameId;
+	   groupNameId = 'num'+groupNameId;
 	}
 
     // Добавляем карту в указанную группу или создаем новую группу, если она не существует
