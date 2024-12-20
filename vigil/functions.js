@@ -1138,6 +1138,9 @@ function showPopupMantra(blockId,weekId,week,doit,position) {
         var textMantraPovtoryate = 'другим';
     }
     
+    document.getElementById('buttonCloseMantra').style.width = '50%';
+    document.getElementById('weekMantra').style.width = '10%';
+    document.getElementById('doitMantra').style.width = '10%';
     document.getElementById('buttonCloseMantra').onclick = () => {closePopupMantra(position); };
     document.getElementById('textCloseMantra').innerHTML = textClose;
     document.getElementById('textMantraPovtoryate').innerHTML = textMantraPovtoryate;
@@ -1145,6 +1148,19 @@ function showPopupMantra(blockId,weekId,week,doit,position) {
     document.getElementById('textMantra').innerHTML = ''+days2[weekId]+' ' + doit +'<br><b class="h3_text">' + document.getElementById(blockId).innerHTML + '</b>';
     document.getElementById('weekMantra').src = './taro/week/' + week +'.jpg';
     document.getElementById('doitMantra').src = './taro/doit/' + doit +'.jpg';
+    
+        setTimeout(() => {
+          document.getElementById('weekMantra').style.width = '20%';
+          document.getElementById('doitMantra').style.width = '20%';
+          }, 1000);
+        setTimeout(() => {
+            document.getElementById('weekMantra').style.width = '30%';
+            document.getElementById('doitMantra').style.width = '30%';
+          }, 2000);
+          setTimeout(() => {
+              document.getElementById('weekMantra').style.width = '35%';
+              document.getElementById('doitMantra').style.width = '35%';
+            }, 3000);
 }
 
 function closePopupMantra(position=false) {
