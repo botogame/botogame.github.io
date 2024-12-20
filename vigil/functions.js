@@ -1010,6 +1010,8 @@ function setupOnLoad() {
             setMsgToUser('select',"Ваша последняя карта: " + getCookie("endCard") + '.');
         }
         else{
+            document.getElementById("startCard").value = 8;
+            setCookie("endCard",8);
             setMsgToUser('start','Пасьянс Медичи помогает в сложных ситуациях, а Бдилка выявляет скрытые желания. Перед вами инструмент настоящей свободы в мире, где ваши границы сознания станут как спасением, так и ловушкой. Если это первый расклад, то ставьте последней картой: 8. Полную инструкцию смотрите на <a class="a_info" href="https://github.com/botogame/botogame/blob/main/freedom/interaction/vigil/README.md">сайте разработчика</a>. Мигающий гриб кликабелен, там история желаний!');
         }
 
