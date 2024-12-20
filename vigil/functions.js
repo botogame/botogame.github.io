@@ -294,30 +294,7 @@ function clear_input_error(_this, isSelect = false, restore = false,alarm=true,m
 
 function getCookie(name) {
 
-if(name == 'cardGroups'){
-    var cookieValue = document.cookie
-        .split("; ")
-        .find((row) => row.startsWith(name+"="))
-        ?.split("=")[1];
-
-    if (cookieValue) {
-        // Десериализуем данные обратно в объект
-        var cardGroupsPre = JSON.parse(decodeURIComponent(cookieValue));
-    } else {
-        var cardGroupsPre = {};
-    }
-	
-    let fullNameCardGroups = {};
-
-    for (let groupNameId in cardGroupsPre) {
-        // Восстанавливаем полное имя группы из отдельной куки
-        let fullName = getCookie(`groupName_${groupNameId}`) || groupNameId;
-        fullNameCardGroups[fullName] = cardGroupsPre[groupNameId];
-    }
-
-    return fullNameCardGroups;
-}
-else if(name == 'ukladGroups' || name == 'cardUklady'){
+if(name == 'cardGroups' || name == 'ukladGroups' || name == 'cardUklady'){
     var cookieValue = document.cookie
         .split("; ")
         .find((row) => row.startsWith(name+"="))
@@ -732,35 +709,17 @@ function countAllCards() {
     return totalCards;
 }
 
-
+// Функция для сохранения данных в куки
 function saveCardGroupsToCookies(groupName, card) {
-	
-    // Уникальный идентификатор для группы (groupNameId) как номер записи в cardGroups
-    let groupNameId = Number(Object.keys(cardGroups).length.toString());
-	
-	if(groupNameId===0 || (getCookie(`groupName_${groupNameId}`)!==undefined && groupName!==getCookie(`groupName_${groupNameId}`))){
-	
-	groupNameId = groupNameId + 1;
-	
-	groupNameId = 'num'+groupNameId;
-	
-    // Сохраняем полное имя группы в отдельной куке
-    setCookie(`groupName_${groupNameId}`, groupName);
-		
-	}
-	else{
-	   groupNameId = 'num'+groupNameId;
-	}
-
     // Добавляем карту в указанную группу или создаем новую группу, если она не существует
-    if (!cardGroups[groupNameId]) {
-        cardGroups[groupNameId] = []; // Если группа не существует, создаем её
+    if (!cardGroups[groupName]) {
+        cardGroups[groupName] = []; // Если группа не существует, создаем её
     }
-    cardGroups[groupNameId].push(card); // Добавляем карту в группу
-
+    cardGroups[groupName].push(card); // Добавляем карту в группу
     // Сериализуем объект в строку
     var serializedData = JSON.stringify(cardGroups);
-    setCookie('cardGroups', encodeURIComponent(serializedData));
+
+    setCookie('cardGroups',encodeURIComponent(serializedData));
 }
 
 // Функция для сохранения данных в куки
