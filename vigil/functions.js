@@ -753,9 +753,14 @@ function saveCardGroupsToCookies(groupName, card) {
 	
 	groupNameId = groupNameId + 1;
 	
+	groupNameId = '#'+groupNameId;
+	
     // Сохраняем полное имя группы в отдельной куке
     setCookie(`groupName_${groupNameId}`, groupName);
 		
+	}
+	else{
+		groupNameId = '#'+groupNameId;
 	}
 
     // Добавляем карту в указанную группу или создаем новую группу, если она не существует
