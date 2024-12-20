@@ -1138,7 +1138,7 @@ function showPopupMantra(blockId,weekId,week,doit,position) {
         var textMantraPovtoryate = 'другим';
     }
     
-    document.getElementById('buttonCloseMantra').style.width = '50%';
+    document.getElementById('buttonCloseMantra').style.width = '80%';
     document.getElementById('weekMantra').style.width = '10%';
     document.getElementById('doitMantra').style.width = '10%';
     document.getElementById('buttonCloseMantra').onclick = () => {closePopupMantra(position); };
