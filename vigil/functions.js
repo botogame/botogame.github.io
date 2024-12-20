@@ -309,7 +309,7 @@ if(name == 'cardGroups'){
 	
     let fullNameCardGroups = {};
 
-    for (let groupNameId in cardGroups) {
+    for (let groupNameId in cardGroupsPre) {
         // Восстанавливаем полное имя группы из отдельной куки
         let fullName = getCookie(`groupName_${groupNameId}`) || groupNameId;
         fullNameCardGroups[fullName] = cardGroups[groupNameId];
