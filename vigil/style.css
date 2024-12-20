@@ -529,6 +529,9 @@
    .none{
        display: none;
    }
+   .card-link3 {
+    background-color: gray;
+}
            
    /* Медиазапрос для мобильных устройств */
    @media only screen and (max-width: 768px) {
