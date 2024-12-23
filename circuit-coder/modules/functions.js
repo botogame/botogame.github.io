@@ -143,8 +143,7 @@ class NestedArrayBuilder {
             };
             ul.appendChild(li);
             if (item.children.length > 0) {
-                level = level + 1;
-                this.renderList(item.children, li, level);
+                this.renderList(item.children, li, level + 1);
             }
         });
         parentElement.appendChild(ul);
@@ -179,8 +178,7 @@ class NestedArrayBuilder {
                 selectElement.appendChild(option);
 
                 if (item.children.length > 0) {
-                    level = level + 1;
-                    this.addOptions(selectElement, item.children, level);
+                    this.addOptions(selectElement, item.children, level + 1);
                 }
             }
         });
