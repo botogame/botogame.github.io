@@ -999,6 +999,10 @@ function setupOnLoad() {
         optionElement.textContent = option.text;
         selectUklad.appendChild(optionElement);
     });
+	
+        if (getCookie("gender") != undefined) {
+            document.getElementById("gender").value = getCookie("gender");
+        }
 
     if (getCookie("startCard") != undefined) {
         set_result(getCookie("gender"), getCookie("startCard"), getCookie("endCard"), getCookie("needType"), getCookie("wish"), getCookie("symvol_text"));
@@ -1015,9 +1019,6 @@ function setupOnLoad() {
             setMsgToUser('start','Пасьянс Медичи помогает в сложных ситуациях, а Бдилка выявляет скрытые желания. Перед вами инструмент настоящей свободы в мире, где ваши границы сознания станут как спасением, так и ловушкой. Если это первый расклад, то ставьте последней картой: 8. Полную инструкцию смотрите на <a class="a_info" href="https://github.com/botogame/botogame/blob/main/freedom/interaction/vigil/README.md">сайте разработчика</a>. Мигающие карты кликабельны, там история желаний!');
         }
 
-        if (getCookie("gender") != undefined) {
-            document.getElementById("gender").value = getCookie("gender");
-        }
     }
 
     // Инициализация списка направлений при загрузке страницы
