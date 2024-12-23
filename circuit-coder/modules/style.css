@@ -71,9 +71,9 @@ button {
 .function {
     cursor: pointer;
     padding: 3px;
-    color: #fe019a;
+    color: #FF5F1F;
     transition: background-color 0.3s;
-    box-shadow: inset 0px 0px 81px 17px rgba(254, 1, 154, 0.5), 0px 0px 20px 4px rgba(254, 1, 154, 0.5);
+    box-shadow: inset 0px 0px 81px 17px rgba(255, 95, 31, 0.5), 0px 0px 20px 4px rgba(255, 95, 31, 0.5);
 }
 .button-group {
     flex-wrap: wrap;
@@ -108,7 +108,7 @@ button {
     background-color: #5555ff;
 }
 #function:checked + label {
-    background-color: #fe019a;
+    background-color: #FF5F1F;
 }
 a {
     color: gray;
