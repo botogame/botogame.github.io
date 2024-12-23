@@ -720,7 +720,7 @@ function highlightSequence(matrix) {
         setTimeout(() => {
             if (currentGroupIndexWiew == -2) {
                 currentGroupIndexWiew = -1;
-                var cardNext = "<img src="https://botogame.github.io/vigil/favicon.png?v=1.0" style="max-width:35px;margin-bottom:-10px;">";
+                var cardNext = '<img src="./favicon.png?v=1.0" style="max-width:35px;margin-bottom:-10px;">';
             } else {
                 var cardNext = getNextCard();
             }
