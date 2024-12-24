@@ -1027,6 +1027,9 @@ function setupOnLoad() {
     if (typeof Website2APK !== "undefined") {
         document.getElementById("buttonClose").style.display = "block";
     }
+    else{
+        document.getElementById("buttonAndroid").style.display = "block";
+    }
 	
 	
     clear_input_error(document.getElementById("startCard"), true, false,false);
