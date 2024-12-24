@@ -7,13 +7,45 @@
         <meta name="keywords" content="Пасьянс Медичи, ПМ, Бдилка, Волков Андрей, желания" />
         <meta name="description" content="Пасьянс Медичи помогает в сложных ситуациях, а Бдилка выявляет скрытые желания. Перед вами инструмент настоящей свободы в мире, где ваши границы сознания станут как спасением, так и ловушкой." />
         <link rel="icon" type="image/x-icon" href="./favicon.png?v=1.0" />
-        <link rel="stylesheet" href="./style.css?v=4.11" />
-        <script src="./functions.js?v=4.14"></script>
+        <link rel="stylesheet" href="./style.css?v=4.15" />
+        <script src="./functions.js?v=4.15"></script>
         <script src="./config.js?v=4.0"></script>
         <style></style>
     </head>
 
     <body>
+        <!-- Модальное окно -->
+        <div id="matrixModal" class="modal">
+            <div class="modal-content">
+                <span class="close" onclick="closeModal()">&times;</span>
+                <div class="modal-header">
+                    Расклады
+                </div>
+                <table id="matrix"></table>
+                <button id="button5" class="open-modal-btn" onclick="freeMartix()">Освободить грибницу</button>
+                <!-- Миниатюрный листинг раскладов -->
+                <div id="cardListContainer">
+                    <ul id="cardList" class="card-list"></ul>
+                </div>
+                <button id="button3" class="open-modal-btn" onclick="deleteCardGroupsCookies()">Очистить историю</button>
+            </div>
+        </div>
+
+        <div id="popupMantra" class="popup-overlayMantra">
+            <div class="popup-contentMantra">
+                <div class="image-backgroundMantra">
+                    <div class="text-overlayMantra">
+                    <p id="textMantra"></p>
+                    Повторяйте мантру пока не почуствуете что вы стали <text id="textMantraPovtoryate">другим</text>.<br><br>
+                    <img id="weekMantra" src="">
+                    <img id="doitMantra" src="">
+                    <br>
+                    <button class="close-btnMantra" id="buttonCloseMantra" onclick="closePopupMantra()"><b id="textCloseMantra">Я прошёл</b> ⛩️</button>
+                    <button class="close-btnMantra" id="buttonCloseMantra2" onclick="closePopupMantra();updateDayNow();" style="width:80%;">Сменить день недели</button>
+                    </div>
+                </div>
+            </div>
+        </div>
         <div class="container">
             <div id="overlay"><b>Cпасибо!</b></div>
 
@@ -83,49 +115,16 @@
 
             <button id="button" onclick="getCard()">Получить расклад</button>
             <button id="buttonClose" onclick="Website2APK.exitApp()">Закрыть программу</button>
+            <button id="buttonAndroid" onclick="window.location = 'https://botogame.github.io/vigil/ПМ_Бдилка.apk';">Приложение на телефон (android)</button>
             <br />
             <br />
             <p>
                 <center>
-                    Версия 4.14
+                    Версия 4.15
                     <span class="separator">|</span>
                     <a class="a_info2" target="_blank" href="https://github.com/botogame/botogame/blob/main/freedom/interaction/vigil/README.md">сайт разработчика</a>
                 </center>
             </p>
         </div>
-
-        <!-- Модальное окно -->
-        <div id="matrixModal" class="modal">
-            <div class="modal-content">
-                <span class="close" onclick="closeModal()">&times;</span>
-                <div class="modal-header">
-                    Расклады
-                </div>
-                <table id="matrix"></table>
-                <button id="button5" class="open-modal-btn" onclick="freeMartix()">Освободить грибницу</button>
-                <!-- Миниатюрный листинг раскладов -->
-                <div id="cardListContainer">
-                    <ul id="cardList" class="card-list"></ul>
-                </div>
-                <button id="button3" class="open-modal-btn" onclick="deleteCardGroupsCookies()">Очистить историю</button>
-            </div>
-        </div>
-
-        <div id="popupMantra" class="popup-overlayMantra">
-            <div class="popup-contentMantra">
-                <div class="image-backgroundMantra">
-                    <div class="text-overlayMantra">
-                    <p id="textMantra"></p>
-                    Повторяйте мантру пока не почуствуете что вы стали <text id="textMantraPovtoryate">другим</text>.<br><br>
-                    <img id="weekMantra" src="">
-                    <img id="doitMantra" src="">
-                    <br>
-                    <button class="close-btnMantra" id="buttonCloseMantra" onclick="closePopupMantra()"><b id="textCloseMantra">Я прошёл</b> ⛩️</button>
-                    <button class="close-btnMantra" id="buttonCloseMantra2" onclick="closePopupMantra();updateDayNow();" style="width:80%;">Сменить день недели</button>
-                    </div>
-                </div>
-            </div>
-        </div>
-
     </body>
 </html>
