@@ -146,6 +146,11 @@
     width: 100%;
     display: none;
    }
+   #buttonAndroid {
+    background: linear-gradient(45deg, gray, #007bbf);
+    width: 100%;
+    display: none;
+   }
    
    body {
     font-family: "Courier New", Courier, monospace;
