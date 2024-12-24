@@ -8,7 +8,7 @@
         <meta name="description" content="Пасьянс Медичи помогает в сложных ситуациях, а Бдилка выявляет скрытые желания. Перед вами инструмент настоящей свободы в мире, где ваши границы сознания станут как спасением, так и ловушкой." />
         <link rel="icon" type="image/x-icon" href="./favicon.png?v=1.0" />
         <link rel="stylesheet" href="./style.css?v=4.15" />
-        <script src="./functions.js?v=4.15"></script>
+        <script src="./functions.js?v=4.16"></script>
         <script src="./config.js?v=4.0"></script>
         <style></style>
     </head>
@@ -22,15 +22,15 @@
                     Расклады
                 </div>
                 <table id="matrix"></table>
-                <button id="button5" class="open-modal-btn" onclick="freeMartix()">Освободить грибницу</button>
+                <button id="button5" class="open-modal-btn" onclick="freeMartix()">Освободить расклады на реализацию</button>
                 <!-- Миниатюрный листинг раскладов -->
                 <div id="cardListContainer">
                     <ul id="cardList" class="card-list"></ul>
                 </div>
-                <button id="button3" class="open-modal-btn" onclick="deleteCardGroupsCookies()">Очистить историю</button>
+                <button id="button3" class="open-modal-btn" onclick="deleteCardGroupsCookies()">Удалить расклады</button>
             </div>
         </div>
-
+        <!-- Модальное окно -->
         <div id="popupMantra" class="popup-overlayMantra">
             <div class="popup-contentMantra">
                 <div class="image-backgroundMantra">
@@ -46,6 +46,7 @@
                 </div>
             </div>
         </div>
+        <!-- Рабочее окно -->
         <div class="container">
             <div id="overlay"><b>Cпасибо!</b></div>
 
@@ -120,7 +121,7 @@
             <br />
             <p>
                 <center>
-                    Версия 4.15
+                    Версия 4.16
                     <span class="separator">|</span>
                     <a class="a_info2" target="_blank" href="https://github.com/botogame/botogame/blob/main/freedom/interaction/vigil/README.md">сайт разработчика</a>
                 </center>
