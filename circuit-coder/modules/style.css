@@ -147,7 +147,7 @@ b {
 }
 
 .section_item_id{
-	background-color: #f0f0f0;padding: 2px 5px;border-radius: 3px;
+	background-color: gray;padding: 2px 5px;border-radius: 3px;
 }
 .section_item_svg{
 	cursor: pointer;width: 16px;height: 16px;
