@@ -1,153 +1,58 @@
-body {
-    background: url(./background.webp) repeat #2e2e2e;
-    backdrop-filter: blur(5px);
-    color: #b8b8b8;
-    font-family: Arial, sans-serif;
-    margin: 0;
-    padding: 20px;
-    box-sizing: border-box;
-}
-ul {
-    list-style-type: none;
-    padding: 0;
-}
-#output {
-    margin-top: 10px;
-    background-color: #2e2e2e;
-    box-sizing: border-box;
-    width: 100%;
-    height: 500px;
-}
-#output2 {
-    background-color: #2e2e2e;
-    box-sizing: border-box;
-    width: 100%;
-    height: 300px;
-}
-li {
-    cursor: pointer;
-    margin: 10px;
-    border-radius: 5px;
-    transition: background-color 0.3s;
-}
-select,
-input,
-button {
-    margin: 5px 0;
-    padding: 10px;
-    border: none;
-    border-radius: 5px;
-    box-sizing: border-box;
-    width: 100%;
-    max-width: 100%;
-}
-button {
-    background-color: #121313;
-    color: #ffffff;
-    cursor: pointer;
-    transition: background-color 0.3s;
-}
-.teg {
-    border-radius: 6px;
-    cursor: pointer;
-    padding: 3px;
-    color: #39ff14;
-    transition: background-color 0.3s;
-    box-shadow: inset 0px 0px 81px 17px rgba(57, 255, 20, 0.5), 0px 0px 20px 4px rgba(57, 255, 20, 0.5);
-}
-.atribut {
-    border-radius: 6px;
-    cursor: pointer;
-    padding: 3px;
-    color: #bc13fe;
-    transition: background-color 0.3s;
-    box-shadow: inset 0px 0px 81px 17px rgba(188, 19, 254, 0.5), 0px 0px 20px 4px rgba(188, 19, 254, 0.5);
-}
-.reflex {
-    border-radius: 6px;
-    cursor: pointer;
-    padding: 3px;
-    color: #5555ff;
-    transition: background-color 0.3s;
-    box-shadow: inset 0px 0px 81px 17px rgba(85, 85, 255, 0.5), 0px 0px 20px 4px rgba(85, 85, 255, 0.5);
-}
-.function {
-    border-radius: 6px;
-    cursor: pointer;
-    padding: 3px;
-    color: #FF5F1F;
-    transition: background-color 0.3s;
-    box-shadow: inset 0px 0px 81px 17px rgba(255, 95, 31, 0.5), 0px 0px 20px 4px rgba(255, 95, 31, 0.5);
-}
-.button-group {
-    flex-wrap: wrap;
-    gap: 10px;
-    margin-bottom: 20px;
-    text-align: center;
-}
-.button-group input[type="radio"] {
-    display: none;
-}
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Чистый код. Схемокодер</title>
+        <link rel="icon" href="./modules/favicon.png?v=1.5" type="image/x-icon" />
+        <link rel="stylesheet" href="./modules/style.css?v=1.10" />
+        <script src="./modules/functions.js?v=1.8"></script>
+        <script src="./modules/config.js?v=1.3"></script>
+    </head>
+    <body>
+        <div>
+            <div class="button-group">
+                <h2>
+                    Чистый&nbsp;код&nbsp;{
+                    <b id="placeholder"><img src="./modules/favicon.png?v=1.5" style="max-width:28px;margin-bottom:-8px;"></b>
+                    <span id="dynamic-content"></span>
+                    }&nbsp;Схемокодер
+                </h2>
+            </div>
+            <input type="text" id="itemName" autocomplete="off" placeholder="Команда" />
+            <select id="parentId">
+                <option value="">Корень программы</option>
+            </select>
+            <button id="addItem" style="display: inline;" onclick="addItem()">Добавить элемент</button>
+            <button id="updateItem" style="display: none;" onclick="updateItem()">Сохранить элемент</button>
+            <button id="deleteItem" style="display: none;" onclick="deleteItem()">Удалить элемент</button>
+            <button id="closeupdateItem" style="display: none;" onclick="builder.unselectItem()">Отменить изменение</button>
+        </div>
+        <hr />
+        <div id="nested-list">Собираться схема будет здесь.</div>
+        <hr />
+        <button id="runButton" onclick="runSequence()">Тестовый запуск</button><br />
+        Тестовый запуск пока включает в себя:<br />
+        1. последовательный авто-проход по элементам (игнор контейнеров на 1-м уровне).<br />
+        2. для рефлекса понимает команду "продолжить с другого элемента": <mark>перейти на {id: N}</mark><br />
+        3. контейнеры в корне программы "игнорируются авто-проходом" и им присваивается статус модульный: <mark>TAG_NAME модульный</mark><br />
+        4. для рефлекса понимает команду "заинклудить модульный контейнер": <mark>подключить {id: N}</mark><br />
+        p.s. значение N заменять на число, например: подключить {id: 23}<br />
+        p.s. максимум вложенных инклудов (для тестового запуска): 2.<br />
+        p.s. максимум зациклиенных переходов (для сформированной страницы): 10.<br />
+        p.s. фукционал не выполняется<br />
+        p.s. в атрибуты можно пока добавлять только стили и innerText
 
-.button-group label {
-    color: #ffffff;
-}
-.button-group label {
-    padding: 10px 20px;
-    border-radius: 5px;
-    cursor: pointer;
-    transition: background-color 0.3s, box-shadow 0.3s;
-    background-color: #121313;
-}
-.button-group input[type="radio"]:checked + label {
-    box-shadow: 0px 0px 10px 2px rgba(255, 255, 255, 0.5);
-}
-#teg:checked + label {
-    background-color: #39ff14;
-}
-#atribut:checked + label {
-    background-color: #bc13fe;
-}
-#reflex:checked + label {
-    background-color: #5555ff;
-}
-#function:checked + label {
-    background-color: #FF5F1F;
-}
-a {
-    color: gray;
-}
-b {
-    color: white;
-}
-.highlight {
-    background-color: #cfff04;
-}
-.highlight2 {
-    text-shadow: 0 0 15px #ffffff, 0 0 20px #ffffff, 0 0 35px #ffffff;
-}
-
-.button-group {
-    display: flex;
-    flex-wrap: wrap;
-    align-items: center;
-}
-
-.button-group h2 {
-    display: inline-block;
-    align-items: center;
-    margin: 0;
-}
-
-#dynamic-content label {
-    display: inline-block;
-    margin: 10px;
-    margin-top: 3px;
-}
-
-.section_item_id{
-	background-color: #b8b8b8;padding: 2px 5px;border-radius: 3px;
-}
-.section_item_svg{
-	cursor: pointer;width: 16px;height: 16px;
-}
+        <hr />
+        Ниже будет формироваться страница, которая пока отображает любые тэги например "<mark>table</mark>", "<mark>tr</mark>", "<mark>td</mark>" (контейнеров), задает текст тэгам "<mark>innerText: TEXT</mark>" (атрибутов) и задат любой
+        стиль тэгам например "<mark>color: green</mark>", "<mark>text-shadow: 0 0 15px red</mark>" (атрибутов):
+        <iframe id="output" readonly></iframe>
+        <br />
+        <br />
+        Код сформированной страницы:
+        <textarea id="output2"></textarea>
+        <br />
+        <br />
+        <center><b style="padding-bottom:10px;">Версия 1.10 | </b><a target="_blank" href="https://github.com/botogame/botogame/blob/main/freedom/distribution/circuit_coder/README.md">страница разработчика</a></center>
+    </body>
+</html>
