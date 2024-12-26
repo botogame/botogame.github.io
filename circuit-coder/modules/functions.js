@@ -231,21 +231,23 @@ class NestedArrayBuilder {
         items.forEach((item) => {
             const li = document.createElement("li");
             var name = item.name;
+			
+            var liData = `<span class="${item.type}"><text class="section_item_id">id: ${item.id}</text> `;
+			
             if (item.type === "teg" && level == 1) {
-                name = name + " модульный";
+                liData = liData + `<text class="section_item_id">модульный</text> `;
             }
 			
-            var liData = `<span class="${item.type}"><text style="background-color: #f0f0f0;padding: 2px 5px;border-radius: 3px;">id: ${item.id}</text> 
-			<b>${name}</b> 
+			liData = liData + `<b>${name}</b> `;
 			
-			<a href="#" onclick="builder.selectItem(${item.id});" style="background-color: #f0f0f0;padding: 2px 5px;border-radius: 3px;" title="Редактировать"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" style="fill: gray;cursor: pointer;width: 16px;height: 16px;"><path d="M3 17.25V21h3.75l11.06-11.06-3.75-3.75L3 17.25zm2.92-2.92l9.06-9.06 3.75 3.75-9.06 9.06H5.92v-3.75z"></path></svg></a>`;
+			liData = liData + `<a href="#" onclick="builder.selectItem(${item.id});" class="section_item_id" title="Редактировать"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" class="section_item_svg"><path d="M3 17.25V21h3.75l11.06-11.06-3.75-3.75L3 17.25zm2.92-2.92l9.06-9.06 3.75 3.75-9.06 9.06H5.92v-3.75z"></path></svg></a>`;
 			
 			if(builder.checkmoveItem(item.id, 'up')){
-				liData = liData + ` <a href="#" onclick="builder.moveItem(${item.id}, 'up')" style="background-color: #f0f0f0;padding: 2px 5px;border-radius: 3px;"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" style="fill: gray;cursor: pointer;width: 16px;height: 16px;"><path d="M7 14l5-5 5 5H7z"></path></svg></a>`;
+				liData = liData + ` <a href="#" onclick="builder.moveItem(${item.id}, 'up')" class="section_item_id" title="Поднять вверх"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" class="section_item_svg"><path d="M7 14l5-5 5 5H7z"></path></svg></a>`;
 			}
 			
 			if(builder.checkmoveItem(item.id, 'down')){
-				liData = liData + ` <a onclick="builder.moveItem(${item.id}, 'down')" style="background-color: #f0f0f0;padding: 2px 5px;border-radius: 3px;"><svg style="fill: gray;cursor: pointer;width: 16px;height: 16px;"  xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M7 10l5 5 5-5H7z"></path></svg></a>`;
+				liData = liData + ` <a onclick="builder.moveItem(${item.id}, 'down')" class="section_item_id" title="Опустить вниз"><svg class="section_item_svg"  xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M7 10l5 5 5-5H7z"></path></svg></a>`;
 			}
 			
 			liData = liData + `<\/span>`;
@@ -287,7 +289,7 @@ class NestedArrayBuilder {
                 var prefix = "&nbsp;".repeat(level * 2);
                 var name = item.name;
                 if (item.type === "teg" && level == 1) {
-                    name = name + " модульный";
+                    name = "[модульный] " + name;
                 }
                 option.innerHTML = `${prefix}[id: ${item.id}] ${name}`;
                 selectElement.appendChild(option);
