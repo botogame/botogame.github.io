@@ -33,6 +33,104 @@ class NestedArrayBuilder {
             }
         }
     }
+	
+	
+    moveItem(id, direction) {
+        const move = (list) => {
+                 console.error(list);
+            const index = list.findIndex(item => {
+                 console.error(`check: ${item.id}.`);
+                    return Number(item.id) === Number(id);
+                });
+            if (index === -1){
+				return false;
+				}
+
+            const currentItem = list[index];
+			
+            if (direction === 'up' && index > 0) {
+				
+            const upperItem = list[index - 1];
+
+            // Проверка на невозможность перемещения вверх
+            if (currentItem.type !== 'atribute' && upperItem.type === 'atribute') {
+                return false;
+            }
+                [list[index - 1], list[index]] = [list[index], list[index - 1]];
+                return true;
+            } else if (direction === 'down' && index < list.length - 1) {
+				
+            const downItem = list[index + 1];
+			
+            if (currentItem.type === 'atribute' && downItem.type !== 'atribute') {
+                return false;
+            }
+                [list[index], list[index + 1]] = [list[index + 1], list[index]];
+                return true;
+            }
+			
+            return false;
+        };
+
+        const traverseAndMove = (list) => {
+            if (move(list)) return true;
+            for (const item of list) {
+                if (traverseAndMove(item.children)) return true;
+            }
+            return false;
+        };
+
+        if(traverseAndMove(this.items)){
+			render();
+		}
+    }
+	
+    checkmoveItem(id, direction) {
+        const move = (list) => {
+                 console.error(list);
+            const index = list.findIndex(item => {
+                    return Number(item.id) === Number(id);
+                });
+            if (index === -1){
+				return false;
+				}
+
+				
+            const currentItem = list[index];
+			
+            if (direction === 'up' && index > 0) {
+				
+            const upperItem = list[index - 1];
+
+            // Проверка на невозможность перемещения вверх
+            if (currentItem.type !== 'atribut' && upperItem.type === 'atribut') {
+                return false;
+            }
+			
+                return true;
+            } else if (direction === 'down' && index < list.length - 1) {
+				
+            const downItem = list[index + 1];
+			
+            if (currentItem.type === 'atribut' && downItem.type !== 'atribut') {
+                return false;
+            }
+                return true;
+            }
+			
+            return false;
+        };
+
+        const traverseAndMove = (list) => {
+            if (move(list)) return true;
+            for (const item of list) {
+                if (traverseAndMove(item.children)) return true;
+            }
+            return false;
+        };
+
+        return traverseAndMove(this.items);
+    }
 
     updateItem(id, name, type, newParentId = null) {
         const item = this.findItemById(this.items, id);
@@ -136,11 +234,28 @@ class NestedArrayBuilder {
             if (item.type === "teg" && level == 1) {
                 name = name + " модульный";
             }
-            li.innerHTML = `<b class="${item.type}">${name} [id: ${item.id}]<\/b>`;
-            li.onclick = (event) => {
-                event.stopPropagation();
-                this.selectItem(item.id);
-            };
+			
+            var liData = `<span class="${item.type}"><text style="background-color: #f0f0f0;padding: 2px 5px;border-radius: 3px;">id: ${item.id}</text> 
+			<b>${name}</b> 
+			
+			<a href="#" onclick="builder.selectItem(${item.id});" style="background-color: #f0f0f0;padding: 2px 5px;border-radius: 3px;" title="Редактировать"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" style="fill: gray;cursor: pointer;width: 16px;height: 16px;"><path d="M3 17.25V21h3.75l11.06-11.06-3.75-3.75L3 17.25zm2.92-2.92l9.06-9.06 3.75 3.75-9.06 9.06H5.92v-3.75z"></path></svg></a>`;
+			
+			if(builder.checkmoveItem(item.id, 'up')){
+				liData = liData + ` <a href="#" onclick="builder.moveItem(${item.id}, 'up')" style="background-color: #f0f0f0;padding: 2px 5px;border-radius: 3px;"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" style="fill: gray;cursor: pointer;width: 16px;height: 16px;"><path d="M7 14l5-5 5 5H7z"></path></svg></a>`;
+			}
+			
+			if(builder.checkmoveItem(item.id, 'down')){
+				liData = liData + ` <a onclick="builder.moveItem(${item.id}, 'down')" style="background-color: #f0f0f0;padding: 2px 5px;border-radius: 3px;"><svg style="fill: gray;cursor: pointer;width: 16px;height: 16px;"  xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M7 10l5 5 5-5H7z"></path></svg></a>`;
+			}
+			
+			liData = liData + `<\/span>`;
+			
+			li.innerHTML = liData;
+			
+            //li.onclick = (event) => {
+               // event.stopPropagation();
+               // this.selectItem(item.id);
+            //};
             ul.appendChild(li);
             if (item.children.length > 0) {
                 this.renderList(item.children, li, level + 1);
@@ -187,16 +302,17 @@ class NestedArrayBuilder {
     generateOutput() {
         return JSON.stringify(this.items, null, 2);
     }
-
-    selectItem(id) {
-        if (this.selectedItemId === id) {
-            // Если элемент уже выбран, снимаем выделение
-            this.selectedItemId = null;
+	
+	
+    unselectItem() {
+		
+		this.selectedItemId = null;
 
             // Сбрасываем форму и возвращаем в режим добавления
             document.getElementById("addItem").style.display = "inline";
             document.getElementById("updateItem").style.display = "none";
             document.getElementById("deleteItem").style.display = "none";
+            document.getElementById("closeupdateItem").style.display = "none";
             document.getElementById("itemName").value = "";
             document.getElementById("parentId").value = "";
 
@@ -211,13 +327,21 @@ class NestedArrayBuilder {
                     input.checked = false; // Убираем checked для всех остальных
                 }
             });
-        } else {
-            // Если элемент не выбран, выделяем его
+		
+	}
+
+    selectItem(id) {
+        // Если элемент не выбран, выделяем его
             this.selectedItemId = id;
             const item = this.findItemById(this.items, id);
             if (item) {
+				
+            document.getElementById("updateItem").innerText = "Сохранить элемент [id: "+id+"]";
+            document.getElementById("deleteItem").innerText = "Удалить элемент  [id: "+id+"]";
+			
                 document.getElementById("addItem").style.display = "none";
                 document.getElementById("updateItem").style.display = "inline";
+                document.getElementById("closeupdateItem").style.display = "inline";
                 document.getElementById("deleteItem").style.display = "inline";
                 document.getElementById("itemName").value = item.name;
                 const parent = this.findParentById(this.items, id);
@@ -237,7 +361,6 @@ class NestedArrayBuilder {
 
                 builder.updateParentOptions();
             }
-        }
     }
 }
 
@@ -273,6 +396,7 @@ function updateItem() {
 
     document.getElementById("addItem").style.display = "inline";
     document.getElementById("updateItem").style.display = "none";
+    document.getElementById("closeupdateItem").style.display = "none";
     document.getElementById("deleteItem").style.display = "none";
 
     const itemName = document.getElementById("itemName").value;
@@ -290,6 +414,10 @@ function deleteItem() {
         alert("Пожалуйста, выберите элемент для удаления.");
         return;
     }
+    document.getElementById("addItem").style.display = "inline";
+    document.getElementById("updateItem").style.display = "none";
+    document.getElementById("closeupdateItem").style.display = "none";
+    document.getElementById("deleteItem").style.display = "none";
     builder.deleteItem(builder.selectedItemId);
     builder.selectedItemId = null;
     render();
@@ -335,11 +463,17 @@ function runSequence() {
 
     const listItems = document.querySelectorAll("#nested-list li");
     let index = 0;
+	
     let relocation_index = false;
-    let doit_index_out = false;
+	
+	let doit_postion = 0;
+	let doit_data = {};
+    let index_out = false;
+	
     let doit_index = false;
     let doit_index_exists = false;
-    let index_out = false;
+    let doit_index_out = false;
+    let doit_index_out_see = false;
 
     let doit_index2 = false;
     let doit_index_exists2 = false;
@@ -366,9 +500,14 @@ function runSequence() {
             return;
         }
 
+
+        console.log("set index: " + index);
+
         let relocation_exists = false;
-        if (index > 0) {
-            listItems[index - 1].classList.remove("highlight");
+        if (index > 0 && doit_index_exists !== index && doit_index_exists2 !== index && doit_index_exists3 !== index) {
+            if(listItems[index - 1]){
+				listItems[index - 1].classList.remove("highlight");
+			}
         }
         if (relocation_index !== false) {
             listItems[relocation_index].classList.remove("highlight");
@@ -379,24 +518,28 @@ function runSequence() {
             listItems[index_out].classList.remove("highlight");
             index_out = false;
         }
+			
         if (index < listItems.length) {
-            const currentItem = listItems[index];
-            const itemData = currentItem.querySelector("b");
+		
+        var currentItem = listItems[index];
+        var itemData = currentItem.querySelector("span");
 
-            if (!relocation_exists && (doit_index_exists === false || doit_index_exists !== index)) {
-                doit_index_exists = false;
-                const isTegWithPhrase = itemData.classList.contains("teg") && itemData.textContent.includes(" модульный");
+            if (!relocation_exists && doit_index_exists !== index && doit_index_exists2 !== index && doit_index_exists3 !== index) {
+				
+                var isTegWithPhrase = itemData.classList.contains("teg") && itemData.textContent.includes(" модульный");
+
 
                 if (isTegWithPhrase) {
-                    console.log("detect break run: " + index);
-                    const countIn = currentItem.querySelectorAll("b").length;
+                    var countIn = currentItem.querySelectorAll("span").length;
                     for (let i = 1; i <= countIn; i += 1) {
+						
                         index++;
                     }
                     setTimeout(highlightNext, 0);
                     return;
                 }
             }
+
 
             currentItem.classList.add("highlight");
 
@@ -432,22 +575,28 @@ function runSequence() {
                 doit_index_out2see = false;
                 index_out = doit_index_out;
                 doit_index_out = false;
+				doit_index_exists = false;
+                doit_index_exists2 = false;
+				doit_index_exists3 = false;
                 index = doit_index;
                 doit_index = false;
 
                 console.log("detect default item on out 1 level run: " + index);
                 index++;
             } else if (doit_index_out2see === index) {
+				doit_index_exists2 = false;
+				doit_index_exists3 = false;
                 console.log("detect default item on out 2 level run: " + index);
                 index++;
             } else if (doit_index_out3see === index) {
+				doit_index_exists3 = false;
                 console.log("detect default item on out 3 level run: " + index);
                 console.log("detect default item: " + index);
                 index++;
             } else if (doit) {
                 const targetId = parseInt(doit[1]);
                 const targetIndex = Array.from(listItems).findIndex((item) => {
-                    const itemIdMatch = item.querySelector("b").textContent.match(/\[id: (\d+)\]/);
+                    const itemIdMatch = item.querySelector("text").textContent.match(/id: (\d+)/);
                     return itemIdMatch && parseInt(itemIdMatch[1]) === targetId;
                 });
 
@@ -460,7 +609,7 @@ function runSequence() {
                         doit_index = doit_index_reload;
                         doit_index_exists = index;
                         doit_index_out = targetIndex;
-                        const countIn = listItems[index].querySelectorAll("b").length;
+                        const countIn = listItems[index].querySelectorAll("span").length;
                         for (let i = 1; i < countIn; i += 1) {
                             doit_index_out++;
                         }
@@ -468,9 +617,8 @@ function runSequence() {
                         console.log("detect in 2 level run: " + index);
                         doit_index2 = doit_index_reload;
                         doit_index_exists2 = index;
-                        relocation_index = doit_index2;
                         doit_index_out2 = targetIndex;
-                        const countIn = listItems[index].querySelectorAll("b").length;
+                        const countIn = listItems[index].querySelectorAll("span").length;
                         for (let i = 1; i < countIn; i += 1) {
                             doit_index_out2++;
                         }
@@ -478,9 +626,8 @@ function runSequence() {
                         console.log("detect in 3 level run: " + index);
                         doit_index3 = doit_index_reload;
                         doit_index_exists3 = index;
-                        relocation_index = doit_index3;
                         doit_index_out3 = targetIndex;
-                        const countIn = listItems[index].querySelectorAll("b").length;
+                        const countIn = listItems[index].querySelectorAll("span").length;
                         for (let i = 1; i < countIn; i += 1) {
                             doit_index_out3++;
                         }
@@ -492,7 +639,7 @@ function runSequence() {
                 console.log("detect relocation: " + index);
                 const targetId = parseInt(relocation[1]);
                 const targetIndex = Array.from(listItems).findIndex((item) => {
-                    const itemIdMatch = item.querySelector("b").textContent.match(/\[id: (\d+)\]/);
+                    const itemIdMatch = item.querySelector("span").textContent.match(/id: (\d+)/);
                     return itemIdMatch && parseInt(itemIdMatch[1]) === targetId;
                 });
 
@@ -503,7 +650,8 @@ function runSequence() {
                     index++;
                 }
             } else {
-                console.log("detect default item: " + index);
+				
+                console.log("detect unknout command: " + index);
                 index++;
             }
 
