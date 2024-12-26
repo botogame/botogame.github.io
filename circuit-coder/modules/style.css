@@ -48,6 +48,7 @@ button {
     transition: background-color 0.3s;
 }
 .teg {
+    border-radius: 6px;
     cursor: pointer;
     padding: 3px;
     color: #39ff14;
@@ -55,6 +56,7 @@ button {
     box-shadow: inset 0px 0px 81px 17px rgba(57, 255, 20, 0.5), 0px 0px 20px 4px rgba(57, 255, 20, 0.5);
 }
 .atribut {
+    border-radius: 6px;
     cursor: pointer;
     padding: 3px;
     color: #bc13fe;
@@ -62,6 +64,7 @@ button {
     box-shadow: inset 0px 0px 81px 17px rgba(188, 19, 254, 0.5), 0px 0px 20px 4px rgba(188, 19, 254, 0.5);
 }
 .reflex {
+    border-radius: 6px;
     cursor: pointer;
     padding: 3px;
     color: #5555ff;
@@ -69,6 +72,7 @@ button {
     box-shadow: inset 0px 0px 81px 17px rgba(85, 85, 255, 0.5), 0px 0px 20px 4px rgba(85, 85, 255, 0.5);
 }
 .function {
+    border-radius: 6px;
     cursor: pointer;
     padding: 3px;
     color: #FF5F1F;
@@ -114,7 +118,7 @@ a {
     color: gray;
 }
 b {
-    color: gray;
+    color: white;
 }
 .highlight {
     text-shadow: 0 0 15px #ffffff, 0 0 20px #ffffff, 0 0 35px #ffffff;
