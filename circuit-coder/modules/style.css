@@ -121,8 +121,7 @@ b {
     color: white;
 }
 .highlight {
-    text-shadow: 0 0 15px #ffffff, 0 0 20px #ffffff, 0 0 35px #ffffff;
-    background-color: #ffffff;
+    background-color: #cfff04;
 }
 .highlight2 {
     text-shadow: 0 0 15px #ffffff, 0 0 20px #ffffff, 0 0 35px #ffffff;
