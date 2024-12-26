@@ -6,7 +6,7 @@
         <title>Чистый код. Схемокодер</title>
         <link rel="icon" href="./modules/favicon.png?v=1.5" type="image/x-icon" />
         <link rel="stylesheet" href="./modules/style.css?v=1.4" />
-        <script src="./modules/functions.js?v=1.6"></script>
+        <script src="./modules/functions.js?v=1.7"></script>
         <script src="./modules/config.js?v=1.3"></script>
     </head>
     <body>
@@ -26,6 +26,7 @@
             <button id="addItem" style="display: inline;" onclick="addItem()">Добавить элемент</button>
             <button id="updateItem" style="display: none;" onclick="updateItem()">Сохранить элемент</button>
             <button id="deleteItem" style="display: none;" onclick="deleteItem()">Удалить элемент</button>
+            <button id="closeupdateItem" style="display: none;" onclick="builder.unselectItem()">Отменить изменение</button>
         </div>
         <hr />
         <div id="nested-list">Собираться схема будет здесь.</div>
@@ -37,8 +38,10 @@
         3. контейнеры в корне программы "игнорируются авто-проходом" и им присваивается статус модульный: <mark>TAG_NAME модульный</mark><br />
         4. для рефлекса понимает команду "заинклудить модульный контейнер": <mark>подключить {id: N}</mark><br />
         p.s. значение N заменять на число, например: подключить {id: 23}<br />
-        p.s. максимум вложенных инклудов: 3.<br />
-        p.s. максимум зациклиенных переходов: 10.
+        p.s. максимум вложенных инклудов (для тестового запуска): 2.<br />
+        p.s. максимум зациклиенных переходов (для сформированной страницы): 10.<br />
+        p.s. фукционал не выполняется<br />
+        p.s. в атрибуты можно пока добавлять только стили
 
         <hr />
         Ниже будет формироваться страница, которая пока отображает любые тэги например "<mark>table</mark>", "<mark>tr</mark>", "<mark>td</mark>" (контейнеров), задает текст тэгам "<mark>innerText: TEXT</mark>" (атрибутов) и задат любой
@@ -50,6 +53,6 @@
         <textarea id="output2"></textarea>
         <br />
         <br />
-        <center><b style="padding-bottom:10px;">Версия 1.6 | </b><a target="_blank" href="https://github.com/botogame/botogame/blob/main/freedom/distribution/circuit_coder/README.md">страница разработчика</a></center>
+        <center><b style="padding-bottom:10px;">Версия 1.7 | </b><a target="_blank" href="https://github.com/botogame/botogame/blob/main/freedom/distribution/circuit_coder/README.md">страница разработчика</a></center>
     </body>
 </html>
