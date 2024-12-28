@@ -468,9 +468,9 @@ function runSequence() {
 	
     let relocation_index = false;
 	
-	let doit_postion = 0;
 	let doit_data = {};
     let index_out = false;
+    let index_out2 = false;
 	
     let doit_index = false;
     let doit_index_exists = false;
@@ -498,6 +498,9 @@ function runSequence() {
             if (index_out !== false) {
                 listItems[index_out].classList.remove("highlight");
             }
+            if (index_out2 !== false) {
+                listItems[index_out2].classList.remove("highlight");
+            }
             document.getElementById("runButton").innerText = "Запустить";
             return;
         }
@@ -520,6 +523,10 @@ function runSequence() {
             listItems[index_out].classList.remove("highlight");
             index_out = false;
         }
+            if (index_out2 !== false) {
+                listItems[index_out2].classList.remove("highlight");
+                index_out2 = false;
+            }
 			
         if (index < listItems.length) {
 		
@@ -652,8 +659,17 @@ function runSequence() {
                     index++;
                 }
             } else {
+
+                if (itemData.classList.contains("atribut")) {
+					index_out2 = index;
+                    var countIn = currentItem.querySelectorAll("span").length;
+                    for (let i = 2; i <= countIn; i += 1) {
+						
+                        index++;
+                    }
+                }
 				
-                console.log("detect unknout command: " + index);
+                console.log("detect default command: " + index);
                 index++;
             }
 
