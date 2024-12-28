@@ -470,7 +470,8 @@ function runSequence() {
 	
 	let doit_data = {};
     let index_out = false;
-    let index_out2 = false;
+    let countPropustitSvet = 0;
+    let countPropustitSvetNow = false;
 	
     let doit_index = false;
     let doit_index_exists = false;
@@ -498,9 +499,6 @@ function runSequence() {
             if (index_out !== false) {
                 listItems[index_out].classList.remove("highlight");
             }
-            if (index_out2 !== false) {
-                listItems[index_out2].classList.remove("highlight");
-            }
             document.getElementById("runButton").innerText = "Запустить";
             return;
         }
@@ -523,10 +521,6 @@ function runSequence() {
             listItems[index_out].classList.remove("highlight");
             index_out = false;
         }
-            if (index_out2 !== false) {
-                listItems[index_out2].classList.remove("highlight");
-                index_out2 = false;
-            }
 			
         if (index < listItems.length) {
 		
@@ -550,7 +544,12 @@ function runSequence() {
             }
 
 
-            currentItem.classList.add("highlight");
+            if(countPropustitSvet>0){
+				countPropustitSvet = countPropustitSvet -1;
+			}
+			else{
+				currentItem.classList.add("highlight");
+			}
 
             let relocation = false;
             if (itemData.classList.contains("reflex")) {
@@ -661,19 +660,26 @@ function runSequence() {
             } else {
 
                 if (itemData.classList.contains("atribut")) {
-					index_out2 = index;
-                    var countIn = currentItem.querySelectorAll("span").length;
-                    for (let i = 2; i <= countIn; i += 1) {
-						
-                        index++;
-                    }
+                    countPropustitSvet = currentItem.querySelectorAll("span").length - 1;
+					countPropustitSvetNow = true;
                 }
 				
                 console.log("detect default command: " + index);
                 index++;
+				
             }
+				var wait = 1000;
 
-            setTimeout(highlightNext, 1000);
+            if(countPropustitSvet>0 && countPropustitSvetNow===false){
+				var wait = 0;
+			}
+			if(countPropustitSvetNow === true){
+				countPropustitSvetNow = false;
+				
+			}
+
+            setTimeout(highlightNext, wait);
+			
         } else {
             document.getElementById("runButton").classList.remove("highlight2");
             document.getElementById("runButton").innerText = "Запустить";
