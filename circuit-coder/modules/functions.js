@@ -471,7 +471,10 @@ function runSequence() {
 	let doit_data = {};
     let index_out = false;
     let countPropustitSvet = 0;
+
     let countPropustitSvetNow = false;
+    let countPropustitSvetNow2 = false;
+    let countPropustitSvetNow3 = false;
 	
     let doit_index = false;
     let doit_index_exists = false;
@@ -504,10 +507,10 @@ function runSequence() {
         }
 
 
-        console.log("set index: " + index);
+        console.log("запрошенный индекс: " + index);
 
         let relocation_exists = false;
-        if (index > 0 && doit_index_exists !== index && doit_index_exists2 !== index && doit_index_exists3 !== index) {
+        if (index > 0 && doit_index_exists !== index && doit_index_exists2 !== index && doit_index_exists3 !== index && countPropustitSvetNow===false) {
             if(listItems[index - 1]){
 				listItems[index - 1].classList.remove("highlight");
 			}
@@ -521,6 +524,23 @@ function runSequence() {
             listItems[index_out].classList.remove("highlight");
             index_out = false;
         }
+
+        console.log("countPropustitSvetNow: " + countPropustitSvetNow);
+        console.log("countPropustitSvetNow2: " + countPropustitSvetNow2);
+        console.log("countPropustitSvetNow3: " + countPropustitSvetNow3);
+
+        if (index === countPropustitSvetNow) {
+            countPropustitSvetNow = false;
+            countPropustitSvetNow3 = true;
+        }
+        else if (countPropustitSvetNow3===true) {
+            listItems[countPropustitSvetNow2].classList.remove("highlight");
+            countPropustitSvetNow3 = false;
+        }
+
+        console.log("countPropustitSvetNow: " + countPropustitSvetNow);
+        console.log("countPropustitSvetNow2: " + countPropustitSvetNow2);
+        console.log("countPropustitSvetNow3: " + countPropustitSvetNow3);
 			
         if (index < listItems.length) {
 		
@@ -661,7 +681,10 @@ function runSequence() {
 
                 if (itemData.classList.contains("atribut")) {
                     countPropustitSvet = currentItem.querySelectorAll("span").length - 1;
-					countPropustitSvetNow = true;
+                    if(countPropustitSvet>0){
+                        countPropustitSvetNow = index + countPropustitSvet;
+                        countPropustitSvetNow2 = index;
+                    }
                 }
 				
                 console.log("detect default command: " + index);
@@ -670,14 +693,14 @@ function runSequence() {
             }
 				var wait = 1000;
 
-            if(countPropustitSvet>0 && countPropustitSvetNow===false){
+                console.log("countPropustitSvet: " + countPropustitSvet);
+                console.log("countPropustitSvetNow: " + countPropustitSvetNow);
+
+            if(countPropustitSvet>0){
 				var wait = 0;
 			}
-			if(countPropustitSvetNow === true){
-				countPropustitSvetNow = false;
-				
-			}
 
+            console.log("wait next command: " + wait);
             setTimeout(highlightNext, wait);
 			
         } else {
