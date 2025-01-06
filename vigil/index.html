@@ -7,8 +7,8 @@
         <meta name="keywords" content="Пасьянс Медичи, ПМ, Бдилка, Волков Андрей, желания" />
         <meta name="description" content="Пасьянс Медичи помогает в сложных ситуациях, а Бдилка выявляет скрытые желания. Перед вами инструмент настоящей свободы в мире, где ваши границы сознания станут как спасением, так и ловушкой." />
         <link rel="icon" type="image/x-icon" href="./favicon.png?v=1.0" />
-        <link rel="stylesheet" href="./style.css?v=4.15" />
-        <script src="./functions.js?v=4.16"></script>
+        <link rel="stylesheet" href="./style.css?v=5.0" />
+        <script src="./functions.js?v=5.0"></script>
         <script src="./config.js?v=4.0"></script>
         <style></style>
     </head>
@@ -46,6 +46,21 @@
                 </div>
             </div>
         </div>
+        <!-- Модальное окно -->
+    <div class="overlayPlanet" id="musicoverlayPlanet">
+        <div class="popupPlanet">
+            <span class="close-btnPlanet" onclick="closepopupPlanet()">X</span>
+            <h2>Синхронизатор</h2>
+            <p id="planetInfo"></p>
+            <img id="planetImage" class="planet-image" src="" alt="Planet Image">
+            <p>Пожалуйста, наденьте наушники для лучшего восприятия.</p>
+            <audio controls id="musicPlayer" loop>
+                <source id="audioSource" type="audio/mpeg">
+                Ваш браузер не поддерживает аудиоэлемент.
+            </audio>
+            <p>Прослушивая медитацию вы будете синхронизированы с мужским началом (на уровне выживания) для получения вариантов к текущей вашей действительности. От бдилки вы получаете переходы женского начала (и нужно дополняться мужским началом).</p>
+        </div>
+    </div>
         <!-- Рабочее окно -->
         <div class="container">
             <div id="overlay"><b>Cпасибо!</b></div>
@@ -115,13 +130,15 @@
             </select>
 
             <button id="button" onclick="getCard()">Получить расклад</button>
+            <button id="button" onclick="getCard()">Получить расклад</button>
             <button id="buttonClose" onclick="Website2APK.exitApp()">Закрыть программу</button>
             <button id="buttonAndroid" onclick="window.location = 'https://botogame.github.io/vigil/ПМ_Бдилка.apk';">Приложение на телефон (android)</button>
+            <button id="buttonPlanet" onclick="openpopupPlanet()">Мужское начало</button>
             <br />
             <br />
             <p>
                 <center>
-                    Версия 4.16
+                    Версия 5.0
                     <span class="separator">|</span>
                     <a class="a_info2" target="_blank" href="https://github.com/botogame/botogame/blob/main/freedom/interaction/vigil/README.md">сайт разработчика</a>
                 </center>

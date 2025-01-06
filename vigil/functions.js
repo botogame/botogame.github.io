@@ -1174,3 +1174,41 @@ function closePopupMantra(position=false) {
     }
     document.getElementById('popupMantra').style.display = 'none';
 }
+
+
+function getDayInfo() {
+    const days = [
+        { name: 'воскресенье', planet: 'Солнце', file: './sinhr/0.mp3', image: './planets/sun.png' },
+        { name: 'понедельник', planet: 'Венера', file: './sinhr/1.mp3', image: './planets/venus.png' },
+        { name: 'вторник', planet: 'Марс', file: './sinhr/2.mp3', image: './planets/mars.png' },
+        { name: 'среда', planet: 'Луна', file: './sinhr/3.mp3', image: './planets/moon.png' },
+        { name: 'четверг', planet: 'Сатурн', file: './sinhr/4.mp3', image: './planets/saturn.png' },
+        { name: 'пятница', planet: 'Юпитер', file: './sinhr/5.mp3', image: './planets/jupiter.png' },
+        { name: 'суббота', planet: 'Меркурий', file: './sinhr/6.mp3', image: './planets/mercury.png' }
+    ];
+
+    const today = new Date().getDay();
+    return days[today];
+}
+
+function openpopupPlanet() {
+    const dayInfo = getDayInfo();
+    document.getElementById('planetInfo').innerText = `Сегодня ${dayInfo.name}, день планеты ${dayInfo.planet}.`;
+    document.getElementById('audioSource').src = dayInfo.file;
+    document.getElementById('planetImage').src = dayInfo.image;
+
+    document.getElementById('musicoverlayPlanet').style.display = 'flex';
+    const audio = document.getElementById('musicPlayer');
+    audio.volume = 0.5; // Устанавливаем громкость на 50%
+    audio.load(); // Загружаем аудио
+    audio.play(); // Начинаем воспроизведение
+    document.getElementById('planetImage').classList.add('animatedPlanet');
+}
+
+function closepopupPlanet() {
+    document.getElementById('musicoverlayPlanet').style.display = 'none';
+    const audio = document.getElementById('musicPlayer');
+    audio.pause(); // Останавливаем воспроизведение
+    audio.currentTime = 0; // Сбрасываем время воспроизведения
+    document.getElementById('planetImage').classList.remove('animatedPlanet');
+}

@@ -556,6 +556,81 @@
     border-radius: 10px;
     background-color: #ffffff;
 }
+
+
+        /* Стили для затемнения фона */
+        .overlayPlanet {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.9);
+            display: none;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+            font-family: 'Star Jedi', Arial, sans-serif; /* Шрифт в стиле "Звездных войн" */
+        }
+
+        /* Стили для pop-up окна */
+        .popupPlanet {
+            background-color: #1c1c1c;
+            padding: 20px;
+            border-radius: 10px;
+            text-align: center;
+            width: 320px;
+            box-shadow: 0 0 15px rgba(0, 0, 0, 0.5);
+            border: 2px solid #ffe81f; /* Желтая граница в стиле "Звездных войн" */
+        }
+
+        /* Кнопка закрытия */
+        .close-btnPlanet {
+            cursor: pointer;
+            color: #ffe81f; /* Желтый цвет текста в стиле "Звездных войн" */
+            font-weight: bold;
+            float: right;
+            font-size: 18px;
+        }
+
+
+        #buttonPlanet {
+            background: linear-gradient(45deg, #000000, #1c1c1c, #000000); /* Градиентный фон в стиле "Звездных войн" */
+            color: #ffe81f; /* Желтый цвет текста в стиле "Звездных войн" */
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        #buttonPlanet:hover {
+            background-color: #444;
+        }
+
+        /* Стили для изображения планеты */
+        .planet-image {
+            width: 100px;
+            height: 100px;
+            margin-top: 20px;
+        }
+
+        /* Анимация */
+        @keyframes pulse {
+            0% {
+                transform: scale(1);
+            }
+            50% {
+                transform: scale(1.1);
+            }
+            100% {
+                transform: scale(1);
+            }
+        }
+
+        .animatedPlanet {
+            animation: pulse 2s infinite;
+        }
            
    /* Медиазапрос для мобильных устройств */
    @media only screen and (max-width: 768px) {
