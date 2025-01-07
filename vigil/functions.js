@@ -1177,18 +1177,9 @@ function closePopupMantra(position=false) {
 
 
 function getDayInfo() {
-    const days = [
-        { name: 'воскресенье', planet: 'Солнце', file: 'https://botogame.github.io/vigil/sinhr/0.mp3', image: './planets/sun.png' },
-        { name: 'понедельник', planet: 'Венера', file: 'https://botogame.github.io/vigil/sinhr/1.mp3', image: './planets/venus.png' },
-        { name: 'вторник', planet: 'Марс', file: 'https://botogame.github.io/vigil/sinhr/2.mp3', image: './planets/mars.png' },
-        { name: 'среда', planet: 'Луна', file: 'https://botogame.github.io/vigil/sinhr/3.mp3', image: './planets/moon.png' },
-        { name: 'четверг', planet: 'Сатурн', file: 'https://botogame.github.io/vigil/sinhr/4.mp3', image: './planets/saturn.png' },
-        { name: 'пятница', planet: 'Юпитер', file: 'https://botogame.github.io/vigil/sinhr/5.mp3', image: './planets/jupiter.png' },
-        { name: 'суббота', planet: 'Меркурий', file: 'https://botogame.github.io/vigil/sinhr/6.mp3', image: './planets/mercury.png' }
-    ];
+    var today = new Date().getDay();
 
-    const today = new Date().getDay();
-    return days[today];
+    return meditation_days[today];
 }
 
 function openpopupPlanet() {
@@ -1204,7 +1195,8 @@ function updateDayInfoPlanet() {
     const dayInfo = getDayInfo();
     document.getElementById('planetInfo').innerText = `Сегодня ${dayInfo.name}, день планеты ${dayInfo.planet}.`;
     document.getElementById('audioSource').src = dayInfo.file;
-    document.getElementById('planetImage').src = dayInfo.image;
+    document.getElementById('planetImage').src = './planets/' + dayInfo.image;
+    document.getElementById('planetHref').href = 'https://botogame.github.io/vigil/sinhr/' + dayInfo['id'] + '.mp3';
 
     const audio = document.getElementById('musicPlayer');
     audio.volume = 0.5; // Устанавливаем громкость на 50%
@@ -1222,8 +1214,6 @@ function closepopupPlanet() {
     audio.currentTime = 0; // Сбрасываем время воспроизведения
     document.getElementById('planetImage').classList.remove('animatedPlanet');
 }
-
-var checkDayChangePlanetStarted = false;
 
 // Обновление информации о дне недели каждый день в полночь
 function checkDayChangePlanet() {
