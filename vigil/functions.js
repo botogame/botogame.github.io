@@ -1089,9 +1089,9 @@ function calculateDolgy() {
 
 function setCookie(name,value) {
     if(value==''){
-        document.cookie = name+ "=;SameSite=None;Secure;max-age=-1";
+        document.cookie = name+ "=;max-age=-1";
     }else{
-        document.cookie = name + '=' + value +';SameSite=None;Secure;max-age=' + oneYearInSeconds;
+        document.cookie = name + '=' + value +';max-age=' + oneYearInSeconds;
     }
     
 }
