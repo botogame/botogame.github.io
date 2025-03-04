@@ -1,3 +1,11 @@
+window.onerror = function (msg, url, line) {
+
+    alert(msg + "\n" + url + "\n" + "\n" + line);
+   
+    return true;
+   
+   };
+
 let days = [
     'воскресенье',
     'понедельник',
