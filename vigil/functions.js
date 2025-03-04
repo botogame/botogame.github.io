@@ -303,7 +303,7 @@ function getCookie(name) {
     
         if (cookieValue) {
             // Десериализуем данные обратно в объект
-            var cardGroupsPre = JSON.parse(decodeURIComponent(cookieValue));
+            var cardGroupsPre = JSON.parse(safeDecodeURIComponent(cookieValue));
             var cardGroupsPre2 = {};
             for (let position in cardGroupsPre) {
                 // Восстанавливаем полное имя группы из отдельной куки
@@ -326,7 +326,7 @@ function getCookie(name) {
     
         if (cookieValue) {
             // Десериализуем данные обратно в объект
-            var cardUkladyPre = JSON.parse(decodeURIComponent(cookieValue));
+            var cardUkladyPre = JSON.parse(safeDecodeURIComponent(cookieValue));
             var cardUkladyPre2 = {};
             for (let position in cardUkladyPre) {
                 // Восстанавливаем полное имя группы из отдельной куки
@@ -347,7 +347,7 @@ function getCookie(name) {
     
         if (cookieValue) {
             // Десериализуем данные обратно в объект
-            return JSON.parse(decodeURIComponent(cookieValue));
+            return JSON.parse(safeDecodeURIComponent(cookieValue));
         } else {
             return {};
         }
@@ -356,7 +356,7 @@ else{
     var matches = document.cookie.match(new RegExp("(?:^|; )" + name.replace(/([\.$?*|{}\(\)\[\]\\\/\+^])/g, "\\$1") + "=([^;]*)"));
 
     if (matches) {
-        var result = decodeURIComponent(matches[1]);
+        var result = safeDecodeURIComponent(matches[1]);
 
         if (result === "undefined") {
             return undefined;
@@ -370,6 +370,14 @@ else{
     }
 }
     
+}
+
+function safeDecodeURIComponent(value) {
+    try {
+        return decodeURIComponent(value);
+    } catch (e) {
+        return value; // Возвращаем оригинальное значение, если декодирование не удалось
+    }
 }
 
 function formatDate() {
