@@ -1,6 +1,6 @@
 window.onerror = function (msg, url, line) {
 
-    alert(msg + "\n" + url + "\n" + "\n" + line);
+    alert('Критическая ошибка: ' + msg + "\n" + "\n" + 'Место: ' + url + "\n" + "\n" + 'Строка: ' + line);
    
     return true;
    
