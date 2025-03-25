@@ -30,6 +30,14 @@ function updateDirections() {
 function trackInput(_this){
     clear_input_error(_this);
 
+    var gender = document.getElementById('gender').value;
+    if(gender == 'female'){
+        var genderMsg = 'молю';
+    }
+    else{
+        var genderMsg = 'желаю';
+    }
+
     if(_this.id=='wish'){
         if(_this.value==''){
             setMsgToUser('select','Введите желание!');
@@ -41,7 +49,7 @@ function trackInput(_this){
             if(symvol_text!=''){
                 symvol_text = ' для ' + symvol_text;
             }
-            setMsgToUser('write',"Я желаю чтобы " + _this.value + symvol_text);
+            setMsgToUser('write',"Я " + genderMsg + " чтобы " + _this.value + symvol_text);
         }
     }
     else if(_this.id=='symvol_text'){
@@ -51,7 +59,7 @@ function trackInput(_this){
 		else{
             var wish = document.getElementById("wish").value;
 
-            setMsgToUser('write',"Я желаю чтобы " + wish + ' для ' + _this.value);
+            setMsgToUser('write',"Я " + genderMsg + " чтобы " + wish + ' для ' + _this.value);
         }
     }
 
@@ -434,14 +442,22 @@ function set_result(gender, startCard, endCard, needType, wish, symvol_text, gen
     var weekId = new Date().getDay();
     var monthId = new Date().getMonth();
     
-    var output = 'Месяц ' + schemeMonth[monthId] + '<br><div class="image-backgroundMonth"><img src="./month/'+ monthId+'.jpg"></div><br>' + typeoutput + ': желаю чтобы '+ wish +'.<br><br><button id="button2" class="open-modal-btn" onclick="updateDayNow()">Обновить месяц или день недели</button><hr>Уклад на ' + days[weekId] +':<br><br>';
+
+    if(gender == 'female'){
+        var genderMsg = 'молю';
+    }
+    else{
+        var genderMsg = 'желаю';
+    }
+
+    var output = 'Месяц ' + schemeMonth[monthId] + '<br><div class="image-backgroundMonth"><img src="./month/'+ monthId+'.jpg"></div><br>' + typeoutput + ': ' + genderMsg + ' чтобы '+ wish +'.<br><br><button id="button2" class="open-modal-btn" onclick="updateDayNow()">Обновить месяц или день недели</button><hr>Уклад на ' + days[weekId] +':<br><br>';
 
     const result2 = findBalancedPathWithSpecificEndTransition(startCard, endCard, needType);
 
     if (result2) {
         
         if (generation == true) {
-            var wishcardUklady = formatDate() + " | желаю чтобы " + wish;
+            var wishcardUklady = formatDate() + " | " + genderMsg + " чтобы " + wish;
             setCookie('wishcardUklady',wishcardUklady);
         }
 
@@ -458,7 +474,7 @@ function set_result(gender, startCard, endCard, needType, wish, symvol_text, gen
             let cardWithMast = card + mastNow;
             if (mastNow != "") {
 
-                var mantraText = "я желаю от своей бдилки " + schemeSuitsDaysWeek[weekId][mastNow] + " " + schemeСardAssignments[card][mastNow] + " чтобы " + wish;
+                var mantraText = "я " + genderMsg + " от своей бдилки " + schemeSuitsDaysWeek[weekId][mastNow] + " " + schemeСardAssignments[card][mastNow] + " чтобы " + wish;
 
                 if(position>=i){
                     position_setted = ' card-link3';
