@@ -32,7 +32,7 @@ function trackInput(_this){
 
     var gender = document.getElementById('gender').value;
     if(gender == 'female'){
-        var genderMsg = 'молю';
+        var genderMsg = 'хочу';
     }
     else{
         var genderMsg = 'желаю';
@@ -40,7 +40,7 @@ function trackInput(_this){
 
     if(_this.id=='wish'){
         if(_this.value==''){
-            setMsgToUser('select','Введите желание!');
+            setMsgToUser('select','Введите мечту!');
         }
 		else{
 
@@ -54,7 +54,7 @@ function trackInput(_this){
     }
     else if(_this.id=='symvol_text'){
         if(_this.value==''){
-            setMsgToUser('select','Опишите для чего ваше желание!');
+            setMsgToUser('select','Опишите для чего ваша мечта!');
         }
 		else{
             var wish = document.getElementById("wish").value;
@@ -215,7 +215,7 @@ function getCard(clearMatrix=false) {
         return;
     }
     if (wish === "") {
-        setMsgToUser('select','Введите желание!');
+        setMsgToUser('select','Введите мечту!');
         document.getElementById("wish").classList.add("alert_input");
         return;
     }
@@ -235,7 +235,7 @@ function getCard(clearMatrix=false) {
         return;
     }
     if (symvol_text === "") {
-        setMsgToUser('select','Опишите для чего ваше желание!');
+        setMsgToUser('select','Опишите для чего ваша мечта!');
         document.getElementById("symvol_text").classList.add("alert_input");
         return;
     }
@@ -433,7 +433,7 @@ function set_result(gender, startCard, endCard, needType, wish, symvol_text, gen
     var typeoutput = '';
 
     if(getCookie('disableDolgType') == undefined){
-        typeoutput = 'Желание';
+        typeoutput = 'Мечта';
     }
     else{
         typeoutput = 'Отработка долга (' + ukladvariantsStatus[getCookie('disableDolgType')] + ')';
@@ -444,7 +444,7 @@ function set_result(gender, startCard, endCard, needType, wish, symvol_text, gen
     
 
     if(gender == 'female'){
-        var genderMsg = 'молю';
+        var genderMsg = 'хочу';
     }
     else{
         var genderMsg = 'желаю';
@@ -1040,7 +1040,7 @@ function setupOnLoad() {
         else{
             document.getElementById("startCard").value = 8;
             setCookie("endCard",8);
-            setMsgToUser('start','Пасьянс Медичи помогает в сложных ситуациях, а Бдилка выявляет скрытые желания. Перед вами инструмент настоящей свободы в мире, где ваши границы сознания станут как спасением, так и ловушкой. Если это первый расклад, то ставьте последней картой: 8. Полную инструкцию смотрите на <a class="a_info" href="https://github.com/botogame/botogame/blob/main/freedom/interaction/vigil/README.md">сайте разработчика</a>. Мигающие карты кликабельны, там история желаний!');
+            setMsgToUser('start','Пасьянс Медичи помогает в сложных ситуациях, а Бдилка выявляет скрытые мечты. Перед вами инструмент настоящей свободы в мире, где ваши границы сознания станут как спасением, так и ловушкой. Если это первый расклад, то ставьте последней картой: 8. Полную инструкцию смотрите на <a class="a_info" href="https://github.com/botogame/botogame/blob/main/freedom/interaction/vigil/README.md">сайте разработчика</a>. Мигающие карты кликабельны, там история ваших мечтаний!');
         }
 
     }
