@@ -348,6 +348,8 @@ if (typeof Website2APK !== "undefined") {
     let history = JSON.parse(localStorage.getItem("deaths") || "[]");
     history.push(`${type}::${sentence}`);
     localStorage.setItem("deaths", JSON.stringify(history));
+localStorage.setItem("selectedGender", gender);
+localStorage.setItem("selectedType", type);
 
     renderHistory(history);
     updateStats(history);
@@ -355,6 +357,15 @@ if (typeof Website2APK !== "undefined") {
     form.reset();
     // Чтобы подпись method обновилась сразу на мужской по умолчанию после сброса формы:
     clientGenderSelect.dispatchEvent(new Event("change"));
+	
+	// Восстанавливаем пол "Кто вы" и союзника
+var savedGender = localStorage.getItem("selectedGender");
+if (savedGender) genderSelect.value = savedGender;
+
+var savedType = localStorage.getItem("selectedType");
+if (savedType) typeSelect.value = savedType;
+	
+	
   });
 
   window.addEventListener("load", () => {
@@ -363,6 +374,12 @@ if (typeof Website2APK !== "undefined") {
     updateStats(history);
     typeSelect.dispatchEvent(new Event("change"));
     clientGenderSelect.dispatchEvent(new Event("change"));
+	// Восстанавливаем пол "Кто вы" и союзника
+var savedGender = localStorage.getItem("selectedGender");
+if (savedGender) genderSelect.value = savedGender;
+
+var savedType = localStorage.getItem("selectedType");
+if (savedType) typeSelect.value = savedType;
   });
 
   // Работа с попапом правил
