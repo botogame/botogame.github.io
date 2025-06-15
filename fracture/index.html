@@ -283,12 +283,36 @@ if (typeof Website2APK !== "undefined") {
 
   // Обновление подписи поля method в зависимости от пола Клиента
   clientGenderSelect.addEventListener("change", () => {
-    if (clientGenderSelect.value === "мужской") {
-      methodLabel.innerText = "Кем хотите чтобы Клиент был:";
-    } else {
-      methodLabel.innerText = "Кем хотите чтобы Клиент стала:";
-    }
+  updatemethodLabel();
   });
+  
+  typeSelect.addEventListener("change", () => {
+  updatemethodLabel();
+  });
+  
+  genderSelect.addEventListener("change", () => {
+  updatemethodLabel();
+  });
+  function updatemethodLabel() {
+   if(genderSelect.value=='мужской'){
+   var mechta = 'желаете';
+   }
+   else{
+   var mechta = 'хотите';
+   }
+   if(typeSelect.value=='убрать'){
+   var ne = ' не';
+   }
+   else{
+   var ne = '';
+   }
+   
+    if (clientGenderSelect.value === "мужской") {
+      methodLabel.innerText = "Кем " + mechta+ " чтобы Клиент" + ne+ " был:";
+    } else {
+      methodLabel.innerText = "Кем " + mechta+ " чтобы Клиент" + ne+ " стал:";
+    }
+  }
 
   function updateStats(entries) {
     let countU = 0;
@@ -339,11 +363,15 @@ if (typeof Website2APK !== "undefined") {
     }
 
     const transformedType = gender === "женский"
-      ? (type === "убрать" ? "хорошее" : "прекрасно")
-      : (type === "убрать" ? "лучше" : "блиц");
+      ? (type === "убрать" ? "не хорошего" : "прекрасного")
+      : (type === "убрать" ? "не лучшего" : "быстроты");
+	  
+    const transformedNe = gender === "женский"
+      ? (type === "убрать" ? "не " : "")
+      : (type === "убрать" ? "не " : "");
 
     const transformedClientGender = clientGender === "мужской" ? "был" : "стал";
-    const sentence = `100% ${transformedType} ${name} 100% ${transformedClientGender} ${method}`;
+    const sentence = `Надо мне ${transformedType} чтобы ${name} ${transformedNe}${transformedClientGender} ${transformedNe}${method}`;
 
     let history = JSON.parse(localStorage.getItem("deaths") || "[]");
     history.push(`${type}::${sentence}`);
@@ -380,6 +408,8 @@ if (savedGender) genderSelect.value = savedGender;
 
 var savedType = localStorage.getItem("selectedType");
 if (savedType) typeSelect.value = savedType;
+
+updatemethodLabel();
   });
 
   // Работа с попапом правил
