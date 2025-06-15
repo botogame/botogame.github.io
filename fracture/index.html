@@ -1,0 +1,382 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Книга Смерти</title>
+  <style>
+    body {
+      font-family: "Courier New", monospace;
+      background-color: #111;
+      color: #eee;
+      padding: 20px;
+      margin: 0;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+    h1, h2 {
+      color: crimson;
+      text-align: center;
+      text-shadow: 0 0 5px crimson;
+      margin: 0.2em 0;
+    }
+    form {
+      background: #222;
+      padding: 20px;
+      border-radius: 10px;
+      box-shadow: 0 0 15px crimson;
+      width: 320px;
+      display: flex;
+      flex-direction: column;
+      gap: 15px;
+      margin-top: 20px;
+    }
+    label {
+      display: flex;
+      flex-direction: column;
+      font-weight: bold;
+      font-size: 0.9rem;
+      user-select: none;
+    }
+    input, select, button {
+      padding: 10px;
+      background: #111;
+      color: #eee;
+      border: 1px solid #444;
+      border-radius: 6px;
+      font-family: monospace;
+      font-size: 1rem;
+    }
+    button {
+      background-color: crimson;
+      font-weight: bold;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+    }
+    button:hover {
+      background-color: darkred;
+    }
+
+    .stats {
+      width: 100%;
+      max-width: 400px;
+      background: #222;
+      border-radius: 10px;
+      padding: 12px;
+      margin-top: 10px;
+      color: crimson;
+      font-weight: bold;
+      text-align: center;
+      box-shadow: 0 0 10px crimson;
+      user-select: none;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 15px;
+      font-size: 1.1rem;
+    }
+    .stats a {
+      color: #eee;
+      text-decoration: underline;
+      cursor: pointer;
+      font-weight: normal;
+    }
+    .stats a:hover {
+      color: crimson;
+    }
+
+    .output {
+      width: 90%;
+      max-width: 700px;
+      background: #222;
+      padding: 15px;
+      border-radius: 10px;
+      margin-top: 25px;
+      box-shadow: 0 0 20px crimson;
+      color: #eee;
+      user-select: text;
+    }
+    .output h3 {
+      margin-top: 0;
+      color: crimson;
+      text-align: center;
+      text-shadow: 0 0 8px crimson;
+    }
+
+    .orders-container {
+      display: flex;
+      gap: 30px;
+      margin-top: 15px;
+      justify-content: center;
+      flex-wrap: wrap;
+    }
+
+    .orders-column {
+      flex: 1 1 300px;
+      background: #111;
+      border: 1px solid crimson;
+      border-radius: 8px;
+      padding: 15px;
+      box-shadow: 0 0 10px crimson;
+      max-height: 300px;
+      overflow-y: auto;
+    }
+
+    .orders-column h4 {
+      margin-top: 0;
+      color: crimson;
+      text-align: center;
+      text-shadow: 0 0 6px red;
+      font-weight: bold;
+      margin-bottom: 10px;
+    }
+
+    .orders-column pre {
+      white-space: pre-wrap;
+      word-break: break-word;
+      color: #eee;
+      font-size: 1em;
+      margin: 0;
+    }
+
+    /* Popup rules styling */
+    #rulesPopup {
+      position: fixed;
+      top: 0; left: 0; right: 0; bottom: 0;
+      background: rgba(0,0,0,0.85);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      visibility: hidden;
+      opacity: 0;
+      transition: opacity 0.3s ease;
+      z-index: 1000;
+    }
+    #rulesPopup.show {
+      visibility: visible;
+      opacity: 1;
+    }
+    #rulesContent {
+      background: #111;
+      color: #eee;
+      border: 2px solid crimson;
+      border-radius: 12px;
+      padding: 20px 30px;
+      max-width: 400px;
+      font-family: monospace;
+      font-size: 1rem;
+      text-align: left;
+      box-shadow: 0 0 20px crimson;
+      position: relative;
+    }
+    #closeRules {
+      background: crimson;
+      border: none;
+      color: #eee;
+      font-weight: bold;
+      font-size: 1.2rem;
+      border-radius: 5px;
+      cursor: pointer;
+      width: 100%;
+    }
+    #closeRules:hover {
+      background: darkred;
+    }
+  </style>
+</head>
+<body>
+  <h1>Перелом</h1>
+  <h2>Книга Смерти</h2>
+
+  <div class="stats" id="stats">
+    Убрать: 0 | Подменить: 0
+    <a href="#" id="rulesLink">Правила</a>
+  </div>
+
+  <form id="deathForm">
+    <label>Кто Вы:
+      <select id="gender" required>
+        <option value="мужской">Мужчина</option>
+        <option value="женский">Женщина</option>
+      </select>
+    </label>
+
+    <label>Союзник:
+      <select id="type" required>
+        <option value="убрать">Аннигилятор</option>
+        <option value="подменить">Создатель</option>
+      </select>
+    </label>
+
+    <label>Имя Клиента:
+      <input type="text" id="name" required />
+    </label>
+
+    <label>Пол Клиента:
+      <select id="clientGender" required>
+        <option value="мужской">Мужчина</option>
+        <option value="женский">Женщина</option>
+      </select>
+    </label>
+
+    <label><text id="methodLabel">Кем хотите чтобы Клиент был:</text>
+      <input type="text" id="method" required />
+    </label>
+
+    <button type="submit">Заказать</button>
+  </form>
+
+  <div class="output" id="result">
+    <h3>Несбалансированные заказы:</h3>
+    <div class="orders-container">
+      <div class="orders-column" id="orders-remove">
+        <h4>Для аннигилятора (убрать)</h4>
+        <pre></pre>
+      </div>
+      <div class="orders-column" id="orders-replace">
+        <h4>Для создателя (подменить)</h4>
+        <pre></pre>
+      </div>
+    </div>
+  </div>
+
+  <!-- Popup Правил -->
+  <div id="rulesPopup">
+    <div id="rulesContent">
+      <h3>Правила</h3>
+      <ol>
+        <li>Соблюдайте баланс между союзниками.</li>
+        <li>Когда баланс соблюден, заказы принимаются в реализацию.</li>
+      </ol>
+      <button id="closeRules" title="Принимаю">Принимаю</button>
+    </div>
+  </div>
+
+<script>
+  const form = document.getElementById("deathForm");
+  const genderSelect = document.getElementById("gender");
+  const typeSelect = document.getElementById("type");
+  const nameInput = document.getElementById("name");
+  const methodInput = document.getElementById("method");
+  const clientGenderSelect = document.getElementById("clientGender");
+  const methodLabel = document.getElementById("methodLabel");
+
+  const statsDiv = document.getElementById("stats");
+  const resultDiv = document.getElementById("result");
+  const removePre = document.querySelector("#orders-remove pre");
+  const replacePre = document.querySelector("#orders-replace pre");
+
+  const rulesLink = document.getElementById("rulesLink");
+  const rulesPopup = document.getElementById("rulesPopup");
+  const closeRulesBtn = document.getElementById("closeRules");
+
+  // Обновление подписи поля method в зависимости от пола Клиента
+  clientGenderSelect.addEventListener("change", () => {
+    if (clientGenderSelect.value === "мужской") {
+      methodLabel.innerText = "Кем хотите чтобы Клиент был:";
+    } else {
+      methodLabel.innerText = "Кем хотите чтобы Клиент стала:";
+    }
+  });
+
+  function updateStats(entries) {
+    let countU = 0;
+    let countP = 0;
+
+    entries.forEach(entry => {
+      if (entry.startsWith("убрать")) countU++;
+      if (entry.startsWith("подменить")) countP++;
+    });
+
+    statsDiv.childNodes[0].nodeValue = `Убрать: ${countU} | Подменить: ${countP} `;
+
+    if (countU === countP && countU > 0) {
+      localStorage.removeItem("deaths");
+      removePre.textContent = "";
+      replacePre.textContent = "";
+      statsDiv.childNodes[0].nodeValue = "Заказы приняты на реализацию ";
+    }
+  }
+
+  function renderHistory(entries) {
+    const removeEntries = entries
+      .filter(entry => entry.startsWith("убрать"))
+      .map(entry => entry.split("::")[1])
+      .join("\n");
+
+    const replaceEntries = entries
+      .filter(entry => entry.startsWith("подменить"))
+      .map(entry => entry.split("::")[1])
+      .join("\n");
+
+    removePre.textContent = removeEntries || "";
+    replacePre.textContent = replaceEntries || "";
+  }
+
+  form.addEventListener("submit", e => {
+    e.preventDefault();
+
+    const gender = genderSelect.value;
+    const type = typeSelect.value;
+    const name = nameInput.value.trim();
+    const method = methodInput.value.trim();
+    const clientGender = clientGenderSelect.value;
+
+    if (!gender || !type || !name || !method || !clientGender) {
+      alert("Пожалуйста, заполните все поля.");
+      return;
+    }
+
+    const transformedType = gender === "женский"
+      ? (type === "убрать" ? "хорошее" : "прекрасно")
+      : (type === "убрать" ? "лучше" : "блиц");
+
+    const transformedClientGender = clientGender === "мужской" ? "был" : "стал";
+    const sentence = `100% ${transformedType} ${name} 100% ${transformedClientGender} ${method}`;
+
+    let history = JSON.parse(localStorage.getItem("deaths") || "[]");
+    history.push(`${type}::${sentence}`);
+    localStorage.setItem("deaths", JSON.stringify(history));
+
+    renderHistory(history);
+    updateStats(history);
+
+    form.reset();
+    // Чтобы подпись method обновилась сразу на мужской по умолчанию после сброса формы:
+    clientGenderSelect.dispatchEvent(new Event("change"));
+  });
+
+  window.addEventListener("load", () => {
+    const history = JSON.parse(localStorage.getItem("deaths") || "[]");
+    renderHistory(history);
+    updateStats(history);
+    typeSelect.dispatchEvent(new Event("change"));
+    clientGenderSelect.dispatchEvent(new Event("change"));
+  });
+
+  // Работа с попапом правил
+  rulesLink.addEventListener("click", e => {
+    e.preventDefault();
+    rulesPopup.classList.add("show");
+  });
+
+  closeRulesBtn.addEventListener("click", () => {
+    rulesPopup.classList.remove("show");
+  });
+
+  window.addEventListener("click", (e) => {
+    if (e.target === rulesPopup) {
+      rulesPopup.classList.remove("show");
+    }
+  });
+
+  window.addEventListener("keydown", (e) => {
+    if (e.key === "Escape" && rulesPopup.classList.contains("show")) {
+      rulesPopup.classList.remove("show");
+    }
+  });
+</script>
+</body>
+</html>
