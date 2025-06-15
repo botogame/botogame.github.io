@@ -225,7 +225,8 @@
       <input type="text" id="method" required />
     </label>
 
-    <button type="submit">Заказать</button>
+    <button type="submit">Заказать</button><br>
+	<button id="buttonClose" onclick="Website2APK.exitApp()">Закрыть программу</button>
   </form>
 
   <div class="output" id="result">
@@ -255,6 +256,14 @@
   </div>
 
 <script>
+
+if (typeof Website2APK !== "undefined") {
+        document.getElementById("buttonClose").style.display = "block";
+    }
+    else{
+        document.getElementById("buttonAndroid").style.display = "block";
+    }
+
   const form = document.getElementById("deathForm");
   const genderSelect = document.getElementById("gender");
   const typeSelect = document.getElementById("type");
