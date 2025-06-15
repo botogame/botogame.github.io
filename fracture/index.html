@@ -191,7 +191,7 @@
   <h2>Книга Смерти</h2>
 
   <div class="stats" id="stats">
-    Убрать: 0<br>Подменить: 0
+    Счет: 0 - 0
     <a href="#" id="rulesLink">Правила</a>
   </div>
 
@@ -299,7 +299,7 @@ if (typeof Website2APK !== "undefined") {
       if (entry.startsWith("подменить")) countP++;
     });
 
-    statsDiv.childNodes[0].nodeValue = `Убрать: ${countU}<br>Подменить: ${countP} `;
+    statsDiv.childNodes[0].nodeValue = `Счет: ${countU} - ${countP} `;
 
     if (countU === countP && countU > 0) {
       localStorage.removeItem("deaths");
