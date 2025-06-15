@@ -310,7 +310,7 @@ if (typeof Website2APK !== "undefined") {
     if (clientGenderSelect.value === "мужской") {
       methodLabel.innerText = "Кем " + mechta+ " чтобы Клиент" + ne+ " был:";
     } else {
-      methodLabel.innerText = "Кем " + mechta+ " чтобы Клиент" + ne+ " стал:";
+      methodLabel.innerText = "Кем " + mechta+ " чтобы Клиент" + ne+ " стала:";
     }
   }
 
@@ -370,7 +370,7 @@ if (typeof Website2APK !== "undefined") {
       ? (type === "убрать" ? "не " : "")
       : (type === "убрать" ? "не " : "");
 
-    const transformedClientGender = clientGender === "мужской" ? "был" : "стал";
+    const transformedClientGender = clientGender === "мужской" ? "был" : "стала";
     const sentence = `Надо мне ${transformedType} чтобы ${name} ${transformedNe}${transformedClientGender} ${transformedNe}${method}`;
 
     let history = JSON.parse(localStorage.getItem("deaths") || "[]");
