@@ -191,7 +191,7 @@
   <h2>Книга Смерти</h2>
 
   <div class="stats" id="stats">
-    Убрать: 0 Подменить: 0
+    Убрать: 0<br>Подменить: 0
     <a href="#" id="rulesLink">Правила</a>
   </div>
 
@@ -261,7 +261,7 @@ if (typeof Website2APK !== "undefined") {
         document.getElementById("buttonClose").style.display = "block";
     }
     else{
-        document.getElementById("buttonAndroid").style.display = "block";
+        document.getElementById("buttonClose").style.display = "none";
     }
 
   const form = document.getElementById("deathForm");
@@ -299,7 +299,7 @@ if (typeof Website2APK !== "undefined") {
       if (entry.startsWith("подменить")) countP++;
     });
 
-    statsDiv.childNodes[0].nodeValue = `Убрать: ${countU} Подменить: ${countP} `;
+    statsDiv.childNodes[0].nodeValue = `Убрать: ${countU}<br>Подменить: ${countP} `;
 
     if (countU === countP && countU > 0) {
       localStorage.removeItem("deaths");
