@@ -360,14 +360,14 @@ var clientTime = clientTimeSelect.value;
 
   function renderHistory(entries) {
     const removeEntries = entries
-      .filter(entry => entry.startsWith("убрать"))
-      .map(entry => entry.split("::")[1])
-      .join("\n");
+    .filter(entry => entry.startsWith("убрать"))
+    .map((entry, index) => `${index + 1}. ${entry.split("::")[1]}`)
+    .join("\n");
 
-    const replaceEntries = entries
-      .filter(entry => entry.startsWith("подменить"))
-      .map(entry => entry.split("::")[1])
-      .join("\n");
+  const replaceEntries = entries
+    .filter(entry => entry.startsWith("подменить"))
+    .map((entry, index) => `${index + 1}. ${entry.split("::")[1]}`)
+    .join("\n");
 
     removePre.textContent = removeEntries || "";
     replacePre.textContent = replaceEntries || "";
