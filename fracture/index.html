@@ -227,6 +227,14 @@
       </select>
     </label>
 
+    <label>Время Клиента:
+      <select id="clientTime" required>
+        <option value="текущий">Текущее - клиент в вашем времени</option>
+        <option value="младший">Прошлое - клиент младший</option>
+        <option value="старший">Будующее - клиент старший</option>
+      </select>
+    </label>
+
     <label><text id="methodLabel">Кем хотите чтобы Клиент был:</text>
       <input type="text" id="method" required />
     </label>
@@ -259,7 +267,6 @@
         <li>При создании заказов соблюдайте баланс между союзниками.</li>
         <li>Когда баланс соблюден, заказы принимаются в реализацию.</li>
         <li>Описание про Перелом читайте <a href="https://github.com/botogame/botogame/blob/main/freedom/distribution/fracture/README.md" target="_blank">здесь</a>.</li>
-		
       </ol>
       <button id="closeRules" title="Принимаю">Принимаю</button>
     </div>
@@ -281,6 +288,7 @@ if (typeof Website2APK !== "undefined") {
   const methodInput = document.getElementById("method");
   const clientGenderSelect = document.getElementById("clientGender");
   const methodLabel = document.getElementById("methodLabel");
+  const clientTimeSelect = document.getElementById("clientTime");
 
   const statsDiv = document.getElementById("stats");
   const resultDiv = document.getElementById("result");
@@ -303,6 +311,9 @@ if (typeof Website2APK !== "undefined") {
   genderSelect.addEventListener("change", () => {
   updatemethodLabel();
   });
+  clientTimeSelect.addEventListener("change", () => {
+  updatemethodLabel();
+  });
   function updatemethodLabel() {
    if(genderSelect.value=='мужской'){
    var mechta = 'желаете';
@@ -318,9 +329,9 @@ if (typeof Website2APK !== "undefined") {
    }
    
     if (clientGenderSelect.value === "мужской") {
-      methodLabel.innerText = "Кем " + mechta+ " чтобы Клиент" + ne+ " был:";
+      methodLabel.innerText = "Кем " + mechta+ " чтобы " + clientTimeSelect.value + " Клиент" + ne+ " был:";
     } else {
-      methodLabel.innerText = "Кем " + mechta+ " чтобы Клиент" + ne+ " стала:";
+      methodLabel.innerText = "Кем " + mechta+ " чтобы " + clientTimeSelect.value + " Клиент" + ne+ " стала:";
     }
   }
 
@@ -381,7 +392,7 @@ if (typeof Website2APK !== "undefined") {
       : (type === "убрать" ? "не " : "");
 
     const transformedClientGender = clientGender === "мужской" ? "был" : "стала";
-    const sentence = `Надо мне ${transformedType} чтобы ${name} ${transformedNe}${transformedClientGender} ${transformedNe}${method}`;
+    const sentence = `Надо мне ${transformedType} чтобы ${clientTimeSelect.value} ${name} ${transformedNe}${transformedClientGender} ${transformedNe}${method}`;
 
     let history = JSON.parse(localStorage.getItem("deaths") || "[]");
     history.push(`${type}::${sentence}`);
