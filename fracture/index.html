@@ -329,10 +329,13 @@ if (typeof Website2APK !== "undefined") {
    var ne = '';
    }
    
+   
+var clientTime = clientTimeSelect.value;
+   
     if (clientGenderSelect.value === "мужской") {
-      methodLabel.innerText = "Кем " + mechta+ " чтобы " + clientTimeSelect.value + " Клиент" + ne+ " был:";
+      methodLabel.innerText = "Кем " + mechta+ " чтобы " + clientTime + " Клиент" + ne+ " был:";
     } else {
-      methodLabel.innerText = "Кем " + mechta+ " чтобы " + clientTimeSelect.value + " Клиент" + ne+ " стала:";
+      methodLabel.innerText = "Кем " + mechta+ " чтобы " + clientTime + " Клиент" + ne+ " стала:";
     }
   }
 
@@ -391,9 +394,29 @@ if (typeof Website2APK !== "undefined") {
     const transformedNe = gender === "женский"
       ? (type === "убрать" ? "не " : "")
       : (type === "убрать" ? "не " : "");
+	  
+	  
+   
+   if(genderSelect.value=='женский'){
+   if(clientTimeSelect.value=='текущий'){
+   var clientTime = 'текушая';
+   }
+   else if(clientTimeSelect.value=='младший'){
+   var clientTime = 'младшая';
+   }
+   else{
+   var clientTime = 'старшая';
+   }
+   
+   }
+   else{
+   var clientTime = clientTimeSelect.value;
+   
+   }
+   
 
     const transformedClientGender = clientGender === "мужской" ? "был" : "стала";
-    const sentence = `Надо мне ${transformedType} чтобы ${clientTimeSelect.value} ${name} ${transformedNe}${transformedClientGender} ${transformedNe}${method}`;
+    const sentence = `Надо мне ${transformedType} чтобы ${clientTime} ${name} ${transformedNe}${transformedClientGender} ${transformedNe}${method}`;
 
     let history = JSON.parse(localStorage.getItem("deaths") || "[]");
     history.push(`${type}::${sentence}`);
