@@ -190,6 +190,44 @@
     #closeRules:hover {
       background: darkred;
     }
+	
+	@keyframes electricWords {
+  0% {
+    background-position: 0% 50%;
+    text-shadow: 0 0 4px crimson;
+  }
+  50% {
+    background-position: 100% 50%;
+    text-shadow: 0 0 12px white, 0 0 6px crimson;
+  }
+  100% {
+    background-position: 0% 50%;
+    text-shadow: 0 0 4px crimson;
+  }
+}
+
+h1 {
+  animation: electricWords 4s linear infinite;
+  background: linear-gradient(90deg, crimson, red, crimson);
+  background-size: 300% auto;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+@keyframes pulseBorder {
+  0% {
+    border-image: linear-gradient(45deg, crimson, black) 1;
+  }
+  50% {
+    border-image: linear-gradient(45deg, white, crimson) 1;
+  }
+  100% {
+    border-image: linear-gradient(45deg, crimson, black) 1;
+  }
+}
+
+
+	
   </style>
 </head>
 <body>
