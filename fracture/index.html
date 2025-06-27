@@ -287,6 +287,15 @@
   }
 }
 	
+	.orders-column2 {
+  white-space: normal;       /* чтобы переносить и не ломать пробелы */
+  text-align: center;        /* выравнивание по центру */
+  font-family: monospace;    /* фиксированная ширина шрифта */
+  margin: 0 auto;
+  width: 100%;        /* ширина по содержимому */
+  max-width: 100%;           /* не больше контейнера */
+}
+
   </style>
 </head>
 <body>
@@ -374,11 +383,11 @@ updateLightning();
     <div class="orders-container">
       <div class="orders-column" id="orders-remove">
         <h4>Для аннигилятора (убрать)</h4>
-        <pre></pre>
+        <pre class="orders-column2"></pre>
       </div>
       <div class="orders-column" id="orders-replace">
         <h4>Для создателя (подменить)</h4>
-        <pre></pre>
+        <pre class="orders-column2"></pre>
       </div>
     </div>
   </div>
