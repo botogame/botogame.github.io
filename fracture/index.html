@@ -71,7 +71,7 @@
       border-radius: 10px;
       padding: 12px;
       margin-top: 10px;
-      color: crimson;
+      color: #0f0;
       font-weight: bold;
       text-align: center;
       box-shadow: 0 0 10px crimson;
@@ -296,6 +296,25 @@
   max-width: 100%;           /* не больше контейнера */
 }
 
+
+.RomanMonth{
+      width: 100%;
+      max-width: 400px;
+      background: #222;
+      border-radius: 10px;
+      padding: 12px;
+      margin-top: 10px;
+      color: #40E0D0;
+      font-weight: bold;
+      text-align: center;
+      box-shadow: 0 0 10px crimson;
+      user-select: none;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 15px;
+      font-size: 1.1rem;}
+
   </style>
 </head>
 <body>
@@ -334,6 +353,10 @@ updateLightning();
   <div class="stats" id="stats">
     Счет: 0 - 0
     <a href="#" id="rulesLink">Правила</a>
+  </div>
+  
+  <div class="RomanMonth" id="RomanMonth">
+    
   </div>
 
   <form id="deathForm">
@@ -413,6 +436,46 @@ updateLightning();
 <div id="dreamPopup"></div>
 <script>
 
+function getAncientRomanMonth() {
+  const today = new Date();
+  const day = today.getDate();
+  const month = today.getMonth(); // 0-based (0 = январь)
+
+  // Кол-во дней в каждом месяце обычного (невисокосного) года
+  const gregorianMonths = [31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31];
+
+  // Вычисляем номер дня в году
+  let dayOfYear = 0;
+  for (let i = 0; i < month; i++) {
+    dayOfYear += gregorianMonths[i];
+  }
+  dayOfYear += day;
+
+  // Смещаем так, чтобы 1 марта стало днём 1
+  const dayFromMarch = (dayOfYear >= 60) ? (dayOfYear - 59) : (dayOfYear + 306); // 59 = 31 (янв) + 28 (фев)
+
+  // Диапазоны месяцев (от 1 марта)
+  const ranges = [
+    { name: "1-й узел: ОБОЛОЧКА", desc: "Ты не управляешь телом. Оно движется само.<br>Ты — оболочка. Иллюзия контроля.<br>Чтобы пройти — задай себе вопрос:<br>«Я сейчас сплю?»<br>Если да — ты готов идти дальше.",     number: 1, from: 1,   to: 31 },
+    { name: "2-й узел: ПЕТЛЯ", desc: "Снова. И снова. И снова.<br>Они зовут это «жизнь», но ты чувствуешь — ты в ловушке.<br>Петля не сломается, пока ты не осознаешь:<br>ты — тот, кто её крутит.<br>Пройди через повтор. И увидь, что было скрыто.",    number: 2, from: 32,  to: 61 },
+    { name: "3-й узел: ВСПЫШКА",desc: "Ты на грани.<br>Гнев. Страх. Желание.<br>Они бьют, как молнии — и ты пылаешь.<br>Но лишь пепел ведёт к истине.<br>Погаси себя. Замри.<br>Тогда место это пройдешь.",       number: 3, from: 62,  to: 92 },
+    { name: "4-й узел: ПРАВИЛО", desc: "Всё, что ты знал — больше не работает.<br>Здесь нет гравитации. Нет морали.<br>Есть только воля.<br>Если ты её нашёл — ты пишешь правила.<br>И правила слушаются тебя.",     number: 4, from: 93,  to: 122 },
+    { name: "5-й узел: ХРАНИЛИЩЕ",desc: "Открой ящик. Внутри — то, что ты пытался забыть.<br>Ошибки. Предательства. Слова, что не успел сказать.<br>Ты думаешь: «Зачем помнить это?»<br>Но Тетрадь знает: всё забытое — оживает во сне.<br>Прими. Или повтори.",   number: 5, from: 123, to: 153 },
+    { name: "6-й узел: СТРАЖИ", desc: "Ты близко.<br>Но на пороге стоят Лица.<br>Они угрожают. Обвиняют. Убеждают вернуться.<br>Они — части тебя, оставшиеся снаружи.<br>Их нельзя победить.<br>Им нужно сказать:<br>«Ты — я. Пошли со мной.»",   number: 6, from: 154, to: 183 },
+    { name: "7-й узел: ТЕНЬ", desc: "Ты здесь — и видишь себя.<br>Того, кого ненавидишь.<br>Того, кем боишься стать.<br>Того, кто знает твою слабость.<br>Чтобы пройти — не отвернись.<br>Обними.",  number: 7, from: 184, to: 213 },
+    { name: "8-й узел: ГОЛОС РОДА",desc: "Шепот. Стон. Молитва.<br>Ты не первый, кто пришёл сюда.<br>Ты — продолжение их боли и воли.<br>Их ошибки ждут повторения.<br>Их мудрость — спасение.<br>Слушай.",     number: 8, from: 214, to: 244 },
+    { name: "9-й узел: АРХЕТИП",  desc: "Ты надеваешь маску.<br>Воин. Маг. Судья.<br>Ты — не ты.<br>Ты — образ, вырезанный во снах сотен поколений.<br>Выбери своего аватара.<br>Он проведёт тебя… к последнему месту.",  number: 9, from: 245, to: 274 },
+    { name: "10-й узел: ПУСТОТА", desc: "Ты здесь…<br>…и не находишь ничего.<br>Ты без имени. Без тела. Без памяти.<br>Здесь нет смысла.<br>Нет боли.<br>Нет тебя.<br>Но если ты сможешь остаться в этой пустоте —<br>Ты станешь тем, кто заполняет её волей.",   number: 10,from: 275, to: 305 }
+  ];
+
+  // Ищем соответствующий месяц по диапазону
+  const found = ranges.find(r => dayFromMarch >= r.from && dayFromMarch <= r.to);
+
+  return found
+    ? `${found.desc}`
+    : "Сегодня нет центрального узла. Сплошная зима.";
+}
+
 if (typeof Website2APK !== "undefined") {
         document.getElementById("buttonClose").style.display = "block";
     }
@@ -430,6 +493,7 @@ if (typeof Website2APK !== "undefined") {
   const clientTimeSelect = document.getElementById("clientTime");
 
   const statsDiv = document.getElementById("stats");
+  const RomanMonthDiv = document.getElementById("RomanMonth");
   const resultDiv = document.getElementById("result");
   const removePre = document.querySelector("#orders-remove pre");
   const replacePre = document.querySelector("#orders-replace pre");
@@ -446,6 +510,13 @@ if (typeof Website2APK !== "undefined") {
     'Ф': 22, 'Х': 23, 'Ц': 24, 'Ч': 25, 'Ш': 26, 'Щ': 27, 'Ъ': 28,
     'Ы': 29, 'Ь': 30, 'Э': 31, 'Ю': 32, 'Я': 33
   };
+
+function updateRomanMonthDiv() {
+
+RomanMonthDiv.innerHTML = getAncientRomanMonth();
+}
+
+updateRomanMonthDiv();
 
   function calculateDreamValue(text) {
     return text
@@ -606,7 +677,7 @@ localStorage.setItem("selectedType", type);
     renderHistory(history);
     updateStats(history);
 	showDreamPopup(dreamValue);
-
+updateRomanMonthDiv();
     form.reset();
     // Чтобы подпись method обновилась сразу на мужской по умолчанию после сброса формы:
     clientGenderSelect.dispatchEvent(new Event("change"));
