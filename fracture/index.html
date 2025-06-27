@@ -237,8 +237,55 @@
 }
 
 
+ 
+#dreamOverlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.8); /* затемнение */
+  z-index: 9998;
+  display: none;
+}
 
+#dreamPopup {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background: rgba(0, 0, 0, 0.8); /* затемнение */
+  color: #40E0D0;
+  padding: 20px 30px;
+  border-radius: 12px;
+  font-size: 2rem;
+  font-weight: bold;
+  text-align: center;
+  box-shadow: 0 0 30px #0f0, 0 0 60px #0f0, 0 0 90px #0f0; /* психоделический свет */
+  z-index: 9999;
 
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 1s ease;
+  display: block; /* чтобы работал transition opacity */
+  animation: pulse 1s infinite alternate;
+}
+
+#dreamPopup.visible {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+@keyframes pulse {
+  from {
+    transform: translate(-50%, -50%) scale(1);
+    box-shadow: 0 0 30px #0f0, 0 0 60px #0f0;
+  }
+  to {
+    transform: translate(-50%, -50%) scale(1.05);
+    box-shadow: 0 0 60px #0f0, 0 0 100px #0f0;
+  }
+}
 	
   </style>
 </head>
@@ -344,6 +391,7 @@ updateLightning();
         <li>Заимейте 4-е поношенные вещи гардероба 4-х разных людей для активации Перелома.</li>
         <li>Храните вещи для Перелома отдельно и не носите их никогда.</li>
         <li>В Клиенты можете записывать косвенные именые обозначения, в том числе "половинка того то".</li>
+        <li>Мечта оцифровывается для принятия сном.</li>
         <li>При создании заказов соблюдайте баланс между союзниками.</li>
         <li>Когда баланс соблюден, заказы принимаются в реализацию.</li>
         <li>Описание про Перелом читайте <a href="https://github.com/botogame/botogame/blob/main/freedom/distribution/fracture/README.md" target="_blank">здесь</a>.</li>
@@ -351,7 +399,9 @@ updateLightning();
       <button id="closeRules" title="Принимаю">Принимаю</button>
     </div>
   </div>
-
+<!-- Popup для суммы мечты -->
+<div id="dreamOverlay"></div>
+<div id="dreamPopup"></div>
 <script>
 
 if (typeof Website2APK !== "undefined") {
@@ -378,6 +428,33 @@ if (typeof Website2APK !== "undefined") {
   const rulesLink = document.getElementById("rulesLink");
   const rulesPopup = document.getElementById("rulesPopup");
   const closeRulesBtn = document.getElementById("closeRules");
+  
+  
+  const letterValues = {
+    'А': 1, 'Б': 2, 'В': 3, 'Г': 4, 'Д': 5, 'Е': 6, 'Ё': 7,
+    'Ж': 8, 'З': 9, 'И': 10, 'Й': 11, 'К': 12, 'Л': 13, 'М': 14,
+    'Н': 15, 'О': 16, 'П': 17, 'Р': 18, 'С': 19, 'Т': 20, 'У': 21,
+    'Ф': 22, 'Х': 23, 'Ц': 24, 'Ч': 25, 'Ш': 26, 'Щ': 27, 'Ъ': 28,
+    'Ы': 29, 'Ь': 30, 'Э': 31, 'Ю': 32, 'Я': 33
+  };
+
+  function calculateDreamValue(text) {
+    return text
+      .toUpperCase()
+      .split('')
+      .map(ch => letterValues[ch] || 0)
+      .reduce((a, b) => a + b, 0);
+  }
+
+
+  function showDreamPopup(value) {
+  dreamPopup.textContent = `Код для сна: ${value}`;
+  dreamPopup.classList.add("visible");
+
+  setTimeout(() => {
+    dreamPopup.classList.remove("visible");
+  }, 5000);
+}
 
   // Обновление подписи поля method в зависимости от пола Клиента
   clientGenderSelect.addEventListener("change", () => {
@@ -438,19 +515,31 @@ var clientTime = clientTimeSelect.value;
   }
 
   function renderHistory(entries) {
-    const removeEntries = entries
+  const sanitizeEntry = (entry, index) => {
+    let value = entry.split("::")[1];
+
+    // Если значение не число, заменяем его на индекс + 1
+    if (isNaN(value)) {
+	
+	 value = calculateDreamValue(value);
+    }
+
+    return value;
+  };
+
+  const removeEntries = entries
     .filter(entry => entry.startsWith("убрать"))
-    .map((entry, index) => `${index + 1}. ${entry.split("::")[1]}`)
-    .join("\n");
+    .map(sanitizeEntry)
+    .join(" "); // через пробел
 
   const replaceEntries = entries
     .filter(entry => entry.startsWith("подменить"))
-    .map((entry, index) => `${index + 1}. ${entry.split("::")[1]}`)
-    .join("\n");
+    .map(sanitizeEntry)
+    .join(" "); // через пробел
 
-    removePre.textContent = removeEntries || "";
-    replacePre.textContent = replaceEntries || "";
-  }
+  removePre.textContent = removeEntries || "";
+  replacePre.textContent = replaceEntries || "";
+}
 
   form.addEventListener("submit", e => {
     e.preventDefault();
@@ -496,15 +585,18 @@ var clientTime = clientTimeSelect.value;
 
     const transformedClientGender = clientGender === "мужской" ? "был" : "стала";
     const sentence = `Надо мне ${transformedType} чтобы ${clientTime} ${name} ${transformedNe}${transformedClientGender} ${transformedNe}${method}`;
+	
+	const dreamValue = calculateDreamValue(sentence);
 
     let history = JSON.parse(localStorage.getItem("deaths") || "[]");
-    history.push(`${type}::${sentence}`);
+    history.push(`${type}::${dreamValue}`);
     localStorage.setItem("deaths", JSON.stringify(history));
 localStorage.setItem("selectedGender", gender);
 localStorage.setItem("selectedType", type);
 
     renderHistory(history);
     updateStats(history);
+	showDreamPopup(dreamValue);
 
     form.reset();
     // Чтобы подпись method обновилась сразу на мужской по умолчанию после сброса формы:
