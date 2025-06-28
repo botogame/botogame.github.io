@@ -240,13 +240,20 @@
  
 #dreamOverlay {
   position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background: rgba(0, 0, 0, 0.8); /* затемнение */
-  z-index: 9998;
-  display: none;
+  top: 0; left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: rgba(0, 0, 0, 0.8);
+  z-index: 9998; /* ниже, чем у попапа */
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 1s ease;
+  display: block;
+}
+
+#dreamOverlay.active {
+  opacity: 1;
+  pointer-events: auto;
 }
 
 #dreamPopup {
@@ -271,7 +278,7 @@
   animation: pulse 1s infinite alternate;
 }
 
-#dreamPopup.visible {
+#dreamPopup.active {
   opacity: 1;
   pointer-events: auto;
 }
@@ -527,12 +534,17 @@ updateRomanMonthDiv();
   }
 
 
-  function showDreamPopup(value) {
-  dreamPopup.textContent = `Код ${value}`;
-  dreamPopup.classList.add("visible");
+function showDreamPopup(value) {
+  const popup = document.getElementById('dreamPopup');
+  const overlay = document.getElementById('dreamOverlay');
+
+  popup.textContent = `Код ${value}`;
+  popup.classList.add('active');
+  overlay.classList.add('active');
 
   setTimeout(() => {
-    dreamPopup.classList.remove("visible");
+    popup.classList.remove('active');
+    overlay.classList.remove('active');
   }, 5000);
 }
 
