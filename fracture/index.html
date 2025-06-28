@@ -518,20 +518,33 @@ if (typeof Website2APK !== "undefined") {
     'Ы': 29, 'Ь': 30, 'Э': 31, 'Ю': 32, 'Я': 33
   };
 
-function updateRomanMonthDiv() {
+const digitWords = {
+  0: 'ноль', 1: 'один', 2: 'два', 3: 'три', 4: 'четыре',
+  5: 'пять', 6: 'шесть', 7: 'семь', 8: 'восемь', 9: 'девять'
+};
 
-RomanMonthDiv.innerHTML = getAncientRomanMonth();
+function replaceNumbersWithWords(text) {
+  return text.replace(/\d+/g, (num) => {
+    return num.split('').map(d => digitWords[d]).join(' ');
+  });
 }
 
-updateRomanMonthDiv();
-
   function calculateDreamValue(text) {
+  text = replaceNumbersWithWords(text);
+
     return text
       .toUpperCase()
       .split('')
       .map(ch => letterValues[ch] || 0)
       .reduce((a, b) => a + b, 0);
   }
+
+function updateRomanMonthDiv() {
+
+RomanMonthDiv.innerHTML = getAncientRomanMonth();
+}
+
+updateRomanMonthDiv();
 
 
 function showDreamPopup(value) {
