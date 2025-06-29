@@ -479,7 +479,7 @@ function getAncientRomanMonth() {
   const found = ranges.find(r => dayFromMarch >= r.from && dayFromMarch <= r.to);
 
   return found
-    ? `Перелом на ${found.name}.<br><br>${found.desc}`
+    ? `Перелом на ${found.name}. ${found.desc}`
     : "Сейчас зимний период, и вы в промежутке. Это фаза, где всё течёт, но ничего не закрепляется. Решения, принятые в промежутке, редко выживают. Перелом не возможен. Но вы можете сделать вызов с помощью психоделиков.";
 }
 
