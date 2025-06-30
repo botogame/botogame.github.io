@@ -509,14 +509,21 @@ if (typeof Website2APK !== "undefined") {
   const rulesPopup = document.getElementById("rulesPopup");
   const closeRulesBtn = document.getElementById("closeRules");
   
-  
-  const letterValues = {
-    'А': 1, 'Б': 2, 'В': 3, 'Г': 4, 'Д': 5, 'Е': 6, 'Ё': 7,
-    'Ж': 8, 'З': 9, 'И': 10, 'Й': 11, 'К': 12, 'Л': 13, 'М': 14,
-    'Н': 15, 'О': 16, 'П': 17, 'Р': 18, 'С': 19, 'Т': 20, 'У': 21,
-    'Ф': 22, 'Х': 23, 'Ц': 24, 'Ч': 25, 'Ш': 26, 'Щ': 27, 'Ъ': 28,
-    'Ы': 29, 'Ь': 30, 'Э': 31, 'Ю': 32, 'Я': 33
-  };
+  const letterValuesReduced = {
+  'А': 1,  'Б': 2,  'В': 3,  'Г': 4,  'Д': 5,  'Е': 6,  'Ё': 7,
+  'Ж': 8,  'З': 9,  'И': 1,  'Й': 2,  'К': 3,  'Л': 4,  'М': 5,
+  'Н': 6,  'О': 7,  'П': 8,  'Р': 9,  'С': 1,  'Т': 2,  'У': 3,
+  'Ф': 4,  'Х': 5,  'Ц': 6,  'Ч': 7,  'Ш': 8,  'Щ': 9,  'Ъ': 1,
+  'Ы': 2,  'Ь': 3,  'Э': 4,  'Ю': 5,  'Я': 6
+};
+
+const letterValuesRReduced = {
+  'А': 6,  'Б': 5,  'В': 4,  'Г': 3,  'Д': 2,  'Е': 1,  'Ё': 9,
+  'Ж': 8,  'З': 7,  'И': 6,  'Й': 5,  'К': 4,  'Л': 3,  'М': 2,
+  'Н': 1,  'О': 9,  'П': 8,  'Р': 7,  'С': 6,  'Т': 5,  'У': 4,
+  'Ф': 3,  'Х': 2,  'Ц': 1,  'Ч': 9,  'Ш': 8,  'Щ': 7,  'Ъ': 6,
+  'Ы': 5,  'Ь': 4,  'Э': 3,  'Ю': 2,  'Я': 1
+};
 
 const digitWords = {
   0: 'ноль', 1: 'один', 2: 'два', 3: 'три', 4: 'четыре',
@@ -531,6 +538,13 @@ function replaceNumbersWithWords(text) {
 
   function calculateDreamValue(text) {
   text = replaceNumbersWithWords(text);
+
+  if(typeSelect.value=='убрать'){
+     var letterValues = letterValuesRReduced;
+  }
+  else{
+     var letterValues = letterValuesReduced;
+  }
 
     return text
       .toUpperCase()
