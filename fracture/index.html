@@ -443,23 +443,24 @@ updateLightning();
 <div id="dreamPopup"></div>
 <script>
 
+function daysSinceFirstMarch() {
+  const now = new Date(); // текущая дата
+  const year = now.getFullYear(); // текущий год
+  const firstMarch = new Date(year, 2, 1); // 1 марта (месяцы в JS от 0, март — это 2)
+
+  // Разница в миллисекундах
+  const diffInMs = now - firstMarch;
+
+  // Переводим миллисекунды в дни
+  const msInOneDay = 24 * 60 * 60 * 1000;
+  const daysPassed = Math.floor(diffInMs / msInOneDay);
+
+  return daysPassed;
+}
+
 function getAncientRomanMonth() {
-  const today = new Date();
-  const day = today.getDate();
-  const month = today.getMonth(); // 0-based (0 = январь)
-
-  // Кол-во дней в каждом месяце обычного (невисокосного) года
-  const gregorianMonths = [31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31];
-
-  // Вычисляем номер дня в году
-  let dayOfYear = 0;
-  for (let i = 0; i < month; i++) {
-    dayOfYear += gregorianMonths[i];
-  }
-  dayOfYear += day;
-
   // Смещаем так, чтобы 1 марта стало днём 1
-  const dayFromMarch = (dayOfYear >= 60) ? (dayOfYear - 59) : (dayOfYear + 306); // 59 = 31 (янв) + 28 (фев)
+  const dayFromMarch = daysSinceFirstMarch();
 
   // Диапазоны месяцев (от 1 марта)
   const ranges = [
