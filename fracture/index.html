@@ -440,7 +440,7 @@ updateLightning();
   </div>
 <!-- Popup для суммы мечты -->
 <div id="dreamOverlay"></div>
-<div id="dreamPopup"></div>
+<div id="dreamPopup"><b id="dreamPopupText"></b><br><button onclick="closeDreamPopup();return false;" style="width:100%;">Запомнил</button></div>
 <script>
 
 function daysSinceFirstMarch() {
@@ -561,19 +561,23 @@ RomanMonthDiv.innerHTML = getAncientRomanMonth();
 
 updateRomanMonthDiv();
 
-
-function showDreamPopup(value) {
+function closeDreamPopup() {
   const popup = document.getElementById('dreamPopup');
   const overlay = document.getElementById('dreamOverlay');
 
-  popup.textContent = `Код ${value}`;
+    popup.classList.remove('active');
+    overlay.classList.remove('active');
+}
+
+function showDreamPopup(value) {
+  const popup = document.getElementById('dreamPopup');
+  const popupText = document.getElementById('dreamPopupText');
+  const overlay = document.getElementById('dreamOverlay');
+
+  popupText.textContent = `Код ${value}`;
   popup.classList.add('active');
   overlay.classList.add('active');
 
-  setTimeout(() => {
-    popup.classList.remove('active');
-    overlay.classList.remove('active');
-  }, 5000);
 }
 
   // Обновление подписи поля method в зависимости от пола Клиента
