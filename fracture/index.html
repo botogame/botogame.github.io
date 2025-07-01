@@ -440,7 +440,7 @@ updateLightning();
   </div>
 <!-- Popup для суммы мечты -->
 <div id="dreamOverlay"></div>
-<div id="dreamPopup"><b id="dreamPopupText"></b><br><button onclick="closeDreamPopup();return false;" style="width:100%;">Запомнил</button></div>
+<div id="dreamPopup"><b id="dreamPopupText"></b><br><button id="dreamPopupButton" onclick="closeDreamPopup();return false;" style="width:100%;">Запомнил</button></div>
 <script>
 
 function daysSinceFirstMarch() {
@@ -573,6 +573,14 @@ function showDreamPopup(value) {
   const popup = document.getElementById('dreamPopup');
   const popupText = document.getElementById('dreamPopupText');
   const overlay = document.getElementById('dreamOverlay');
+  const popupButton = document.getElementById('dreamPopupButton');
+  
+  if(genderSelect.value=='мужской'){
+    popupButton.innerText  = 'Запомнил';
+   }
+   else{
+    popupButton.innerText = 'Запомнила';
+   }
 
   popupText.textContent = `Код ${value}`;
   popup.classList.add('active');
