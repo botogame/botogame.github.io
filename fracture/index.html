@@ -177,19 +177,6 @@
       box-shadow: 0 0 20px crimson;
       position: relative;
     }
-    #closeRules {
-      background: crimson;
-      border: none;
-      color: #eee;
-      font-weight: bold;
-      font-size: 1.2rem;
-      border-radius: 5px;
-      cursor: pointer;
-      width: 100%;
-    }
-    #closeRules:hover {
-      background: darkred;
-    }
     #closeuzel2 {
       background: crimson;
       border: none;
@@ -442,6 +429,44 @@
   scrollbar-width: thin;
   scrollbar-color: crimson #222;
 }
+
+#dreamPopupButton {
+  background-color: #39FF14; /* кислотно-зелёный */
+  color: #111;
+  font-weight: 900;
+  font-family: 'Courier New', monospace;
+  border: 2px solid #0f0;
+  border-radius: 10px;
+  padding: 12px 20px;
+  font-size: 1.1rem;
+  text-transform: uppercase;
+  cursor: pointer;
+  box-shadow: 0 0 10px #0f0, 0 0 20px #39FF14, 0 0 40px #39FF14;
+  transition: all 0.3s ease;
+  z-index: 1001;
+}
+
+#dreamPopupButton:hover {
+  background-color: #00ffcc;
+  color: #000;
+  box-shadow: 0 0 15px #00ffcc, 0 0 30px #00ffcc, 0 0 50px #0ff;
+  transform: rotate(-2deg) scale(1.05);
+}
+
+    #closeRules {
+      background: crimson;
+      border: none;
+      color: #eee;
+      font-weight: bold;
+      font-size: 1.2rem;
+      border-radius: 5px;
+      cursor: pointer;
+      width: 100%;
+    }
+    #closeRules:hover {
+      background: darkred;
+    }
+
   </style>
 </head>
 <body>
@@ -695,6 +720,68 @@ if (typeof Website2APK !== "undefined") {
         document.getElementById("buttonClose").style.display = "none";
     }
 
+  const phrases = [
+  "Да-да, конечно",
+  "Ну и ладно",
+  "Записал в дневник",
+  "Серьёзно?..",
+  "Я всё понял... вроде бы",
+  "И что теперь?",
+  "Ну ок",
+  "Ага, как скажешь",
+  "Допустим",
+  "Так и запишем",
+  "Сделаю вид, что понял",
+  "Мудро... наверное",
+  "Спасибо за это, сонный гуру",
+  "Ну это уже странно",
+  "Слишком глубоко",
+  "Окей, мастер подсознания",
+  "Тут что-то было важное?",
+  "Хватит уже",
+  "Сон принят",
+  "Ничего не понял, но интересно",
+  "Отключаюсь",
+  "Мои нейроны перегрелись",
+  "Где кнопка «пропустить»?",
+  "Запомню на потом",
+  "А теперь кофе",
+  "Хорош, я сдаюсь",
+  "До следующего сна",
+  "Дальше сам",
+  "Я проснулся, честно",
+  // Новые, с иронией
+  "Да-да, конечно… господин сон",
+  "О, великий узел, я просветлён",
+  "Слишком мета. Даже для меня",
+  "Я — сон во сне сна, ясно?",
+  "Запишу в магическую тетрадку",
+  "Ну вот опять началось",
+  "Типа понял. Типа нет",
+  "Это что, был квест?",
+  "Где тут выдать диплом по сновидениям?",
+  "Слишком сложно, я пас",
+  "А можно в форме комикса?",
+  "Такое только в мультике покажут",
+  "Запомню, когда перестану забывать",
+  "И что мне с этим делать?",
+  "Окей, Морти, только не паникуй",
+  "Это звучало... важно? Наверное",
+  "Я это перескажу своему психологу",
+  "Это был сон или туториал?",
+  "Ну и лабуда, брат",
+  "В этом есть смысл. Где-то",
+  "Пойду, притворюсь, что понял",
+  "Слишком много символизма, у меня аллергия",
+  "Хорошо, вы победили",
+  "Да-да, добавлю в коллекцию снов",
+  "А где багрепорт?",
+  "Если это квантовая психология — я увольняюсь",
+  "Глубоко... как мои студенческие долги",
+  "Ладно, я теперь шаман?",
+  "Что ж, опять этот сонный ребус"
+];
+
   const form = document.getElementById("deathForm");
   const genderSelect = document.getElementById("gender");
   const typeSelect = document.getElementById("type");
@@ -740,6 +827,31 @@ const digitWords = {
   5: 'пять', 6: 'шесть', 7: 'семь', 8: 'восемь', 9: 'девять'
 };
 
+  // Функция для задания случайной фразы
+  const recentPhrases = [];
+
+function setRandomButtonText() {
+  let availablePhrases = phrases.filter(p => !recentPhrases.includes(p));
+
+  // Если вдруг все фразы перебрали — сбросим историю
+  if (availablePhrases.length === 0) {
+    recentPhrases.length = 0;
+    availablePhrases = [...phrases];
+  }
+
+  const randomIndex = Math.floor(Math.random() * availablePhrases.length);
+  const chosen = availablePhrases[randomIndex];
+
+  // Установим текст
+  document.getElementById('dreamPopupButton').textContent = chosen;
+
+  // Обновим историю последних 5
+  recentPhrases.push(chosen);
+  if (recentPhrases.length > 5) {
+    recentPhrases.shift(); // убираем самый старый
+  }
+}
+
 function replaceNumbersWithWords(text) {
   return text.replace(/\d+/g, (num) => {
     return num.split('').map(d => digitWords[d]).join(' ');
@@ -784,12 +896,7 @@ function showDreamPopup(value) {
   const overlay = document.getElementById('dreamOverlay');
   const popupButton = document.getElementById('dreamPopupButton');
   
-  if(genderSelect.value=='мужской'){
-    popupButton.innerText  = 'Окей';
-   }
-   else{
-    popupButton.innerText = 'Окей';
-   }
+	setRandomButtonText();
 
   popupText.textContent = `Код ${value}`;
   popup.classList.add('active');
