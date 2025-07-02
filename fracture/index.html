@@ -190,7 +190,7 @@
     #closeRules:hover {
       background: darkred;
     }
-    #closeuzel {
+    #closeuzel2 {
       background: crimson;
       border: none;
       color: #eee;
@@ -200,8 +200,26 @@
       cursor: pointer;
       width: 100%;
     }
-    #closeuzel:hover {
+    #closeuzel2:hover {
       background: darkred;
+    }
+	#closeuzel {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  background: transparent;
+  color: crimson;
+  border: none;
+  font-size: 1.8rem;
+  font-weight: bold;
+  cursor: pointer;
+  line-height: 1;
+  padding: 0;
+  z-index: 10;
+  transition: color 0.2s ease;
+}
+    #closeuzel:hover {
+      background: #eee;
     }
 	
 	@keyframes electricWords {
@@ -358,7 +376,7 @@
   background: #111;
   color: #eee;
   border: 2px solid crimson;
-  border-radius: 12px;
+  border-radius: 12px 0 0 12px;
   padding: 20px 30px;
   max-width: 500px;
   max-height: 90vh;
@@ -546,6 +564,7 @@ updateLightning();
   <!-- Popup Правил -->
   <div id="uzelPopup">
     <div id="uzelContent">
+      <button id="closeuzel" title="Закрыть">×</button>
       <h3>Узлы сна</h3>
       <ol>
         <li><b style="color:#40E0D0;">ЗЕРКАЛО ТЕЛА</b><br>
@@ -610,7 +629,7 @@ updateLightning();
 <b style="color:#0f0;">Признак:</b> тебя нет.<br>
 <b style="color:#0f0;">Пробуждение:</b> не убегай.</li>
       </ol>
-      <button id="closeuzel" title="Окей">Окей</button>
+	  <button id="closeuzel2" title="Закрыть">Закрыть</button>
     </div>
   </div>
   
@@ -692,7 +711,8 @@ if (typeof Website2APK !== "undefined") {
   const uzelLink = document.getElementById("uzelLink");
   const uzelPopup = document.getElementById("uzelPopup");
   const closeuzelBtn = document.getElementById("closeuzel");
-  
+  const closeuzel2Btn = document.getElementById("closeuzel2");
+
   const letterValuesReduced = {
   'А': 1,  'Б': 2,  'В': 3,  'Г': 4,  'Д': 5,  'Е': 6,  'Ё': 7,
   'Ж': 8,  'З': 9,  'И': 1,  'Й': 2,  'К': 3,  'Л': 4,  'М': 5,
@@ -974,6 +994,11 @@ updatemethodLabel();
   closeuzelBtn.addEventListener("click", () => {
     uzelPopup.classList.remove("show");
   });
+  closeuzel2Btn.addEventListener("click", () => {
+    uzelPopup.classList.remove("show");
+  });
+  
+  
 
   window.addEventListener("click", (e) => {
     if (e.target === rulesPopup) {
