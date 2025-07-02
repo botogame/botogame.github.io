@@ -466,7 +466,66 @@
     #closeRules:hover {
       background: darkred;
     }
+@import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@500&display=swap');
 
+body {
+  font-family: 'Orbitron', 'Courier New', monospace;
+  background-color: #050505;
+  background-image: url("sarum.webp");
+  background-size: cover;
+  background-position: center;
+  background-attachment: fixed;
+  color: #b3ffe0;
+}
+
+h1, h2 {
+  color: #00ffcc;
+  text-align: center;
+  text-shadow: 0 0 10px #00ffcc, 0 0 20px #00ffcc;
+  animation: flicker 1.5s infinite alternate;
+}
+
+button, input, select {
+  font-family: 'Orbitron', monospace;
+}
+
+#dreamPopup {
+  background: rgba(0, 255, 204, 0.1);
+  color: #39FF14;
+  border: 2px dashed #39FF14;
+  box-shadow:
+    0 0 20px #0f0,
+    0 0 60px #00ffcc,
+    0 0 100px #0ff;
+  backdrop-filter: blur(6px);
+  animation: glitch 1s infinite alternate;
+}
+
+#dreamPopupButton {
+  font-family: 'Orbitron', monospace;
+  text-shadow: 0 0 5px #0f0, 0 0 10px #0f0;
+}
+
+@keyframes flicker {
+  0% { opacity: 1; }
+  50% { opacity: 0.85; }
+  100% { opacity: 1; }
+}
+
+@keyframes glitch {
+  0% {
+    transform: translate(-50%, -50%) skew(0deg);
+    filter: hue-rotate(0deg);
+  }
+  50% {
+    transform: translate(-51%, -49%) skew(-1deg);
+    filter: hue-rotate(20deg);
+  }
+  100% {
+    transform: translate(-50%, -50%) skew(0.5deg);
+    filter: hue-rotate(-20deg);
+  }
+}
   </style>
 </head>
 <body>
