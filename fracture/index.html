@@ -190,6 +190,19 @@
     #closeRules:hover {
       background: darkred;
     }
+    #closeuzel {
+      background: crimson;
+      border: none;
+      color: #eee;
+      font-weight: bold;
+      font-size: 1.2rem;
+      border-radius: 5px;
+      cursor: pointer;
+      width: 100%;
+    }
+    #closeuzel:hover {
+      background: darkred;
+    }
 	
 	@keyframes electricWords {
   0% {
@@ -322,6 +335,95 @@
       gap: 15px;
       font-size: 1.1rem;}
 
+   /* Popup container */
+#uzelPopup {
+  position: fixed;
+  top: 0; left: 0; right: 0; bottom: 0;
+  background: rgba(0,0,0,0.85);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  visibility: hidden;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+  z-index: 1000;
+}
+#uzelPopup.show {
+  visibility: visible;
+  opacity: 1;
+}
+
+/* Popup content */
+#uzelContent {
+  background: #111;
+  color: #eee;
+  border: 2px solid crimson;
+  border-radius: 12px;
+  padding: 20px 30px;
+  max-width: 500px;
+  max-height: 90vh;
+  overflow-y: auto;
+  font-family: "Segoe UI", sans-serif;
+  font-size: 1rem;
+  line-height: 1.5;
+  text-align: left;
+  box-shadow: 0 0 20px crimson;
+  position: relative;
+}
+
+/* Typography enhancements */
+#uzelContent h1, #uzelContent h2, #uzelContent h3 {
+  color: crimson;
+  margin-top: 1em;
+  margin-bottom: 0.5em;
+}
+
+#uzelContent p {
+  margin: 0.5em 0;
+}
+
+#uzelContent a {
+  color: #4ecdc4;
+  text-decoration: none;
+}
+#uzelContent a:hover {
+  text-decoration: underline;
+}
+
+#uzelContent strong {
+  color: #ffd700;
+}
+
+#uzelContent ul, #uzelContent ol {
+  padding-left: 1.5em;
+  margin: 0.5em 0;
+}
+#uzelContent li {
+  margin-bottom: 0.3em;
+}
+
+/* Scrollbar styling for modern browsers */
+#uzelContent::-webkit-scrollbar {
+  width: 10px;
+}
+#uzelContent::-webkit-scrollbar-track {
+  background: #222;
+  border-radius: 6px;
+}
+#uzelContent::-webkit-scrollbar-thumb {
+  background-color: crimson;
+  border-radius: 6px;
+  border: 2px solid #111;
+}
+#uzelContent::-webkit-scrollbar-thumb:hover {
+  background-color: #ff4d4d;
+}
+
+/* Firefox scrollbar */
+#uzelContent {
+  scrollbar-width: thin;
+  scrollbar-color: crimson #222;
+}
   </style>
 </head>
 <body>
@@ -358,8 +460,7 @@ updateLightning();
 </script>
 
   <div class="stats" id="stats">
-    Счет: 0 - 0
-    <a href="#" id="rulesLink">Правила</a>
+    Счет: ...
   </div>
   
   <div class="RomanMonth" id="RomanMonth">
@@ -421,6 +522,9 @@ updateLightning();
       </div>
     </div>
   </div>
+  
+  
+    <div class="stats" ><a href="#" id="rulesLink">Правила</a> | <a href="#" id="uzelLink">Узлы сна</a></div>
 
   <!-- Popup Правил -->
   <div id="rulesPopup">
@@ -435,12 +539,87 @@ updateLightning();
         <li>Когда баланс соблюден, заказы принимаются в реализацию.</li>
         <li>Описание про Перелом читайте <a href="https://github.com/botogame/botogame/blob/main/freedom/distribution/fracture/README.md" target="_blank">здесь</a>.</li>
       </ol>
-      <button id="closeRules" title="Принимаю">Принимаю</button>
+      <button id="closeRules" title="Окей">Окей</button>
     </div>
   </div>
+  
+  <!-- Popup Правил -->
+  <div id="uzelPopup">
+    <div id="uzelContent">
+      <h3>Узлы сна</h3>
+      <ol>
+        <li><b style="color:#40E0D0;">ЗЕРКАЛО ТЕЛА</b><br>
+<b style="color:#0f0;">Атмосфера:</b> ты внутри сна — но не управляешь. Все движения автоматичны. Всё — как будто не твое.<br>
+<b style="color:#0f0;">Структура:</b> тело движется само, ты не принимаешь решений.<br>
+<b style="color:#0f0;">Логика:</b> иллюзия контроля. Ты — внутри, но без воли. Всё за тебя делает “сценарий”.<br>
+<b style="color:#0f0;">Признак:</b> момент, когда ты пытаешься сказать или сделать — и ничего не происходит.<br>
+<b style="color:#0f0;">Пробуждение:</b> посмотри на что то одно.</li>
+        <li><b style="color:#40E0D0;">МЕХАНИЗМ ВРЕМЕНИ</b><br>
+<b style="color:#0f0;">Атмосфера:</b> ты снова в том же месте. Повтор. День сурка. Всё предсказуемо — и бесконечно.<br>
+<b style="color:#0f0;">Структура:</b> события идут по кругу. Те же действия, те же локации, те же слова.<br>
+<b style="color:#0f0;">Логика:</b> сон закольцован. Он не отпустит, пока ты не осознаешь, что это уже было.<br>
+<b style="color:#0f0;">Признак:</b> невозможность “уйти” или “завершить”.<br>
+<b style="color:#0f0;">Пробуждение:</b> ты — пружина этого механизма.</li>
+
+<li><b style="color:#40E0D0;">ДОПРОС ЧУВСТВАМИ</b><br>
+<b style="color:#0f0;">Атмосфера:</b> напряжение растёт, будто гром перед ударом.<br>
+<b style="color:#0f0;">Структура:</b> страх возникает мгновенно. Что то несется на тебя, сердце сжимается, ты хочешь увернуться, закричать.<br>
+<b style="color:#0f0;">Логика:</b>  сон создаёт образ погони, вторжения, агрессии. Он ставит тебя в центр опасного события, заставляя сказать правду.<br>
+<b style="color:#0f0;">Признак:</b> тело сжимается, инстинкты кричат — «спасайся».<br>
+<b style="color:#0f0;">Пробуждение:</b> они идут своей дорогой.</li>
+        <li><b style="color:#40E0D0;">МИР БЕЗ ЗАКОНОВ</b><br>
+<b style="color:#0f0;">Атмосфера:</b> абсурд, сломанные законы, но всё — логично по-своему.<br>
+<b style="color:#0f0;">Структура:</b> здесь гравитация другая, время не линейно, мораль условна, путь нереален.<br>
+<b style="color:#0f0;">Логика:</b> мир сна не нарушен — просто это другой порядок, который ты можешь переписать.<br>
+<b style="color:#0f0;">Признак:</b> ты чувствуешь, что можешь управлять “внутренними” правилами.<br>
+<b style="color:#0f0;">Пробуждение:</b> найди адекватные детали.</li>
+        <li><b style="color:#40E0D0;">ЗАПРЕТНАЯ ПАМЯТЬ</b><br>
+<b style="color:#0f0;">Атмосфера:</b> перед тобой спертый воздух, пыль в солнечном луче, напряжённая тишина. Всё внутри давно смирилось с тем, что ты не вернёшься.<br>
+<b style="color:#0f0;">Структура:</b> закрытая дверь. Комната в глубине сна. Может быть шкаф, старая кладовая, потайной ящик. Ты всегда знал, где она.<br>
+<b style="color:#0f0;">Логика:</b> ты сам запер туда то, что не хотел вспоминать — слова, поступки, лица.<br>
+<b style="color:#0f0;">Признак:</b> ты подходишь к двери и не хочешь её трогать. А если откроешь: не хочешь входить.<br>
+<b style="color:#0f0;">Пробуждение:</b> перебори себя.</li>
+        <li><b style="color:#40E0D0;">ПОРОГОВЫЕ ЛИЦА</b><br>
+<b style="color:#0f0;">Атмосфера:</b> вежливая ловушка. Всё кажется "правильным": мягкие голоса, разумные аргументы, знакомые лица. Но внутри — нарастающий холод.<br>
+<b style="color:#0f0;">Структура:</b> ты среди тех, кто будто бы рад видеть тебя. Они уверяют, что ты всегда был с ними. Что ты — один из них. Что всё нормально.<br>
+<b style="color:#0f0;">Логика:</b> это демагогия. Они не грубят, не угрожают — они убеждают, ласково и настойчиво, будто под кожу проникают. Они не доказывают — они уже решили за тебя.<br>
+<b style="color:#0f0;">Признак:</b> в тебе растёт дискомфорт. Их слова гладкие, но ты чувствуешь, что за ними — ложь. Они хотят, чтобы ты забыл, кто ты, и стал кем-то удобным.<br>
+<b style="color:#0f0;">Пробуждение:</b> останови их.</li>
+        <li><b style="color:#40E0D0;">ОБРАТНАЯ СТОРОНА</b><br>
+<b style="color:#0f0;">Атмосфера:</b> тревожная встреча. Кто-то похож на тебя, но искажён.<br>
+<b style="color:#0f0;">Структура:</b> ты видишь двойника. Иногда — он действует против тебя. Иногда - противен.<br>
+<b style="color:#0f0;">Логика:</b> тень показывает, чего ты боишься в себе.<br>
+<b style="color:#0f0;">Признак:</b> он появляется там, где ты не хочешь быть.<br>
+<b style="color:#0f0;">Пробуждение:</b> ты увидел себя.</li>
+        <li><b style="color:#40E0D0;">ШЕПОТ ПРЕДКОВ</b><br>
+<b style="color:#0f0;">Атмосфера:</b> приглушённо, по древнему, сакрально.<br>
+<b style="color:#0f0;">Структура:</b> ты слышишь шёпот, молитвы, разговоры — всё из далекого прошлого.<br>
+<b style="color:#0f0;">Логика:</b> ты — не один. Ты продолжаешь тех, кто жил до тебя.<br>
+<b style="color:#0f0;">Признак:</b> ты видишь тех, которых не знаешь, но они знают тебя.<br>
+<b style="color:#0f0;">Пробуждение:</b> это уже устарело.</li>
+        <li><b style="color:#40E0D0;">ВХОЖДЕНИЕ В РОЛЬ</b><br>
+<b style="color:#0f0;">Атмосфера:</b> символично, почти все мифическое.<br>
+<b style="color:#0f0;">Структура:</b> ты становишься кем-то — воином, магом, судьёй, божеством.<br>
+<b style="color:#0f0;">Логика:</b> сновидение предлагает форму, через которую хочет испытать тебя.<br>
+<b style="color:#0f0;">Признак:</b> ты говоришь от имени того, кем не являешься. Ты действуешь уверенно, зная то, чего не учился.<br>
+<b style="color:#0f0;">Пробуждение:</b> найди дефект.</li>
+        <li><b style="color:#40E0D0;">БЕЛАЯ ПУСТОТА</b><br>
+<b style="color:#0f0;">Атмосфера:</b> белый шум, ничто, спокойствие, почти смерть.<br>
+<b style="color:#0f0;">Структура:</b> нет формы, событий, персонажей. Только ты — и пустота.<br>
+<b style="color:#0f0;">Логика:</b> всё завершено.<br>
+<b style="color:#0f0;">Признак:</b> тебя нет.<br>
+<b style="color:#0f0;">Пробуждение:</b> не убегай.</li>
+      </ol>
+      <button id="closeuzel" title="Окей">Окей</button>
+    </div>
+  </div>
+  
+  
+  
+  
 <!-- Popup для суммы мечты -->
 <div id="dreamOverlay"></div>
-<div id="dreamPopup"><b id="dreamPopupText"></b><br><button id="dreamPopupButton" onclick="closeDreamPopup();return false;" style="width:100%;">Запомнил</button></div>
+<div id="dreamPopup"><b id="dreamPopupText"></b><br><button id="dreamPopupButton" onclick="closeDreamPopup();return false;" style="width:100%;">Окей</button></div>
 <script>
 
 function daysSinceFirstMarch() {
@@ -510,6 +689,10 @@ if (typeof Website2APK !== "undefined") {
   const rulesPopup = document.getElementById("rulesPopup");
   const closeRulesBtn = document.getElementById("closeRules");
   
+  const uzelLink = document.getElementById("uzelLink");
+  const uzelPopup = document.getElementById("uzelPopup");
+  const closeuzelBtn = document.getElementById("closeuzel");
+  
   const letterValuesReduced = {
   'А': 1,  'Б': 2,  'В': 3,  'Г': 4,  'Д': 5,  'Е': 6,  'Ё': 7,
   'Ж': 8,  'З': 9,  'И': 1,  'Й': 2,  'К': 3,  'Л': 4,  'М': 5,
@@ -576,10 +759,10 @@ function showDreamPopup(value) {
   const popupButton = document.getElementById('dreamPopupButton');
   
   if(genderSelect.value=='мужской'){
-    popupButton.innerText  = 'Запомнил';
+    popupButton.innerText  = 'Окей';
    }
    else{
-    popupButton.innerText = 'Запомнила';
+    popupButton.innerText = 'Окей';
    }
 
   popupText.textContent = `Код ${value}`;
@@ -636,7 +819,7 @@ var clientTime = clientTimeSelect.value;
       if (entry.startsWith("подменить")) countP++;
     });
 
-    statsDiv.childNodes[0].nodeValue = `Счет: ${countU} - ${countP} `;
+    statsDiv.childNodes[0].nodeValue = `Счет: ${countU} | ${countP} `;
 
     if (countU === countP && countU > 0) {
       localStorage.removeItem("deaths");
@@ -779,6 +962,28 @@ updatemethodLabel();
   window.addEventListener("keydown", (e) => {
     if (e.key === "Escape" && rulesPopup.classList.contains("show")) {
       rulesPopup.classList.remove("show");
+    }
+  });
+  
+  // Работа с попапом uzel
+  uzelLink.addEventListener("click", e => {
+    e.preventDefault();
+    uzelPopup.classList.add("show");
+  });
+
+  closeuzelBtn.addEventListener("click", () => {
+    uzelPopup.classList.remove("show");
+  });
+
+  window.addEventListener("click", (e) => {
+    if (e.target === rulesPopup) {
+      uzelPopup.classList.remove("show");
+    }
+  });
+
+  window.addEventListener("keydown", (e) => {
+    if (e.key === "Escape" && uzelPopup.classList.contains("show")) {
+      uzelPopup.classList.remove("show");
     }
   });
 </script>
