@@ -89,26 +89,6 @@ let getNextCard = createCardIterator();
 
 document.addEventListener("DOMContentLoaded", function() {
 
-    loadScript('./scheme.js', function() {
-        setupOnLoad();
-    }, function() {
-        alert('Сбой в работе программы. Пожалуйста попробуйте сменить устройство для его запуска.');
-    });
-
-    // Попытка загрузить актуальные данные схемы
-    /*loadScript(
-        'https://botogame.github.io/vigil/scheme.js',
-        function() {
-            setupOnLoad();
-        },
-        function() {
-            // Попытка загрузить локальный скрипт при ошибке внешнего
-            loadScript('./scheme.js', function() {
-                setupOnLoad();
-            }, function() {
-                alert('Сбой в работе программы. Пожалуйста попробуйте сменить устройство для его запуска.');
-            });
-        }
-    );*/
+setupOnLoad();
 
 });
