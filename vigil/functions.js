@@ -155,6 +155,7 @@ function getCard(clearMatrix=false) {
         saveUkladGroupsToCookies(uklad,getCookie("symvol_text"), getCookie("endCard"));
 
         document.getElementById("startCard").value = getCookie("endCard");
+		document.getElementById("button2").style.display = "none";
         document.getElementById("button").innerHTML = "Получить расклад";
 
         setMsgToUser('select',"Ваша последняя карта: " + getCookie("endCard") + '.');
