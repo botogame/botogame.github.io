@@ -965,6 +965,9 @@ function otrabotatDolg(dolgType,cardSet){
 
 
 function showPopupMantra(blockId,weekId,week,doit,position) {
+	
+	
+    document.body.classList.add("popup-open");
     
     var gender = document.getElementById('gender').value;
 
@@ -1003,6 +1006,8 @@ function showPopupMantra(blockId,weekId,week,doit,position) {
 }
 
 function closePopupMantra(position=false) {
+	
+    document.body.classList.remove("popup-open");
     if(position){
         document.getElementById('cardButton'+position).classList.add("card-link3");
         setCookie('position', position);
