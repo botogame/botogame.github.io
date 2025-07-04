@@ -364,7 +364,7 @@ function set_result(gender, startCard, endCard, needType, wish, symvol_text, gen
         var genderMsg = 'желаю';
     }
 
-    var output = '<div><span class="month-title" onclick="toggleText(\'month1\')">Сейчас месяц ' + schemeMonth[monthId] + '</span><div id="month1" class="month-text">' + schemeMonthFull[monthId] +'</div></div><hr><div><span class="month-title" onclick="toggleText(\'month2\')">И уклад делается на ' + days[weekId] +'</span><div id="month2" class="month-text">' + daysFull[weekId] +'</div></div><hr>' + typeoutput + ': ' + genderMsg + ' чтобы '+ wish +'.<br><br>';
+    var output = '<div><span class="month-title" onclick="toggleText(\'month1\')">Сейчас месяц ' + schemeMonth[monthId] + '</span><div id="month1" class="month-text">' + schemeMonthFull[monthId] +'</div></div><hr><div><span class="month-title" onclick="toggleText(\'month2\')">И уклад делается на ' + days[weekId] +'</span><div id="month2" class="month-text">' + daysFull[weekId] +'</div></div><hr>' + typeoutput + ' такая: ' + genderMsg + ' чтобы '+ wish +'.<br><br>';
 
     const result2 = findBalancedPathWithSpecificEndTransition(startCard, endCard, needType);
 
