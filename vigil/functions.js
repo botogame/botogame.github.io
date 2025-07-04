@@ -302,93 +302,6 @@ function clear_input_error(_this, isSelect = false, restore = false,alarm=true,m
     }
 }
 
-function getCookie(name) {
-
-    if(name == 'cardGroups'){
-        var cookieValue = document.cookie
-            .split("; ")
-            .find((row) => row.startsWith(name+"="))
-            ?.split("=")[1];
-    
-        if (cookieValue) {
-            // Десериализуем данные обратно в объект
-            var cardGroupsPre = JSON.parse(safeDecodeURIComponent(cookieValue));
-            var cardGroupsPre2 = {};
-            for (let position in cardGroupsPre) {
-                // Восстанавливаем полное имя группы из отдельной куки
-                var cardGroupName = getCookie('cardGroupName'+position) || position;
-                cardGroupsPre2[cardGroupName] = cardGroupsPre[position];
-            }
-
-            return cardGroupsPre2;
-
-        } else {
-            return {};
-        }
-
-    }
-    else if(name == 'cardUklady'){
-        var cookieValue = document.cookie
-            .split("; ")
-            .find((row) => row.startsWith(name+"="))
-            ?.split("=")[1];
-    
-        if (cookieValue) {
-            // Десериализуем данные обратно в объект
-            var cardUkladyPre = JSON.parse(safeDecodeURIComponent(cookieValue));
-            var cardUkladyPre2 = {};
-            for (let position in cardUkladyPre) {
-                // Восстанавливаем полное имя группы из отдельной куки
-                var cardGroupName = getCookie('cardGroupName'+position) || position;
-                cardUkladyPre2[cardGroupName] = cardUkladyPre[position];
-            }
-
-            return cardUkladyPre2;
-        } else {
-            return {};
-        }
-    }
-    else if(name == 'ukladGroups'){
-        var cookieValue = document.cookie
-            .split("; ")
-            .find((row) => row.startsWith(name+"="))
-            ?.split("=")[1];
-    
-        if (cookieValue) {
-            // Десериализуем данные обратно в объект
-            return JSON.parse(safeDecodeURIComponent(cookieValue));
-        } else {
-            return {};
-        }
-    }
-else{
-    var matches = document.cookie.match(new RegExp("(?:^|; )" + name.replace(/([\.$?*|{}\(\)\[\]\\\/\+^])/g, "\\$1") + "=([^;]*)"));
-
-    if (matches) {
-        var result = safeDecodeURIComponent(matches[1]);
-
-        if (result === "undefined") {
-            return undefined;
-        } else if (result === "") {
-            return undefined;
-        } else {
-            return result;
-        }
-    } else {
-        return undefined;
-    }
-}
-    
-}
-
-function safeDecodeURIComponent(value) {
-    try {
-        return decodeURIComponent(value);
-    } catch (e) {
-        return value; // Возвращаем оригинальное значение, если декодирование не удалось
-    }
-}
-
 function formatDate() {
     var date = new Date();
 
@@ -451,7 +364,7 @@ function set_result(gender, startCard, endCard, needType, wish, symvol_text, gen
         var genderMsg = 'желаю';
     }
 
-    var output = 'Месяц ' + schemeMonth[monthId] + ':<br>' + schemeMonthFull[monthId] +'<br><br>Уклад на ' + days[weekId] +':<br>' + daysFull[weekId] +'<br><br>' + typeoutput + ':<br>' + genderMsg + ' чтобы '+ wish +'.<br><br>';
+    var output = '<div><span class="month-title" onclick="toggleText(\'month1\')">Сейчас месяц ' + schemeMonth[monthId] + '</span><div id="month1" class="month-text">' + schemeMonthFull[monthId] +'</div></div><hr><div><span class="month-title" onclick="toggleText(\'month2\')">И уклад делается на ' + days[weekId] +'</span><div id="month2" class="month-text">' + daysFull[weekId] +'</div></div><hr>' + typeoutput + ': ' + genderMsg + ' чтобы '+ wish +'.<br><br>';
 
     const result2 = findBalancedPathWithSpecificEndTransition(startCard, endCard, needType);
 
@@ -794,101 +707,6 @@ function countAllCards() {
     return totalCards;
 }
 
-// Функция для сохранения данных в куки
-function saveCardGroupsToCookies(groupName, card) {
-
-    // Добавляем карту в указанную группу или создаем новую группу, если она не существует
-    if (!cardGroups[groupName]) {
-        cardGroups[groupName] = []; // Если группа не существует, создаем её
-    }
-    cardGroups[groupName].push(card); // Добавляем карту в группу
-
-
-    var cardGroupsPre = {};
-    var position = 0;
-    for (let groupNamePre in cardGroups) {
-        position = position + 1;
-        cardGroupsPre[position] = cardGroups[groupNamePre];
-        setCookie('cardGroupName'+position, groupNamePre);
-    }
-
-    // Сериализуем объект в строку
-    var serializedData = JSON.stringify(cardGroupsPre);
-
-    setCookie('cardGroups',encodeURIComponent(serializedData));
-}
-
-// Функция для сохранения данных в куки
-function savecardUkladyToCookies(groupName,ukladType) {
-    
-    cardUklady[groupName] = ukladType;
-
-    var cardUkladyPre = {};
-    var position = 0;
-    var groupNamePre2 = '';
-    for (let groupNamePre in cardGroups) {
-        position = position + 1;
-
-        if(cardUklady[groupNamePre]!==undefined){
-            if(getCookie('cardGroupName'+position)!==undefined){
-                groupNamePre2 = position;
-            }
-            else{
-                groupNamePre2 = groupNamePre;
-            }
-
-            cardUkladyPre[groupNamePre2] = cardUklady[groupNamePre];
-        }
-    }
-
-    // Сериализуем объект в строку
-    var serializedData = JSON.stringify(cardUkladyPre);
-
-    setCookie('cardUklady',encodeURIComponent(serializedData));
-    
-}
-
-// Функция для сохранения данных в куки
-function saveUkladGroupsToCookies(ukladCode,ukladName, card) {
-    // Добавляем карту в указанную группу или создаем новую группу, если она не существует
-
-    if (!ukladGroups[ukladCode]) {
-        ukladGroups[ukladCode] = {}; // Создаем объект, если он не существует
-        ukladGroups[ukladCode]['name'] = ukladName;
-        ukladGroups[ukladCode]['cards'] = [];
-    }
-    else{
-        if(ukladName.length > ukladGroups[ukladCode]['name'].length){
-            ukladGroups[ukladCode]['name'] = ukladName;
-        }
-    }
-
-
-    ukladGroups[ukladCode]['cards'].push(card); // Добавляем карту в группу
-    // Сериализуем объект в строку
-    var serializedData = JSON.stringify(ukladGroups);
-
-    setCookie('ukladGroups',encodeURIComponent(serializedData));
-    
-}
-
-// Функция для удаления куки
-function deleteCardGroupsCookies() {
-    var isDelete = confirm("Точно хотите удалить всю историю?");
-
-    if (isDelete == true) {
-
-        destroyHistory();
-
-        if (document.getElementById("button").innerHTML == "Уклад полностью проработан") {
-            setCookie('position','');
-            getCard(true);
-        }
-
-        openModal();
-    }
-}
-
 // Функция для открытия модального окна
 function openModal() {
     var checkMatrix = findMatrix();
@@ -1113,15 +931,6 @@ function calculateDolgy() {
     return totalCards;
 }
 
-function setCookie(name,value) {
-    if(value==''){
-        document.cookie = name+ "=;SameSite=None;Secure;max-age=-1";
-    }else{
-        document.cookie = name + '=' + value +';SameSite=None;Secure;max-age=' + oneYearInSeconds;
-    }
-    
-}
-
 function otrabotatDolg(dolgType,cardSet){
 
     var startCard = document.getElementById("startCard").value;
@@ -1256,4 +1065,175 @@ function checkDayChangePlanet() {
         checkDayChangePlanetStarted = false;
         checkDayChangePlanet(); // Планируем следующую проверку
     }, timeUntilMidnight);
+}
+
+
+  function toggleText(id) {
+    const allTexts = document.querySelectorAll('.month-text');
+    allTexts.forEach(el => {
+      if (el.id !== id) el.classList.remove('visible');
+    });
+    const element = document.getElementById(id);
+    element.classList.toggle('visible');
+  }
+  
+  
+function setCookie(name, value) {
+    if (value === '') {
+        localStorage.removeItem(name);
+    } else {
+        localStorage.setItem(name, value);
+    }
+}
+
+function getCookie(name) {
+    if (name === 'cardGroups') {
+        const stored = localStorage.getItem(name);
+        if (stored) {
+            const cardGroupsPre = JSON.parse(safeDecodeURIComponent(stored));
+            const cardGroupsPre2 = {};
+            for (let position in cardGroupsPre) {
+                const cardGroupName = getCookie('cardGroupName' + position) || position;
+                cardGroupsPre2[cardGroupName] = cardGroupsPre[position];
+            }
+            return cardGroupsPre2;
+        } else {
+            return {};
+        }
+    }
+    else if (name === 'cardUklady') {
+        const stored = localStorage.getItem(name);
+        if (stored) {
+            const cardUkladyPre = JSON.parse(safeDecodeURIComponent(stored));
+            const cardUkladyPre2 = {};
+            for (let position in cardUkladyPre) {
+                const cardGroupName = getCookie('cardGroupName' + position) || position;
+                cardUkladyPre2[cardGroupName] = cardUkladyPre[position];
+            }
+            return cardUkladyPre2;
+        } else {
+            return {};
+        }
+    }
+    else if (name === 'ukladGroups') {
+        const stored = localStorage.getItem(name);
+        if (stored) {
+            return JSON.parse(safeDecodeURIComponent(stored));
+        } else {
+            return {};
+        }
+    }
+    else {
+        const value = localStorage.getItem(name);
+        if (value === undefined || value === null || value === '' || value === 'undefined') {
+            return undefined;
+        }
+        return safeDecodeURIComponent(value);
+    }
+}
+
+
+
+// Функция для сохранения данных в куки
+function saveCardGroupsToCookies(groupName, card) {
+
+    // Добавляем карту в указанную группу или создаем новую группу, если она не существует
+    if (!cardGroups[groupName]) {
+        cardGroups[groupName] = []; // Если группа не существует, создаем её
+    }
+    cardGroups[groupName].push(card); // Добавляем карту в группу
+
+
+    var cardGroupsPre = {};
+    var position = 0;
+    for (let groupNamePre in cardGroups) {
+        position = position + 1;
+        cardGroupsPre[position] = cardGroups[groupNamePre];
+        setCookie('cardGroupName'+position, groupNamePre);
+    }
+
+    // Сериализуем объект в строку
+    var serializedData = JSON.stringify(cardGroupsPre);
+
+    setCookie('cardGroups',encodeURIComponent(serializedData));
+}
+
+// Функция для сохранения данных в куки
+function savecardUkladyToCookies(groupName,ukladType) {
+    
+    cardUklady[groupName] = ukladType;
+
+    var cardUkladyPre = {};
+    var position = 0;
+    var groupNamePre2 = '';
+    for (let groupNamePre in cardGroups) {
+        position = position + 1;
+
+        if(cardUklady[groupNamePre]!==undefined){
+            if(getCookie('cardGroupName'+position)!==undefined){
+                groupNamePre2 = position;
+            }
+            else{
+                groupNamePre2 = groupNamePre;
+            }
+
+            cardUkladyPre[groupNamePre2] = cardUklady[groupNamePre];
+        }
+    }
+
+    // Сериализуем объект в строку
+    var serializedData = JSON.stringify(cardUkladyPre);
+
+    setCookie('cardUklady',encodeURIComponent(serializedData));
+    
+}
+
+// Функция для сохранения данных в куки
+function saveUkladGroupsToCookies(ukladCode,ukladName, card) {
+    // Добавляем карту в указанную группу или создаем новую группу, если она не существует
+
+    if (!ukladGroups[ukladCode]) {
+        ukladGroups[ukladCode] = {}; // Создаем объект, если он не существует
+        ukladGroups[ukladCode]['name'] = ukladName;
+        ukladGroups[ukladCode]['cards'] = [];
+    }
+    else{
+        if(ukladName.length > ukladGroups[ukladCode]['name'].length){
+            ukladGroups[ukladCode]['name'] = ukladName;
+        }
+    }
+
+
+    ukladGroups[ukladCode]['cards'].push(card); // Добавляем карту в группу
+    // Сериализуем объект в строку
+    var serializedData = JSON.stringify(ukladGroups);
+
+    setCookie('ukladGroups',encodeURIComponent(serializedData));
+    
+}
+
+// Функция для удаления куки
+function deleteCardGroupsCookies() {
+    var isDelete = confirm("Точно хотите удалить всю историю?");
+
+    if (isDelete == true) {
+
+        destroyHistory();
+
+        if (document.getElementById("button").innerHTML == "Уклад полностью проработан") {
+            setCookie('position','');
+            getCard(true);
+        }
+
+        openModal();
+    }
+}
+
+
+function safeDecodeURIComponent(value) {
+    try {
+        return decodeURIComponent(value);
+    } catch (e) {
+        return value; // Возвращаем оригинальное значение, если декодирование не удалось
+    }
 }
