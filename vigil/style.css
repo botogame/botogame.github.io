@@ -59,7 +59,7 @@
    }
    
    .highlight {
-    background-color: #00e5aa;
+    background-color: #66d9e8;
     color: #0b0c10;
    }
    
@@ -174,8 +174,8 @@
    
    h1 {
     font-size: 3rem;
-    color: #00e5aa;
-    text-shadow: 0 0 10px #00e5aa, 0 0 20px #007f00, 0 0 30px #00e5aa;
+    color: #66d9e8;
+    text-shadow: 0 0 10px #66d9e8, 0 0 20px #007f00, 0 0 30px #66d9e8;
     text-align: center;
    }
    
@@ -185,7 +185,7 @@
     background: rgba(0, 0, 0, 0.8);
     padding: 20px;
     border-radius: 20px;
-    box-shadow: 0 0 20px #00e5aa, 0 0 40px #00eaff;
+    box-shadow: 0 0 20px #66d9e8, 0 0 40px #00eaff;
    }
    
    label {
@@ -233,8 +233,8 @@
    
    select:hover,
    input:hover {
-    border-color: #00e5aa;
-    box-shadow: 0 0 20px #00e5aa;
+    border-color: #66d9e8;
+    box-shadow: 0 0 20px #66d9e8;
    }
    
    button {
@@ -243,9 +243,9 @@
     font-size: 1.2rem;
     border: none;
     border-radius: 10px;
-    background: linear-gradient(45deg, #00e5aa, #00eaff);
+    background: linear-gradient(45deg, #66d9e8, #00eaff);
     color: #ffffff;
-    box-shadow: 0 0 20px #00e5aa, 0 0 40px #00eaff;
+    box-shadow: 0 0 20px #66d9e8, 0 0 40px #00eaff;
     margin-top: 10px;
     cursor: pointer;
     transition: transform 0.3s, box-shadow 0.3s;
@@ -253,22 +253,22 @@
    
    button:hover {
     transform: scale(1.05);
-    box-shadow: 0 0 30px #00e5aa, 0 0 50px #00eaff;
+    box-shadow: 0 0 30px #66d9e8, 0 0 50px #00eaff;
    }
    #result {
     margin-top: 20px;
     padding: 20px;
     background: rgba(0, 0, 0, 0.8); /* Полупрозрачный фон */
     border-radius: 10px;
-    box-shadow: 0 0 15px #00e5aa, 0 0 30px #00eaff; /* Яркое свечение */
+    box-shadow: 0 0 15px #66d9e8, 0 0 30px #00eaff; /* Яркое свечение */
     color: #ffffff; /* Белый текст */
     font-size: 1.1rem; /* Увеличиваем размер шрифта */
     font-weight: bold; /* Делаем текст жирным */
-    text-shadow: 0 0 5px #00e5aa, 0 0 15px #00eaff; /* Неоновое свечение текста */
+    text-shadow: 0 0 5px #66d9e8, 0 0 15px #00eaff; /* Неоновое свечение текста */
     letter-spacing: 1px; /* Увеличиваем межбуквенный интервал для лучшего восприятия */
     transition: all 0.3s ease-in-out; /* Плавный переход для всех свойств */
     font-size: 1.2rem;
-    color: #00e5aa;
+    color: #66d9e8;
     margin: 15px 0 5px;
     font-weight: bold; /* Делаем текст жирным */
     text-align:center;
@@ -293,8 +293,8 @@
    /* Эффект при наведении на #result */
    #result:hover {
     background: rgba(0, 0, 0, 0.9); /* Темнее фон при наведении */
-    box-shadow: 0 0 20px #00e5aa, 0 0 40px #00eaff; /* Более яркое свечение */
-    text-shadow: 0 0 10px #00e5aa, 0 0 20px #00eaff; /* Увеличиваем свечение текста */
+    box-shadow: 0 0 20px #66d9e8, 0 0 40px #00eaff; /* Более яркое свечение */
+    text-shadow: 0 0 10px #66d9e8, 0 0 20px #00eaff; /* Увеличиваем свечение текста */
    }
    
    a {
@@ -352,7 +352,7 @@
     background: rgba(0, 0, 0, 0.8);
     padding: 20px;
     border-radius: 15px;
-    box-shadow: 0 0 20px #00e5aa, 0 0 40px #00eaff;
+    box-shadow: 0 0 20px #66d9e8, 0 0 40px #00eaff;
    }
    
    .close {
@@ -363,13 +363,13 @@
    }
    
    .close:hover {
-    color: #00e5aa;
+    color: #66d9e8;
    }
    
    .modal-header {
     font-size: 1.5rem;
     text-align: center;
-    color: #00e5aa;
+    color: #66d9e8;
     margin-bottom: 20px;
    }
    
@@ -471,7 +471,7 @@
                flex-direction: column;
                align-items: center;
                text-align: center;
-               color: #00e5aa;
+               color: #66d9e8;
                font-family: 'Comic Sans MS', cursive, sans-serif;
                position: relative;
                max-height: 100%; /* Ограничение по высоте */
@@ -497,8 +497,8 @@
    
            .image-backgroundMantra img {
                width: 35%;
-               border: 3px solid #00e5aa;
-               box-shadow: 0 0 20px #00e5aa;
+               border: 3px solid #66d9e8;
+               box-shadow: 0 0 20px #66d9e8;
                border-radius: 25px;
            }
    
@@ -513,10 +513,8 @@
            .text-overlayMantra {
                position: relative;
                z-index: 1;
-               background-color: rgba(44, 62, 80, 0.9);
                padding: 20px;
                max-height: 60%; /* Ограничение по высоте для текста */
-               height: 100vh; /* Ограничение по высоте для текста */
                overflow-y: auto; /* Вертикальная прокрутка */
            }
    
@@ -954,8 +952,8 @@ select, input {
 }
 
 select:hover, input:hover {
-  border-color: #00e5aa;
-  box-shadow: 0 0 30px #00e5aa;
+  border-color: #66d9e8;
+  box-shadow: 0 0 30px #66d9e8;
 }
 
 input::placeholder {
@@ -974,20 +972,20 @@ input::placeholder {
   padding: 22px;
   background: rgba(0, 0, 0, 0.9);
   border-radius: 15px;
-  box-shadow: 0 0 40px #00e5aa, 0 0 70px #00eaff;
-  color: #00e5aa;
+  box-shadow: 0 0 40px #66d9e8, 0 0 70px #00eaff;
+  color: #66d9e8;
   font-weight: 700;
   font-size: 1.4rem;
   text-align: center;
   letter-spacing: 1.3px;
   font-family: 'Orbitron', monospace;
-  text-shadow: 0 0 15px #00e5aa, 0 0 30px #00eaff;
+  text-shadow: 0 0 15px #66d9e8, 0 0 30px #00eaff;
   transition: all 0.3s ease-in-out;
 }
 
 #result:hover {
   background: rgba(0, 0, 0, 0.95);
-  box-shadow: 0 0 55px #00e5aa, 0 0 80px #00ffff;
+  box-shadow: 0 0 55px #66d9e8, 0 0 80px #00ffff;
 }
 
 @media (max-width: 768px) {
@@ -1012,62 +1010,76 @@ input::placeholder {
   }
 }
 
-
-/* Затемнённый фон */
+/* Затемнённый футуристический фон */
 .popup-overlayMantra {
     position: fixed;
     top: 0;
     left: 0;
-    width: 100%;
-    height: 100%;
-    background-color: rgba(5, 10, 20, 0.88); /* Более глубокий тёмный фон */
+    width: 100vw;
+    height: 100vh;
+    background: radial-gradient(circle at center, rgba(5, 10, 20, 0.92), rgba(0, 0, 0, 0.96));
+    backdrop-filter: blur(4px) brightness(0.8);
     display: none;
     justify-content: center;
     align-items: center;
     z-index: 1000;
-    backdrop-filter: blur(3px); /* стеклянный эффект */
+    animation: overlay-pulse 10s infinite ease-in-out;
 }
-
-/* Содержимое окна */
-.popup-content {
-    background: radial-gradient(circle at top left, #041a2d, #0b2d3f); /* sci-fi фон */
-    border: 2px solid #66d9e8;
-    box-shadow: 0 0 12px #66d9e8, 0 0 24px #4a9cae;
+.popup-contentMantra {
+    background: linear-gradient(145deg, #041a2d 0%, #0b2d3f 100%);
+    border: 3px solid #66d9e8;
+    box-shadow:
+        0 0 12px #66d9e8,
+        0 0 25px #4a9cae,
+        inset 0 0 8px rgba(102, 217, 232, 0.4);
     color: #c2f9ff;
+
     max-height: 80vh;
     max-width: 90vw;
+    width: 600px;
     overflow-y: auto;
     overflow-x: hidden;
-    padding: 30px;
-    border-radius: 16px;
+
+    padding: 30px 40px;
+    border-radius: 20px 0 0 20px; /* скруглены: верхний левый и нижний левый */
     font-family: 'Orbitron', sans-serif;
     position: relative;
     animation: popup-fade 0.4s ease-out;
+
     scrollbar-width: thin;
     scrollbar-color: #66d9e8 #0b2d3f;
 }
 
-/* Визуально стильная прокрутка */
-.popup-content::-webkit-scrollbar {
+/* Пользовательский скролл */
+.popup-contentMantra::-webkit-scrollbar {
     width: 8px;
 }
-.popup-content::-webkit-scrollbar-thumb {
-    background-color: #66d9e8;
-    border-radius: 4px;
-}
-.popup-content::-webkit-scrollbar-track {
+.popup-contentMantra::-webkit-scrollbar-track {
     background: #0b2d3f;
 }
+.popup-contentMantra::-webkit-scrollbar-thumb {
+    background-color: #66d9e8;
+    border-radius: 4px;
+    box-shadow: 0 0 6px #66d9e8;
+}
 
-/* Плавное появление */
 @keyframes popup-fade {
     from {
-        transform: scale(0.9);
         opacity: 0;
+        transform: scale(0.95);
     }
     to {
-        transform: scale(1);
         opacity: 1;
+        transform: scale(1);
+    }
+}
+
+@keyframes overlay-pulse {
+    0%, 100% {
+        background: radial-gradient(circle at center, rgba(5, 10, 20, 0.92), rgba(0, 0, 0, 0.96));
+    }
+    50% {
+        background: radial-gradient(circle at center, rgba(10, 20, 40, 0.94), rgba(0, 0, 0, 0.98));
     }
 }
 
