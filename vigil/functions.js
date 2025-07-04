@@ -450,7 +450,7 @@ function set_result(gender, startCard, endCard, needType, wish, symvol_text, gen
         var genderMsg = 'желаю';
     }
 
-    var output = 'Месяц ' + schemeMonth[monthId] + '<br><div class="image-backgroundMonth"><img src="./month/'+ monthId+'.jpg"></div><br>' + typeoutput + ': ' + genderMsg + ' чтобы '+ wish +'.<br><br><button id="button2" class="open-modal-btn" onclick="updateDayNow()">Обновить месяц или день недели</button><hr>Уклад на ' + days[weekId] +':<br><br>';
+    var output = 'Месяц ' + schemeMonth[monthId] + ':<br>' + schemeMonthFull[monthId] +'<br><br>Уклад на ' + days[weekId] +':<br>' + daysFull[weekId] +'<br><br>' + typeoutput + ':<br>' + genderMsg + ' чтобы '+ wish +'.<br><br>';
 
     const result2 = findBalancedPathWithSpecificEndTransition(startCard, endCard, needType);
 
@@ -512,6 +512,7 @@ function set_result(gender, startCard, endCard, needType, wish, symvol_text, gen
         setCookie('wish',wish);
         setCookie('symvol_text',symvol_text);
 
+        document.getElementById("button2").style.display = "block";
         document.getElementById("button").innerHTML = "Уклад полностью проработан";
         document.getElementById("selectForm").style.display = "none";
 
