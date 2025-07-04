@@ -1040,7 +1040,6 @@ input::placeholder {
     overflow-y: auto;
     overflow-x: hidden;
 
-    padding: 30px 40px;
     border-radius: 20px 0 0 20px; /* скруглены: верхний левый и нижний левый */
     font-family: 'Orbitron', sans-serif;
     position: relative;
