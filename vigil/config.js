@@ -87,8 +87,6 @@ let cardUklady = {};
 
 let getNextCard = createCardIterator();
 
-document.addEventListener("DOMContentLoaded", function() {
-
-setupOnLoad();
-
+window.addEventListener("load", function() {
+    setupOnLoad();
 });
