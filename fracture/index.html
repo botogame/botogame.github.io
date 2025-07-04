@@ -608,7 +608,8 @@ updateLightning();
     </label>
 
     <button type="submit">Заказать</button>
-	<button id="buttonClose" onclick="Website2APK.exitApp()">Закрыть программу</button>
+	<button id="buttonClose" onclick="Website2APK.exitApp()" style="display:none;">Закрыть программу</button>
+    <button id="buttonAndroid" onclick="window.location = 'https://botogame.github.io/fracture/perelom_v1.apk';" style="display:none;">Приложение на телефон (android)</button>
   </form>
 
   <div class="output" id="result">
@@ -774,9 +775,11 @@ function getAncientRomanMonth() {
 
 if (typeof Website2APK !== "undefined") {
         document.getElementById("buttonClose").style.display = "block";
+        document.getElementById("buttonAndroid").style.display = "none";
     }
     else{
         document.getElementById("buttonClose").style.display = "none";
+        document.getElementById("buttonAndroid").style.display = "block";
     }
 
   const phrases = [
