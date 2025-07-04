@@ -1011,3 +1011,67 @@ input::placeholder {
     font-size: 1rem;
   }
 }
+
+
+/* Затемнённый фон */
+.popup-overlayMantra {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(5, 10, 20, 0.88); /* Более глубокий тёмный фон */
+    display: none;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+    backdrop-filter: blur(3px); /* стеклянный эффект */
+}
+
+/* Содержимое окна */
+.popup-content {
+    background: radial-gradient(circle at top left, #041a2d, #0b2d3f); /* sci-fi фон */
+    border: 2px solid #66d9e8;
+    box-shadow: 0 0 12px #66d9e8, 0 0 24px #4a9cae;
+    color: #c2f9ff;
+    max-height: 80vh;
+    max-width: 90vw;
+    overflow-y: auto;
+    overflow-x: hidden;
+    padding: 30px;
+    border-radius: 16px;
+    font-family: 'Orbitron', sans-serif;
+    position: relative;
+    animation: popup-fade 0.4s ease-out;
+    scrollbar-width: thin;
+    scrollbar-color: #66d9e8 #0b2d3f;
+}
+
+/* Визуально стильная прокрутка */
+.popup-content::-webkit-scrollbar {
+    width: 8px;
+}
+.popup-content::-webkit-scrollbar-thumb {
+    background-color: #66d9e8;
+    border-radius: 4px;
+}
+.popup-content::-webkit-scrollbar-track {
+    background: #0b2d3f;
+}
+
+/* Плавное появление */
+@keyframes popup-fade {
+    from {
+        transform: scale(0.9);
+        opacity: 0;
+    }
+    to {
+        transform: scale(1);
+        opacity: 1;
+    }
+}
+
+/* Класс, который отключает прокрутку для body */
+body.popup-open {
+    overflow: hidden;
+}
