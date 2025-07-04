@@ -1086,3 +1086,17 @@ input::placeholder {
 body.popup-open {
     overflow: hidden;
 }
+
+a {
+  text-decoration: underline;
+  text-decoration-color: #66d9e8; /* Цвет подчёркивания в стиле Футурамы */
+  text-underline-offset: 3px;     /* Смещение подчёркивания от текста */
+  color: #66d9e8;                 /* Цвет текста ссылки */
+  font-family: 'Orbitron', sans-serif;
+  transition: color 0.3s ease;
+}
+
+a:hover {
+  color: #a0f1ff;
+  text-decoration-color: #a0f1ff;
+}
