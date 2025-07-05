@@ -62,6 +62,136 @@
             <p>От бдилки вы получаете переходы женского начала (и нужно дополняться мужским началом).</p>
         </div>
     </div>
+        <!-- Модальное окно -->
+    <div class="overlayPlanet" id="dninedeli">
+        <div class="popupPlanet">
+            <span class="close-btnPlanet" onclick="document.getElementById('dninedeli').style.display = 'none'">X</span>
+            <h2>Дни недели</h2>
+            <p id="planetInfo"></p>
+            <style>
+.accordion {
+  width: 100%;
+  max-width: 700px;
+  margin: auto;
+  font-family: 'Orbitron', sans-serif;
+}
+
+.accordion-item {
+  border-bottom: 1px solid #444;
+  padding: 10px 0;
+}
+
+.accordion-title {
+  cursor: pointer;
+  font-weight: bold;
+  color: #66d9e8;
+  transition: color 0.3s ease;
+  text-decoration: underline;
+}
+
+.accordion-title:hover {
+  color: #a6f0ff;
+}
+
+.accordion-content {
+  display: none;
+  margin-top: 10px;
+  color: #ccc;
+  line-height: 1.5;
+}
+
+.scrollable {
+  max-height: 300px; /* или любое другое значение */
+  overflow-y: auto;
+}
+.scrollable::-webkit-scrollbar {
+  width: 8px;
+}
+
+.scrollable::-webkit-scrollbar-thumb {
+  background: #66d9e8;
+  border-radius: 4px;
+}
+
+.scrollable::-webkit-scrollbar-track {
+  background: #0b2d3f;
+}
+</style>
+
+<div class="accordion scrollable">
+  <div class="accordion-item">
+    <div class="accordion-title">Воскресенье шлёт последнее предупреждение</div>
+    <div class="accordion-content">
+      Внимание, путешественник: ты только что активировал экзистенциальную перезагрузку.
+      Это необратимо. И, согласно условиям, возврата и техподдержки не предусмотрено.
+    </div>
+  </div>
+
+  <div class="accordion-item">
+    <div class="accordion-title">Понедельник оставил след… и долговую квитанцию</div>
+    <div class="accordion-content">
+      Ты проснулся, и уже кому-то должен. Добро пожаловать в корпоративную астрореальность.
+      Кстати, тень за тобой — не твоя. Мы её арендовали у галактической налоговой.
+    </div>
+  </div>
+
+  <div class="accordion-item">
+    <div class="accordion-title">Вторник заглянул в бездну, и она написала ему</div>
+    <div class="accordion-content">
+      Ты посмотрел внутрь себя. Там Wi-Fi не ловит, но зато есть неоплаченные обещания.
+      И твой двойник, кстати, снова не платит за аренду.
+    </div>
+  </div>
+
+  <div class="accordion-item">
+    <div class="accordion-title">Среда сломалась. Всё идёт по плану</div>
+    <div class="accordion-content">
+      Системная ошибка на экзистенциальном уровне.
+      Ты думал это баг, но это фича. Или как минимум сюжетная необходимость.
+    </div>
+  </div>
+
+  <div class="accordion-item">
+    <div class="accordion-title">Четверг горит. Не туши, смотри</div>
+    <div class="accordion-content">
+      В голове пожар, в душе рассрочка, в глазах огонь.
+      Прозрение включилось автоматически — попробуйте выключить в настройках мультивселенной.
+    </div>
+  </div>
+
+  <div class="accordion-item">
+    <div class="accordion-title">Пятница светится. Ты не должен светиться</div>
+    <div class="accordion-content">
+      Сияние — побочный эффект перехода на тёмную энергию.
+      Пасьянс недоволен. Он уже отправил за тобой вселенского аудитора.
+    </div>
+  </div>
+
+  <div class="accordion-item">
+    <div class="accordion-title">Суббота пришла. Возвращайся в себя, если найдёшь вход</div>
+    <div class="accordion-content">
+      Ты застрял в временной петле между "пофиг" и "а может, всё-таки".
+      Поздравляем! Ты официально — системный глюк Медичи.
+    </div>
+  </div>
+</div>
+
+<script>
+document.querySelectorAll('.accordion-title').forEach(title => {
+  title.addEventListener('click', () => {
+    document.querySelectorAll('.accordion-content').forEach(content => {
+      if (content !== title.nextElementSibling) {
+        content.style.display = 'none';
+      }
+    });
+    const content = title.nextElementSibling;
+    content.style.display = (content.style.display === 'block') ? 'none' : 'block';
+  });
+});
+</script>
+
+        </div>
+    </div>
         <!-- Рабочее окно -->
         <div class="container">
             <div id="overlay"><b>Cпасибо!</b></div>
@@ -139,7 +269,7 @@
             <br />
             <p>
                 <center>
-                    Версия 5.18
+                    <a class="" href="#"  onclick="document.getElementById('dninedeli').style.display = 'flex';return false;">Дни недели</a>
                     <span class="separator">|</span>
                     <a class="a_info2" target="_blank" href="https://www.litres.ru/book/andrey-volkov-33168547/pasyans-medichi-bdilka-71113513/">Книга</a>
                 </center>
