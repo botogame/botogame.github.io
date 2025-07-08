@@ -639,7 +639,7 @@ updateLightning();
         <li>В Клиенты можете записывать косвенные именые обозначения, в том числе "половинка того то".</li>
         <li>Мечта оцифровывается в код для принятия сном.</li>
         <li>При создании заказов соблюдайте баланс между союзниками.</li>
-        <li>Когда баланс соблюден, заказы принимаются в реализацию.</li>
+        <li>Когда баланс соблюден, заказы принимаются в реализацию и создатель добавит дополнительный код на ваш вклад в общество.</li>
         <li>Описание про Перелом читайте в <a href="https://www.litres.ru/book/andrey-volkov-33168547/tetrad-smerti-perelom-72117967/" target="_blank" style="color:#0f0;">книге</a>.</li>
       </ol>
       <button id="closeRules" title="Окей">Окей</button>
@@ -1004,25 +1004,58 @@ var clientTime = clientTimeSelect.value;
       methodLabel.innerText = "Кем " + mechta+ " чтобы " + clientTime + " Клиент" + ne+ " стала:";
     }
   }
+  
+  
+function updateStats(entries) {
+  let countU = 0;
+  let countP = 0;
 
-  function updateStats(entries) {
-    let countU = 0;
-    let countP = 0;
+  entries.forEach(entry => {
+    if (entry.startsWith("убрать")) countU++;
+    if (entry.startsWith("подменить")) countP++;
+  });
 
-    entries.forEach(entry => {
-      if (entry.startsWith("убрать")) countU++;
-      if (entry.startsWith("подменить")) countP++;
-    });
+  statsDiv.childNodes[0].nodeValue = `Счет: ${countU} | ${countP} `;
 
-    statsDiv.childNodes[0].nodeValue = `Счет: ${countU} | ${countP} `;
-
-    if (countU === countP && countU > 0) {
-      localStorage.removeItem("deaths");
-      removePre.textContent = "";
-      replacePre.textContent = "";
-      statsDiv.childNodes[0].nodeValue = "Заказы приняты на реализацию ";
+  if (countU === countP && countU > 0) {
+    // Определим фразу по счёту
+    let phrase = "";
+    switch (countU) {
+      case 1:
+        phrase = "вклад в красивую родню";
+        break;
+      case 2:
+        phrase = "вклад в красивых друзей";
+        break;
+      case 3:
+        phrase = "вклад в красивую команду";
+        break;
+      default:
+        phrase = "вклад в красивых близких";
+        break;
     }
+	
+    // Обнуляем историю
+    localStorage.removeItem("deaths");
+    removePre.textContent = "";
+    replacePre.textContent = "";
+    statsDiv.childNodes[0].nodeValue = "Заказы приняты на реализацию. Добавлен новый код на " + phrase + ".";
+	
+	document.getElementById("type").value = 'подменить';
+
+    var dreamValue = calculateDreamValue(phrase);
+	
+	var type = document.getElementById("type").value;
+	
+    let history = JSON.parse(localStorage.getItem("deaths") || "[]");
+    history.push(`${type}::${dreamValue}`);
+    localStorage.setItem("deaths", JSON.stringify(history));
+	localStorage.setItem("selectedType", type);
+	
+    renderHistory(history);
+
   }
+}
 
   function renderHistory(entries) {
   const sanitizeEntry = (entry, index) => {
@@ -1101,13 +1134,13 @@ var clientTime = clientTimeSelect.value;
     let history = JSON.parse(localStorage.getItem("deaths") || "[]");
     history.push(`${type}::${dreamValue}`);
     localStorage.setItem("deaths", JSON.stringify(history));
-localStorage.setItem("selectedGender", gender);
-localStorage.setItem("selectedType", type);
+	localStorage.setItem("selectedGender", gender);
+	localStorage.setItem("selectedType", type);
 
     renderHistory(history);
     updateStats(history);
 	showDreamPopup(dreamValue);
-updateRomanMonthDiv();
+	updateRomanMonthDiv();
     form.reset();
     // Чтобы подпись method обновилась сразу на мужской по умолчанию после сброса формы:
     clientGenderSelect.dispatchEvent(new Event("change"));
