@@ -750,7 +750,7 @@ function getDateFromMarch(){
   year = year + 1;
   }
   
-  const firstMarch = new Date(year, 2, 1); // 1 марта (март = 2)
+  const firstMarch = new Date(year, 2, 8); // 1 марта (март = 2)
   
   // Прибавляем указанное количество дней (в мс)
   const targetDate = new Date(firstMarch.getTime() + dayNumber * 24 * 60 * 60 * 1000);
@@ -785,7 +785,7 @@ function getDateFromMarch(){
 function daysSinceFirstMarch() {
   const now = new Date(); // текущая дата
   const year = now.getFullYear(); // текущий год
-  const firstMarch = new Date(year, 2, 1); // 1 марта (месяцы в JS от 0, март — это 2)
+  const firstMarch = new Date(year, 2, 8); // 1 марта (месяцы в JS от 0, март — это 2)
 
   // Разница в миллисекундах
   const diffInMs = now - firstMarch + 1;
