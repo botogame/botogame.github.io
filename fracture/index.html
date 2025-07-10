@@ -720,6 +720,8 @@ updateLightning();
 	  <hr>
 	  В феврале узла нет, работайте через зеркало с Вакуумом солидности:<br>
 	  <img src="./2.png" width="100%"><hr>
+	  И не забудьте, квантовый переход на новый год (где вы можете начать все с чистого листа): <b id="new_god"></b>. Подготовьтесь чтобы перейти хорошими.
+	  <hr>
 	  <button id="closeuzel2" title="Хорошо">Хорошо</button>
     </div>
   </div>
@@ -732,13 +734,61 @@ updateLightning();
 <div id="dreamPopup"><b id="dreamPopupText"></b><br><button id="dreamPopupButton" onclick="closeDreamPopup();return false;" style="width:100%;">Окей</button></div>
 <script>
 
+getDateFromMarch();
+
+
+
+function getDateFromMarch(){
+
+  var dayNumber = 141;
+  var dayNumber0 = 140;
+
+
+  var year = new Date().getFullYear(); // Можно заменить на нужный, например: 2025
+  
+  if(daysSinceFirstMarch()>141){
+  year = year + 1;
+  }
+  
+  const firstMarch = new Date(year, 2, 1); // 1 марта (март = 2)
+  
+  // Прибавляем указанное количество дней (в мс)
+  const targetDate = new Date(firstMarch.getTime() + dayNumber * 24 * 60 * 60 * 1000);
+  const targetDate0 = new Date(firstMarch.getTime() + dayNumber0 * 24 * 60 * 60 * 1000);
+  
+  
+  // Названия месяцев для русской локализации
+  const months = [
+    "января", "февраля", "марта", "апреля", "мая", "июня",
+    "июля", "августа", "сентября", "октября", "ноября", "декабря"
+  ];
+
+  const day = targetDate.getDate();
+  const monthName = months[targetDate.getMonth()];
+  const fullYear = targetDate.getFullYear();
+  
+  const day0 = targetDate0.getDate();
+  var monthName0 = months[targetDate0.getMonth()];
+  const fullYear0 = targetDate0.getFullYear();
+  
+  if(monthName0!=monthName){
+  monthName0 = " " + monthName0;
+  }
+  else{
+  monthName0 = '';
+  }
+
+  
+  document.getElementById("new_god").innerText = `${day0}${monthName0} - ${day} ${monthName} ${fullYear} года`;
+}
+
 function daysSinceFirstMarch() {
   const now = new Date(); // текущая дата
   const year = now.getFullYear(); // текущий год
   const firstMarch = new Date(year, 2, 1); // 1 марта (месяцы в JS от 0, март — это 2)
 
   // Разница в миллисекундах
-  const diffInMs = now - firstMarch;
+  const diffInMs = now - firstMarch + 1;
 
   // Переводим миллисекунды в дни
   const msInOneDay = 24 * 60 * 60 * 1000;
