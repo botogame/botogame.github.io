@@ -143,6 +143,7 @@ select:hover, button:hover {
 <body>
   <div class="container">
     <h1>Тетрадь Смерти: <a class="button_a" href="./index.html">Перелом</a></h1>
+	Тестирование мастерства обобщения!<br><br>
     <div id="dream"></div>
     <select id="choice">
       <option disabled selected>Выбери узел сна</option>
@@ -252,7 +253,7 @@ select:hover, button:hover {
     document.getElementById('result').textContent = '';
     const index = Math.floor(Math.random() * dreamNodes.length);
     currentDream = dreamNodes[index];
-    document.getElementById('dream').innerHTML = `<strong>Сон уровня ${dreamLevel}:</strong><br><br>${currentDream.description}`;
+    document.getElementById('dream').innerHTML = `<strong>Сон уровня ${dreamLevel}:</strong><br>${currentDream.description}`;
     document.getElementById('choice').selectedIndex = 0;
 	document.getElementById('awakening').innerHTML = '';
   }
