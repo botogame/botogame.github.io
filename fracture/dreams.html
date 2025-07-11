@@ -1,0 +1,294 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Тетрадь Смерти: Перелом - тестирование</title>
+  <style>
+    body {
+      background: #0b0c10;
+      color: #c5c6c7;
+      font-family: 'Courier New', monospace;
+      padding: 2rem;
+    }
+    .container {
+      max-width: 800px;
+      margin: 0 auto;
+      background: #1f2833;
+      padding: 2rem;
+      border-radius: 10px;
+      box-shadow: 0 0 20px rgba(255,255,255,0.05);
+    }
+    h1 {
+      color: #66fcf1;
+    }
+    select, button {
+      font-size: 1rem;
+      padding: 0.5rem;
+      margin-top: 1rem;
+      background: #45a29e;
+      border: none;
+      border-radius: 5px;
+      color: #0b0c10;
+      cursor: pointer;
+    }
+    select {
+      width: 100%;
+      background: #c5c6c7;
+      color: #0b0c10;
+    }
+    .result {
+      margin-top: 1rem;
+      font-weight: bold;
+    }
+	body {
+  background: linear-gradient(135deg, #0b0c10 0%, #1a1c24 100%);
+  color: #c5c6c7cc;
+  font-family: 'Courier New', monospace;
+  padding: 2rem;
+  filter: blur(0.4px);
+  backdrop-filter: blur(6px);
+  transition: color 0.5s ease;
+}
+
+.container {
+  max-width: 800px;
+  margin: 0 auto;
+  background: rgba(31, 40, 51, 0.7);
+  padding: 2rem;
+  border-radius: 15px;
+  box-shadow: 0 0 40px 5px rgba(102, 252, 241, 0.3);
+  backdrop-filter: blur(15px);
+  border: 1px solid rgba(102, 252, 241, 0.15);
+  animation: gentlePulse 6s infinite ease-in-out;
+}
+
+h1 {
+  color: #66fcf1;
+  text-shadow:
+    0 0 10px #66fcf1cc,
+    0 0 20px #66fcf1bb,
+    0 0 30px #66fcf1aa;
+  font-weight: 700;
+  letter-spacing: 1.5px;
+}
+
+select, button {
+  font-size: 1rem;
+  padding: 0.6rem 1rem;
+  margin-top: 1.2rem;
+  background: rgba(69, 162, 158, 0.8);
+  border: none;
+  border-radius: 8px;
+  color: #0b0c10dd;
+  cursor: pointer;
+  box-shadow:
+    0 0 8px rgba(69, 162, 158, 0.6);
+  transition: background 0.3s ease, box-shadow 0.3s ease;
+}
+
+select {
+  width: 100%;
+  background: rgba(197, 198, 199, 0.8);
+  color: #0b0c10dd;
+  box-shadow:
+    0 0 12px rgba(197, 198, 199, 0.6);
+}
+
+select:hover, button:hover {
+  background: #57cfcfdd;
+  box-shadow:
+    0 0 16px #57cfcfff;
+}
+
+.result {
+  margin-top: 1.5rem;
+  font-weight: 600;
+  color: #a0e7e5;
+  text-shadow:
+    0 0 5px #a0e7e5bb;
+}
+
+.awakening {
+  color: #89e8e8dd;
+  font-style: italic;
+  text-shadow:
+    0 0 8px #89e8e8aa;
+}
+
+/* Анимация плавного пульсирования контейнера */
+@keyframes gentlePulse {
+  0%, 100% {
+    box-shadow: 0 0 40px 5px rgba(102, 252, 241, 0.3);
+  }
+  50% {
+    box-shadow: 0 0 60px 10px rgba(102, 252, 241, 0.5);
+  }
+}
+
+.button_a {
+  font-size: 3rem;
+  background: rgba(69, 162, 158, 0.8);
+  border: none;
+  border-radius: 8px;
+  color: #0b0c10dd;
+  cursor: pointer;
+  box-shadow:
+    0 0 8px rgba(69, 162, 158, 0.6);
+  transition: background 0.3s ease, box-shadow 0.3s ease;
+}
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>Тетрадь Смерти: <a class="button_a" href="/index.html">Перелом</a></h1>
+    <div id="dream"></div>
+    <select id="choice">
+      <option disabled selected>Выбери узел сна</option>
+      <option>1-й узел. Зеркало тела</option>
+      <option>2-й узел. Механизм времени</option>
+      <option>3-й узел. Допрос чувствами</option>
+      <option>4-й узел. Мир без законов</option>
+      <option>5-й узел. Запретная память</option>
+      <option>6-й узел. Пороговые лица</option>
+      <option>7-й узел. Обратная сторона</option>
+      <option>8-й узел. Шепот предков</option>
+      <option>9-й узел. Вхождение в роль</option>
+      <option>10-й узел. Белая пустота</option>
+    </select>
+	<div class="awakening" id="awakening" style="margin-top: 1rem; font-style: italic;"></div>
+    <button onclick="checkAnswer()">Пробудить</button>
+    <div class="result" id="result"></div>
+  </div>
+
+  <script>
+  const dreamNodes = [];
+
+  const dreamsByNode = {
+    "1-й узел. Зеркало тела": {
+      dreams: [
+        "Меня зовут Эрик. Я очнулся в своей квартире, но не мог контролировать ни руку, ни взгляд. Я будто наблюдал, как кто-то в моём теле пьёт кофе, включает свет, отвечает на звонок. Я хотел закричать — но рот не слушался. Тело жило своей жизнью.",
+        "Моя сестра Дина смотрела на меня с удивлением: 'Ты ведёшь себя странно'. Я хотел ответить, но ни одна мышца не двигалась. Я просто сидел, кивал, делал то, чего не понимал. Я был пассажир в своём же теле.",
+        "Я — Павел, стоял перед зеркалом в костюме, которого у меня никогда не было. Я улыбался. Внутри я орал: это не я. Но тело только поправляло галстук и шло дальше."
+      ],
+      awakening: "Посмотри на что то одно"
+    },
+    "2-й узел. Механизм времени": {
+      dreams: [
+        "Меня зовут Ника. Я открыла глаза — и снова была в том же коридоре. Серый свет, капающий кран, будильник. Я точно помнила, что уже жила этот день. Пять раз. Может, больше. Всё начиналось одинаково. И всё заканчивалось ничем.",
+        "Я — Тимур. Я захожу в квартиру, ставлю пакет на стол, слышу звонок — и всё начинается заново. Я даже начал записывать события в блокнот. Но страница всегда пустая утром. Я застрял."
+      ],
+      awakening: "Сделай то, что от тебя не ожидают"
+    },
+    "3-й узел. Допрос чувствами": {
+      dreams: [
+        "Я — Андрей. Я стою в зале ожидания. Пусто. Вдруг из дальнего коридора несётся тварь — чернильная, без лица. Я хочу убежать, но ноги цепенеют. Сердце в горле. Я знаю, она не хочет убить — она хочет заставить вспомнить.",
+        "Меня зовут Ира. Я на сцене, свет бьёт в глаза. Из темноты задают вопросы. Один за другим. Я не знаю ответов, но каждое молчание — как удар. Я чувствую: если совру, меня не станет."
+      ],
+      awakening: "Это не нужно"
+    },
+    "4-й узел. Мир без законов": {
+      dreams: [
+        "Я — Лёша. Я шёл по потолку. Мама мыла пол — внизу. Она даже не удивилась. Время шло назад. Я щёлкнул пальцами — и мы поменялись местами. Мне стало спокойно. Всё это — нормально. Так надо.",
+        "Меня зовут Арсен. Я поднял камень — и он стал окном. За ним — я, спящий. Я протянул руку, и из воздуха вырезалась лестница. Я спустился в воспоминание, которое не моё."
+      ],
+      awakening: "Найди адекватные детали"
+    },
+    "5-й узел. Запретная память": {
+      dreams: [
+        "Я — Женя. Я нашёл ящик в подвале. Он был знаком. Внутри — дневник. Моим почерком. Там было про него. Про то, кого мы потеряли. Я не помнил, как писал это.",
+        "Я — Саша. Комната в старом доме. Заколоченная дверь. За ней — голос. Он звал меня по имени. Это был я. Мой голос. Из прошлого."
+      ],
+      awakening: "Перебори себя, ознакомься"
+    },
+    "6-й узел. Пороговые лица": {
+      dreams: [
+        "Я — Катя. Я пришла в дом. Там были люди, улыбающиеся, дружелюбные. Они говорили: 'Ты вернулась, наконец'. Я кивала, но в груди было пусто. Я их не знала. А они — знали всё обо мне.",
+        "Я — Влад. В комнате за столом сидели мои 'родители'. Только это были не они. Лица похожие, но чужие. Они ласково говорили, что я должен забыть. Что теперь всё будет по-другому."
+      ],
+      awakening: "Выгони их"
+    },
+    "7-й узел. Обратная сторона": {
+      dreams: [
+        "Меня зовут Рома. Я открыл дверь — и увидел того, кто сидел за столом, ел, улыбался. Только он был… неправильным. Лицо как моё, но кожа серая, глаза пустые. Он обернулся. И сказал: 'Теперь моя очередь'.",
+        "Я — Настя. Я увидело странное существо возле своего дома. Оно двигалось иначе. Я наклоняюсь — оно смеётся. Я зажмурилась — и оно шагнуло вперёд."
+      ],
+      awakening: "Да, это ты"
+    },
+    "8-й узел. Шепот предков": {
+      dreams: [
+        "Я — Тарас. Я стою на кургане. Ветер поёт старые песни. Из земли поднимаются силуэты. Один говорит: 'Мы — твои. Ты наш голос'. Я не знаю их. Но знаю, что всё, чем я стал — от них.",
+        "Я — Алиса. В деревне я нашла старый амулет. От него исходили слова, которые я понимала. Я знала, что они говорили не мне — а сквозь меня."
+      ],
+      awakening: "Это устарело, не надо засматриваться"
+    },
+    "9-й узел. Вхождение в роль": {
+      dreams: [
+        "Я — Миша. На мне была мантия. Люди склонялись. Я поднял руку — молчание. Я какой то важный.",
+        "Я — Лара. В битве я повела армию. Я знала тактики, приёмы, названия мест. Наконец то ощущение, что я - настоящая."
+      ],
+      awakening: "Ты фальшивишь"
+    },
+    "10-й узел. Белая пустота": {
+      dreams: [
+        "Я — Ник. Я был голым. Как же стыдно, в публичном месте, где же забыл одеться...",
+        "Я — Вика. Я стояла в комнате без стен. Она была вся из света. Не яркого. Мягкого. Я шагнула — и поняла, что перестала быть. Не умерла. Просто исчезла как форма. Осталась как тень."
+      ],
+      awakening: "Не пугайся, реши проблему на месте"
+    }
+  };
+
+  for (let key in dreamsByNode) {
+    dreamsByNode[key].dreams.forEach(description => {
+      dreamNodes.push({ description, correct: key });
+    });
+  }
+
+  let dreamLevel = 1;
+  let currentDream = null;
+
+  function loadDream() {
+    document.getElementById('result').textContent = '';
+    const index = Math.floor(Math.random() * dreamNodes.length);
+    currentDream = dreamNodes[index];
+    document.getElementById('dream').innerHTML = `<strong>Сон уровня ${dreamLevel}:</strong><br><br>${currentDream.description}`;
+    document.getElementById('choice').selectedIndex = 0;
+	document.getElementById('awakening').innerHTML = '';
+  }
+
+  function checkAnswer() {
+    const choice = document.getElementById('choice').value;
+    if (!choice) return;
+
+    const resultDiv = document.getElementById('result');
+    const correctNode = currentDream.correct;
+    const awakening = dreamsByNode[correctNode].awakening;
+
+    if (choice === correctNode) {
+      dreamLevel++;
+      resultDiv.innerHTML = `<p>Ты распознал узел. Погружаешься глубже...</p>`;
+      setTimeout(loadDream, 3000);
+    } else {
+      resultDiv.innerHTML = `<p>Неверно. Это был узел: ${correctNode}. Ты проснулся. Начни сначала.</p>`;
+      dreamLevel = 1;
+      setTimeout(loadDream, 4000);
+    }
+  }
+
+  window.onload = loadDream;
+  
+  document.getElementById('choice').addEventListener('change', function () {
+  const selected = this.value;
+  const awakeningDiv = document.getElementById('awakening');
+
+  if (dreamsByNode[selected]) {
+    awakeningDiv.innerHTML = `<strong>${dreamsByNode[selected].awakening}</strong>`;
+  } else {
+    document.getElementById('awakening').innerHTML = '';
+  }
+});
+  
+</script>
+
+</body>
+</html>
