@@ -5,8 +5,10 @@
 <meta name="viewport" content="width=device-width, initial-scale=1" />
         <link rel="icon" type="image/x-icon" href="./favicon.png?v=1.0" />
 <title>Пасьянс Медичи. Бдилка - денежный поток</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 <style>
   @import url('https://fonts.googleapis.com/css2?family=Orbitron&display=swap');
+  
   body {
     background: #0b0f23;
     color: #9affff;
@@ -65,6 +67,7 @@
     align-items: center;
     cursor: pointer;
     border-bottom: 1px solid #00ffee;
+	            text-align: center;
   }
   .section-header span.arrow {
     font-size: 1.5em;
@@ -119,13 +122,46 @@
     color: #ff5555;
     font-weight: 700;
   }
-  input[type="checkbox"] {
-    margin-left: 15px;
-    width: 22px;
-    height: 22px;
-    cursor: pointer;
-    flex-shrink: 0;
-  }
+input[type="checkbox"] {
+  appearance: none;
+  width: 20px;
+  height: 20px;
+  border: 2px solid #00ff88;
+  border-radius: 4px;
+  background-color: #0b0f14;
+  box-shadow: 0 0 4px #00ff88;
+  cursor: pointer;
+  position: relative;
+  transition: all 0.2s ease-in-out;
+}
+
+/* Галочка-псевдоэлемент */
+input[type="checkbox"]::after {
+  content: "";
+  position: absolute;
+  top: 2px;
+  left: 6px;
+  width: 4px;
+  height: 10px;
+  border: solid #00ff88;
+  border-width: 0 2px 2px 0;
+  transform: rotate(45deg);
+  opacity: 0.15; /* Блеклый намёк по умолчанию */
+  transition: opacity 0.2s;
+}
+
+input[type="checkbox"]:hover::after {
+  opacity: 0.3; /* чуть заметнее при наведении */
+}
+
+input[type="checkbox"]:checked {
+  background-color: #001f14;
+  box-shadow: 0 0 8px #00ff88, inset 0 0 4px #00ff88;
+}
+
+input[type="checkbox"]:checked::after {
+  opacity: 1; /* Ярко выраженная галка при выборе */
+}
   /* Расположение чекбокса справа */
   .day {
     flex-wrap: nowrap;
@@ -147,14 +183,63 @@
   }
   
   h1 a {
-    color: #00ff88;
-    text-decoration: none;
-    transition: color 0.3s;
+  color: #00ff88;
+  text-decoration: none;
+  font-weight: bold;
+  transition: color 0.3s, text-shadow 0.3s;
   }
   h1 a:hover {
-    color: #33ffaa;
-    text-shadow: 0 0 5px #00ff88;
+  color: #33ffaa;
+  text-shadow: 0 0 8px #00ff88;
   }
+  
+  @media screen and (max-width: 600px) {
+  .day {
+  display: flex;
+  flex-direction: column;
+  background-color: #1b1f24;
+  padding: 12px;
+  border-radius: 12px;
+  border: 1px solid #00ff88;
+}
+
+/* Другие базовые стили... */
+
+
+  }
+  
+  
+/* Мобильная адаптация */
+@media screen and (max-width: 600px) {
+  .day {
+  
+    font-size: 0.95em;
+    padding: 10px;
+  }
+  .desc {
+  display: block;
+    font-size: 0.95em;
+    padding: 10px;
+            text-align: center;
+  }
+  .desc-text {
+    font-size: 0.95em;
+            display: block;
+  }
+  .section-header {
+    font-size: 1em;
+    padding: 8px;
+  }
+  
+  input[type="checkbox"] {
+  top: 9px;
+  }
+  
+}
+  
+input[type="checkbox"] {
+  flex-shrink: 0;
+}
 </style>
 </head>
 <body>
@@ -606,13 +691,6 @@
     saveDone();
   }
 
-  const today = new Date();
-  today.setHours(0,0,0,0);
-  const startDate = new Date(today);
-  startDate.setDate(today.getDate() - 7);
-  const endDate = new Date(today);
-  endDate.setDate(today.getDate() + 40);
-
   function formatDate(date) {
     return date.toLocaleDateString('ru-RU', { day: '2-digit', month: '2-digit', year: '2-digit' });
   }
@@ -645,6 +723,16 @@
   }
 
   function createDayElement(date) {
+  
+
+  const today = new Date();
+  today.setHours(0,0,0,0);
+  const startDate = new Date(today);
+  startDate.setDate(today.getDate() - 7);
+  const endDate = new Date(today);
+  endDate.setDate(today.getDate() + 40);
+  
+  
     const monthKey = getMonthKeyword(date);
     const weekdayKey = getWeekdayKeyword(date);
     const recKey = formatDate(date) + "_" + monthKey + "_" + weekdayKey;
@@ -699,6 +787,14 @@
   }
 
   function renderCurrentDays() {
+
+  const today = new Date();
+  today.setHours(0,0,0,0);
+  const startDate = new Date(today);
+  startDate.setDate(today.getDate() - 7);
+  const endDate = new Date(today);
+  endDate.setDate(today.getDate() + 40);
+  
     const container = document.getElementById("recommendations");
     container.innerHTML = "";
     for(let d = new Date(today); d <= endDate; d.setDate(d.getDate()+1)) {
@@ -712,6 +808,14 @@
   }
 
   function renderPastDays() {
+
+  const today = new Date();
+  today.setHours(0,0,0,0);
+  const startDate = new Date(today);
+  startDate.setDate(today.getDate() - 7);
+  const endDate = new Date(today);
+  endDate.setDate(today.getDate() + 40);
+  
     const container = document.getElementById("pastDays");
     container.innerHTML = "";
     for(let d = new Date(startDate); d < today; d.setDate(d.getDate()+1)) {
