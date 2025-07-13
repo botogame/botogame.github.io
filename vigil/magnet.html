@@ -240,6 +240,41 @@ input[type="checkbox"]:checked::after {
 input[type="checkbox"] {
   flex-shrink: 0;
 }
+
+/* Обертка с прокруткой */
+.content {
+  max-height: 400px;
+  overflow-y: auto;
+  scrollbar-width: thin;          /* для Firefox */
+  scrollbar-color: #00ff88 transparent;
+}
+
+/* Для Webkit-браузеров (Chrome, Safari, Edge) */
+.content::-webkit-scrollbar {
+  width: 8px;
+  background: transparent;
+}
+
+.content::-webkit-scrollbar-thumb {
+  background: #00ff88cc;
+  border-radius: 10px;
+  box-shadow:
+    0 0 8px #00ff88,
+    inset 0 0 8px #00ff88;
+  transition: background-color 0.3s;
+}
+
+.content::-webkit-scrollbar-thumb:hover {
+  background: #33ffaa;
+  box-shadow:
+    0 0 12px #33ffaa,
+    inset 0 0 12px #33ffaa;
+}
+
+/* Скроллбар трек (фон) */
+.content::-webkit-scrollbar-track {
+  background: transparent;
+}
 </style>
 </head>
 <body>
@@ -247,12 +282,20 @@ input[type="checkbox"] {
   <div id="description">
     Этот продвинутый расчёт поможет тебе быть (стать) в денежном потоке, будто ты пилот космического корабля! Каждый день — новый курс на прибыль или контролируемые траты. Выбирай умно и пусть деньги текут, как солнечный ветер!
   </div>
+  
+  <div class="section-container">
+  <div class="section-header collapsed" id="currentHeader" style="cursor:pointer;">
+    Сегодняшние и будущие рекомендации
+    <span class="arrow">▼</span>
+  </div>
+  <div class="content" id="recommendations"></div>
+</div>
 
   <div class="section-container">
-    <div class="section-header" id="currentHeader">
-      Сегодняшние и будущие рекомендации
+    <div class="section-header collapsed" id="doneHeader">
+      Выполненные рекомендации <span class="arrow">▼</span>
     </div>
-    <div class="content open" id="recommendations"></div>
+    <div class="content" id="doneList"></div>
   </div>
 
   <div class="section-container">
@@ -262,12 +305,6 @@ input[type="checkbox"] {
     <div class="content" id="pastDays"></div>
   </div>
 
-  <div class="section-container">
-    <div class="section-header collapsed" id="doneHeader">
-      Выполненные рекомендации <span class="arrow">▼</span>
-    </div>
-    <div class="content" id="doneList"></div>
-  </div>
 
 <script>
   // Данные и логика из предыдущего варианта, только адаптировано под новый HTML + добавлена логика открытия/закрытия секций
@@ -686,7 +723,7 @@ input[type="checkbox"] {
     if (isDone(key)) {
       done = done.filter(k => k !== key);
     } else {
-      done.push(key);
+      done.unshift(key);  // Добавляем в начало массива
     }
     saveDone();
   }
@@ -806,6 +843,7 @@ input[type="checkbox"] {
       }
     }
   }
+  
 
   function renderPastDays() {
 
@@ -912,6 +950,7 @@ input[type="checkbox"] {
   renderAll();
   setupToggle("pastHeader", "pastDays");
   setupToggle("doneHeader", "doneList");
+  setupToggle("currentHeader", "recommendations");
 </script>
 </body>
 </html>
