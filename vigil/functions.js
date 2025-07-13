@@ -1016,63 +1016,6 @@ function closePopupMantra(position=false) {
 }
 
 
-function getDayInfo() {
-    var today = new Date().getDay();
-
-    return meditation_days[today];
-}
-
-function openpopupPlanet() {
-    checkDayChangePlanet();
-    document.getElementById('musicoverlayPlanet').style.display = 'flex';
-    updateDayInfoPlanet();
-    
-}
-
-function updateDayInfoPlanet() {
-    if(document.getElementById('musicoverlayPlanet').style.display==='flex'){
-        
-    const dayInfo = getDayInfo();
-    document.getElementById('planetInfo').innerText = `Сегодня ${dayInfo.name}, день планеты ${dayInfo.planet}.`;
-    document.getElementById('audioSource').src = dayInfo.file;
-    document.getElementById('planetImage').src = './planets/' + dayInfo.image;
-    document.getElementById('planetHref').href = 'https://botogame.github.io/vigil/sinhr/' + dayInfo['id'] + '.mp3';
-
-    const audio = document.getElementById('musicPlayer');
-    audio.volume = 0.5; // Устанавливаем громкость на 50%
-    audio.load(); // Загружаем аудио
-    audio.play(); // Начинаем воспроизведение
-    document.getElementById('planetImage').classList.add('animatedPlanet');
-
-    }
-}
-
-function closepopupPlanet() {
-    document.getElementById('musicoverlayPlanet').style.display = 'none';
-    const audio = document.getElementById('musicPlayer');
-    audio.pause(); // Останавливаем воспроизведение
-    audio.currentTime = 0; // Сбрасываем время воспроизведения
-    document.getElementById('planetImage').classList.remove('animatedPlanet');
-}
-
-// Обновление информации о дне недели каждый день в полночь
-function checkDayChangePlanet() {
-    if(checkDayChangePlanetStarted===true){
-        return;
-    }
-    var now = new Date();
-    var nextMidnight = new Date(now.getFullYear(), now.getMonth(), now.getDate() + 1, 0, 0, 0);
-    var timeUntilMidnight = nextMidnight - now;
-    checkDayChangePlanetStarted = true;
-
-    setTimeout(() => {
-        updateDayInfoPlanet();
-        checkDayChangePlanetStarted = false;
-        checkDayChangePlanet(); // Планируем следующую проверку
-    }, timeUntilMidnight);
-}
-
-
   function toggleText(id) {
     const allTexts = document.querySelectorAll('.month-text');
     allTexts.forEach(el => {
