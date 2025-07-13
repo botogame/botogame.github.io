@@ -67,7 +67,6 @@
         <div class="popupPlanet">
             <span class="close-btnPlanet" onclick="document.getElementById('dninedeli').style.display = 'none'">X</span>
             <h2>Дни недели</h2>
-            <p id="planetInfo"></p>
             <style>
 .accordion {
   width: 100%;
@@ -179,6 +178,96 @@
   </div>
 </div>
 
+        </div>
+    </div>
+	
+	
+	
+        <!-- Модальное окно -->
+    <div class="overlayPlanet" id="instukciya">
+        <div class="popupPlanet">
+            <span class="close-btnPlanet" onclick="document.getElementById('instukciya').style.display = 'none'">X</span>
+            <h2>Инструкции</h2>
+            
+			<div class="accordion scrollable">
+			
+			<div class="accordion-item">
+    <div>Методичка приложения для Бдилки:</div>
+  </div>
+
+  <div class="accordion-item">
+    <div class="accordion-title">1. Выбор пола</div>
+    <div class="accordion-content">
+      Вы можете для новой мечты выбрать противоположный пол например чтобы спиздить артефакт симулировав артефакту (не вы выбираете артефакт, а артефакт выбирает и идет к вам) свойственный и нужный ему пол.
+    </div>
+  </div>
+  <div class="accordion-item">
+    <div class="accordion-title">2. Последняя карта</div>
+    <div class="accordion-content">
+      Если вы впервые или вы опять начали с чистого листа (удалили несобранные в квадратуру уклады) - выставляйте 8.
+    </div>
+  </div>
+  <div class="accordion-item">
+    <div class="accordion-title">3. Мечтаю чтобы</div>
+    <div class="accordion-content">
+      Используйте конструкцию "[мечтаю чтобы] у всех был социализирующий уклад что [я такой то]". Ваша мечта будет накладываться на карты от 2 до Туза, то есть обойдет все месяцы - предстанет перед Годом.
+    </div>
+  </div>
+  <div class="accordion-item">
+    <div class="accordion-title">4. Выбор сферы влияния и направления влияния</div>
+    <div class="accordion-content">
+      Перебирайте названия и по наитию ищите "врага" или уязвимое место. Чем точнее вычислите лазейку, тем тише хакните мир. Ну то есть нашли поломку - починили со своими условиями, внедрив мечту на реализацию, а мир доволен что починили.
+    </div>
+  </div>
+  <div class="accordion-item">
+    <div class="accordion-title">5. Выбор типа необходимости</div>
+    <div class="accordion-content">
+      Если создаете для себя и хотите плодов - то нужда, если вторгаетесь к кому то и забыли - внедрение.
+    </div>
+  </div>
+  <div class="accordion-item">
+    <div class="accordion-title">6. Мечтаю для</div>
+    <div class="accordion-content">
+      Это не относится к мечте, вы пишите аргумент для "старших арканов" (дней недели) почему вы доебались до Года, ну то есть пишите какое благо будет для мира. От этого в дальнейшем будет зависить дальнейшее развитие событий (текущий день недели может посчитать что ваше желание надо передать другому дню недели, что и включит в цепочку событий).
+    </div>
+  </div>
+  <div class="accordion-item">
+    <div class="accordion-title">7. Если расклад не создается</div>
+    <div class="accordion-content">
+      По причине сходства с последней картой предыдущего уклада - меняйте направление влияния на рядом стоящее.
+    </div>
+  </div>
+			
+<div class="accordion-item">
+    <div>Стадия после чтения мантр:</div>
+  </div>
+
+
+  <div class="accordion-item">
+    <div class="accordion-title">1. Выбор характеристики уклада</div>
+    <div class="accordion-content">
+      Определяете написанное "мечтаю для" к чему лучше всего подходит в совокупности вашего изменения (после прочтения всех мантр). По честному только, ну, используя свое наитие конечно же.
+    </div>
+  </div>
+  <div class="accordion-item">
+    <div class="accordion-title">2. Желательно повторить ввод мечты</div>
+    <div class="accordion-content">
+      Повторите ввод мечты еще три раза на другие конечные карты, которые ближе подходят по уязвимостям у 4-х стихий.
+    </div>
+  </div>
+
+<div class="accordion-item">
+    <div>Книга Перелома <a class="a_info2" target="_blank" href="https://www.litres.ru/book/andrey-volkov-33168547/pasyans-medichi-bdilka-71113513/">здесь</a>.</div>
+  </div>
+  
+</div>
+
+
+        </div>
+    </div>
+	
+	
+
 <script>
 document.querySelectorAll('.accordion-title').forEach(title => {
   title.addEventListener('click', () => {
@@ -192,9 +281,7 @@ document.querySelectorAll('.accordion-title').forEach(title => {
   });
 });
 </script>
-
-        </div>
-    </div>
+	
         <!-- Рабочее окно -->
         <div class="container">
             <div id="overlay"><b>Cпасибо!</b></div>
@@ -273,7 +360,7 @@ document.querySelectorAll('.accordion-title').forEach(title => {
                 <center>
                     <a class="" href="#"  onclick="document.getElementById('dninedeli').style.display = 'flex';return false;">Дни недели</a>
                     <span class="separator">|</span>
-                    <a class="a_info2" target="_blank" href="https://www.litres.ru/book/andrey-volkov-33168547/pasyans-medichi-bdilka-71113513/">Книга</a>
+                    <a class="a_info2" href="#"  onclick="document.getElementById('instukciya').style.display = 'flex';return false;">Инструкции</a>
                 </center>
             </p>
         </div>
