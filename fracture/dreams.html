@@ -212,7 +212,7 @@ select:hover, button:hover {
     "5-й узел. Запретная память": {
       dreams: [
         "Я твой {teams1_level} Женя. Я нашёл ящик в подвале. Он был знаком. Внутри — дневник. Моим почерком. Там было про него. Про то, кого мы потеряли. Я не помнил, как писал это.",
-        "Я твоя {teams2_level} Саша. Комната в старом доме. Заколоченная дверь. За ней — голос. Он звал меня по имени. Это был я. Мой голос. Из прошлого."
+        "Я твоя {teams2_level} Саша. Комната в старом доме. Заколоченная дверь. За ней — голос. Она звал меня по имени. Это была я. Мой голос. Из прошлого."
       ],
       awakening: "Перебори себя, ознакомься"
     },
@@ -338,57 +338,57 @@ select:hover, button:hover {
 //паутины
 
 function updateWebOverlay() {
-  const overlay = document.getElementById("web-overlay");
-  overlay.innerHTML = ""; // очистить перед новой отрисовкой
+  const container = document.querySelector('.container');
+  let svg = document.getElementById('web-overlay');
 
-  const svgNS = "http://www.w3.org/2000/svg";
-  const svg = document.createElementNS(svgNS, "svg");
+  if (svg) {
+    svg.remove();
+  }
+
+  svg = document.createElementNS("http://www.w3.org/2000/svg", "svg");
+  svg.setAttribute("id", "web-overlay");
+  svg.setAttribute("class", "web-overlay");
   svg.setAttribute("width", "100%");
   svg.setAttribute("height", "100%");
-  svg.setAttribute("viewBox", `0 0 ${window.innerWidth} ${window.innerHeight}`);
-  svg.setAttribute("preserveAspectRatio", "none");
-  svg.style.position = "absolute";
-  svg.style.top = "0";
-  svg.style.left = "0";
+  svg.setAttribute("style", "position:absolute; top:0; left:0; z-index:0; pointer-events:none;");
+  container.style.position = "relative";
+  container.appendChild(svg);
 
+  const svgNS = "http://www.w3.org/2000/svg";
+  const rect = container.getBoundingClientRect();
   const pointCount = dreamLevel;
   const points = [];
 
-  // Генерация случайных точек
   for (let i = 0; i < pointCount; i++) {
     points.push({
-      x: Math.random() * window.innerWidth,
-      y: Math.random() * window.innerHeight,
+      x: Math.random() * rect.width,
+      y: Math.random() * rect.height
     });
   }
 
-// Соединение точек линиями
-for (let i = 0; i < pointCount; i++) {
-  for (let j = i + 1; j < pointCount; j++) {
-    if (Math.random() < 0.3) {
+  // Соединяем каждую точку с каждой (полный граф)
+  for (let i = 0; i < pointCount; i++) {
+    for (let j = i + 1; j < pointCount; j++) {
       const line = document.createElementNS(svgNS, "line");
       line.setAttribute("x1", points[i].x);
       line.setAttribute("y1", points[i].y);
       line.setAttribute("x2", points[j].x);
       line.setAttribute("y2", points[j].y);
-      line.setAttribute("stroke", "rgba(200, 200, 255, 0.03)"); // мягкий серо-синий
+      line.setAttribute("stroke", "rgba(200, 200, 255, 0.03)");
       line.setAttribute("stroke-width", "1");
       svg.appendChild(line);
     }
   }
-}
 
-// Отрисовка точек как звёзд
-for (const point of points) {
-  const star = document.createElementNS(svgNS, "circle");
-  star.setAttribute("cx", point.x);
-  star.setAttribute("cy", point.y);
-  star.setAttribute("r", "1.5");
-  star.setAttribute("fill", "rgba(220, 220, 255, 0.07)"); // тусклый свет
-  svg.appendChild(star);
-}
-
-  overlay.appendChild(svg);
+  // Добавим звёзды на узлах
+  for (const point of points) {
+    const star = document.createElementNS(svgNS, "circle");
+    star.setAttribute("cx", point.x);
+    star.setAttribute("cy", point.y);
+    star.setAttribute("r", "1.5");
+    star.setAttribute("fill", "rgba(220, 220, 255, 0.07)");
+    svg.appendChild(star);
+  }
 }
 
   
