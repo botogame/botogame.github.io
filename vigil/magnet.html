@@ -275,9 +275,27 @@ input[type="checkbox"] {
 .content::-webkit-scrollbar-track {
   background: transparent;
 }
+
+//////мерцание на фоне
+body, html {
+    margin: 0; padding: 0;
+    width: 100%; height: 100%;
+    background: #0b0f23;
+    overflow: hidden;
+  }
+  #wealthCanvas {
+    position: fixed;
+    top: 0; left: 0;
+    width: 100vw; height: 100vh;
+    pointer-events: none;
+    z-index: -1;
+  }
 </style>
 </head>
 <body>
+
+<canvas id="wealthCanvas"></canvas>
+
   <h1>Пасьянс Медичи. <a href="./index.html">Бдилка</a> - денежный поток</h1>
   <div id="description">
     Этот продвинутый расчёт поможет тебе быть (стать) в денежном потоке, будто ты пилот космического корабля! Каждый день — новый курс на прибыль или контролируемые траты. Выбирай умно и пусть деньги текут, как солнечный ветер!
@@ -309,6 +327,9 @@ input[type="checkbox"] {
 <script>
   // Данные и логика из предыдущего варианта, только адаптировано под новый HTML + добавлена логика открытия/закрытия секций
 
+  let movingLineProgress = 0; // прогресс между текущей и следующей монетой (0..1)
+let currentLineIndex = 0;   // индекс монеты, с которой линия стартует
+const lineSpeed = 0.005;    // скорость движения линии (чем меньше — тем медленнее)
   const STORAGE_KEY = "doneRecsFuturama";
 
   const weekdayKeywords = {
@@ -869,6 +890,7 @@ input[type="checkbox"] {
   function renderDoneList() {
     const container = document.getElementById("doneList");
     container.innerHTML = "";
+	
     // Все выполненные рекомендации
     done.forEach(key => {
       // Парсим ключ
@@ -919,6 +941,8 @@ input[type="checkbox"] {
 
       container.appendChild(dayDiv);
     });
+
+	startCoinsAnimation(done.length);
   }
 
   // Тогглеры секций с анимацией и стрелками
@@ -951,6 +975,140 @@ input[type="checkbox"] {
   setupToggle("pastHeader", "pastDays");
   setupToggle("doneHeader", "doneList");
   setupToggle("currentHeader", "recommendations");
+  
+
+  function startCoinsAnimation(coinsCount) {
+  const canvasId = 'wealthCanvas';
+  let canvas = document.getElementById(canvasId);
+
+  if (!canvas) {
+    canvas = document.createElement('canvas');
+    canvas.id = canvasId;
+    canvas.style.position = 'fixed';
+    canvas.style.top = '0';
+    canvas.style.left = '0';
+    canvas.style.width = '100vw';
+    canvas.style.height = '100vh';
+    canvas.style.pointerEvents = 'none';
+    canvas.style.zIndex = '-1';
+    document.body.appendChild(canvas);
+  }
+
+  const ctx = canvas.getContext('2d');
+  let width, height;
+  const coins = [];
+  let animationId;
+
+  function resize() {
+    width = window.innerWidth;
+    height = window.innerHeight;
+    canvas.width = width * devicePixelRatio;
+    canvas.height = height * devicePixelRatio;
+    canvas.style.width = width + 'px';
+    canvas.style.height = height + 'px';
+    ctx.setTransform(devicePixelRatio, 0, 0, devicePixelRatio, 0, 0);
+  }
+
+  function createCoins(count) {
+    coins.length = 0;
+    for (let i = 0; i < count; i++) {
+      coins.push({
+        x: Math.random() * width,
+        y: Math.random() * height,
+        size: 8 + Math.random() * 20,
+        opacity: 0.1 + Math.random() * 0.3,
+        flickerSpeed: 0.002 + Math.random() * 0.006,
+        flickerPhase: Math.random() * Math.PI * 2
+      });
+    }
+  }
+
+  function drawCoin(x, y, size, opacity) {
+    const gradient = ctx.createRadialGradient(x, y, size * 0.1, x, y, size);
+    gradient.addColorStop(0, `rgba(0, 255, 136, ${opacity})`);
+    gradient.addColorStop(0.7, `rgba(0, 68, 34, 0)`);
+    ctx.fillStyle = gradient;
+    ctx.beginPath();
+    ctx.arc(x, y, size, 0, Math.PI * 2);
+    ctx.fill();
+
+    ctx.strokeStyle = `rgba(51, 255, 170, ${opacity * 0.5})`;
+    ctx.lineWidth = 2;
+    ctx.beginPath();
+    ctx.arc(x, y, size * 0.7, 0, Math.PI * 2);
+    ctx.stroke();
+  }
+
+  function drawLine(x1, y1, x2, y2, opacity) {
+    ctx.strokeStyle = `rgba(0, 255, 136, ${opacity * 0.2})`;
+    ctx.lineWidth = 1;
+    ctx.beginPath();
+    ctx.moveTo(x1, y1);
+    ctx.lineTo(x2, y2);
+    ctx.stroke();
+  }
+
+  function animate(time = 0) {
+  ctx.clearRect(0, 0, width, height);
+  const maxDist = 180;
+  for (let i = 0; i < coins.length; i++) {
+    for (let j = i + 1; j < coins.length; j++) {
+      const dx = coins[i].x - coins[j].x;
+      const dy = coins[i].y - coins[j].y;
+      const dist = Math.sqrt(dx * dx + dy * dy);
+      if (dist < maxDist) {
+        let lineOpacity = 1 - dist / maxDist;
+        lineOpacity *= 0.6 + 0.5 * Math.sin(time * 0.01 + i + j);
+        drawLine(coins[i].x, coins[i].y, coins[j].x, coins[j].y, Math.min(lineOpacity, 0.7));
+      }
+    }
+  }
+
+  // Рисуем монеты
+  for (const coin of coins) {
+    const flicker = 0.5 + 0.7 * Math.sin(time * coin.flickerSpeed + coin.flickerPhase);
+    drawCoin(coin.x, coin.y, coin.size, coin.opacity * flicker);
+  }
+
+  // --- НОВОЕ: рисуем движущуюся линию ---
+  if (coins.length > 1) {
+    // Индексы для линии
+    let nextIndex = (currentLineIndex + 1) % coins.length;
+    const start = coins[currentLineIndex];
+    const end = coins[nextIndex];
+
+    // Интерполяция позиции "кончика" линии
+    const x = start.x + (end.x - start.x) * movingLineProgress;
+    const y = start.y + (end.y - start.y) * movingLineProgress;
+
+    // Рисуем линию от start до текущей точки
+    drawLine(start.x, start.y, x, y, 1);
+
+    // Продвигаем прогресс
+    movingLineProgress += lineSpeed;
+    if (movingLineProgress >= 1) {
+      movingLineProgress = 0;
+      currentLineIndex = nextIndex;
+    }
+  }
+
+  animationId = requestAnimationFrame(animate);
+}
+
+
+  function start() {
+    resize();
+    createCoins(coinsCount);
+    animate();
+  }
+
+  window.addEventListener('resize', () => {
+    resize();
+  });
+
+  start();
+}
+
 </script>
 </body>
 </html>
