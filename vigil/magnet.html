@@ -745,6 +745,9 @@ const lineSpeed = 0.005;    // скорость движения линии (ч�
       done = done.filter(k => k !== key);
     } else {
       done.unshift(key);  // Добавляем в начало массива
+    if (done.length > 20) {
+      done = done.slice(0, 20); // Оставляем только первые 20 элементов
+    }
     }
     saveDone();
   }
@@ -1015,7 +1018,7 @@ const lineSpeed = 0.005;    // скорость движения линии (ч�
       coins.push({
         x: Math.random() * width,
         y: Math.random() * height,
-        size: 8 + Math.random() * 20,
+        size: 2 + Math.random() * 20,
         opacity: 0.1 + Math.random() * 0.3,
         flickerSpeed: 0.002 + Math.random() * 0.006,
         flickerPhase: Math.random() * Math.PI * 2
