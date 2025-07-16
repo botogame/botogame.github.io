@@ -380,15 +380,17 @@ function updateWebOverlay() {
     }
   }
 
-  // Добавим звёзды на узлах
-  for (const point of points) {
-    const star = document.createElementNS(svgNS, "circle");
-    star.setAttribute("cx", point.x);
-    star.setAttribute("cy", point.y);
-    star.setAttribute("r", "1.5");
-    star.setAttribute("fill", "rgba(220, 220, 255, 0.07)");
-    svg.appendChild(star);
-  }
+  // Добавим изображения зеркал на узлах
+for (const point of points) {
+  const mirror = document.createElementNS(svgNS, "image");
+  mirror.setAttributeNS(null, 'href', './mirror.png'); // путь к изображению зеркала
+  mirror.setAttribute('x', point.x - 8); // Центрируем
+  mirror.setAttribute('y', point.y - 8);
+  mirror.setAttribute('width', '16');    // Размер зеркала
+  mirror.setAttribute('height', '16');
+  mirror.setAttribute('opacity', '0.5'); // Можно настроить прозрачность
+  svg.appendChild(mirror);
+}
 }
 
   
