@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8" />
+  <title>Календарь Лунных Месяцев</title>
+  <link rel="icon" type="image/x-icon" href="./favicon.png?v=1.0" />
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #111;
+      color: #eee;
+      padding: 2em;
+    }
+    h1 {
+      text-align: center;
+      margin-bottom: 0.3em;
+    }
+    p {
+      text-align: center;
+      margin-top: 0;
+      margin-bottom: 1.5em;
+      color: #aaa;
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      background: #222;
+    }
+    th, td {
+      border: 1px solid #333;
+      padding: 0.75em;
+      text-align: center;
+    }
+    th {
+      background: #444;
+    }
+    tr:nth-child(even) {
+      background-color: #1a1a1a;
+    }
+    .current {
+      background-color: #3c2d56 !important;
+      font-weight: bold;
+    }
+    .transition {
+      background: #2d2d2d;
+      font-style: italic;
+    }
+
+    /* Стили для popup ссылки */
+    .popup-link {
+      position: relative;
+      cursor: pointer;
+      border-bottom: 1px dashed #9cf;
+      color: #9cf;
+      text-decoration: none;
+      display: inline-block;
+    }
+
+    .popup-link:hover .popup-image {
+      display: block;
+    }
+
+    .popup-image {
+      display: none;
+      position: absolute;
+      top: 1.8em;
+      left: 50%;
+      transform: translateX(-50%);
+      z-index: 10;
+      border: 1px solid #555;
+      background: #000;
+      padding: 0.25em;
+      border-radius: 6px;
+      max-width: 220px;
+      box-shadow: 0 0 8px #0008;
+    }
+
+    .popup-image img {
+      max-width: 200px;
+      height: auto;
+      display: block;
+      border-radius: 6px;
+    }
+  </style>
+</head>
+<body>
+
+<h1 id="pageTitle">Календарь 🌙 Лунных Месяцев</h1>
+<p id="yearTitle"></p>
+
+<table id="lunarTable">
+  <thead>
+    <tr>
+      <th>Лунный месяц</th>
+      <th>Узел сна + Вакуум на зеркало</th>
+      <th>Дата начала</th>
+      <th>Дата окончания</th>
+    </tr>
+  </thead>
+  <tbody></tbody>
+</table>
+
+<script>
+  const ranges = [
+    { name: "ЗЕРКАЛО ТЕЛА", number: 'Martius', from: 1, to: 31 },
+    { name: "МЕХАНИЗМ ВРЕМЕНИ", number: 'Aprilis', from: 32, to: 61 },
+    { name: "ДОПРОС ЧУВСТВАМИ", number: 'Maius', from: 62, to: 92 },
+    { name: "МИР БЕЗ ЗАКОНОВ", number: 'Junius', from: 93, to: 122 },
+    { name: "ЗАПРЕТНАЯ ПАМЯТЬ", number: 'Quintilis', from: 123, to: 153 },
+    { name: "ПОРОГОВЫЕ ЛИЦА", number: 'Sextilis', from: 154, to: 183 },
+    { name: "ОБРАТНАЯ СТОРОНА", number: 'September', from: 184, to: 213 },
+    { name: "ШЕПОТ ПРЕДКОВ", number: 'October', from: 214, to: 244 },
+    { name: "ВХОЖДЕНИЕ В РОЛЬ", number: 'November', from: 245, to: 274 },
+    { name: "БЕЛАЯ ПУСТОТА", number: 'December', from: 275, to: 305 }
+  ];
+
+  function addDays(date, days) {
+    const result = new Date(date);
+    result.setDate(result.getDate() + days);
+    return result;
+  }
+
+  function formatDate(date) {
+    return date.toLocaleDateString('ru-RU', { day: 'numeric', month: 'long' });
+  }
+
+  const today = new Date();
+
+  // Выбор базового года: если до 8 марта — берём предыдущий
+  const baseYear = today.getMonth() < 2 || (today.getMonth() === 2 && today.getDate() < 8)
+    ? today.getFullYear() - 1
+    : today.getFullYear();
+
+  const startDate = new Date(baseYear, 2, 8); // 8 марта baseYear
+  const tableBody = document.querySelector('#lunarTable tbody');
+  const title = document.querySelector('#yearTitle');
+
+  // Установка заголовков
+  document.getElementById("pageTitle").textContent = `Календарь 🌙 Лунных Месяцев на ${baseYear} год`;
+  title.textContent = `Лунный год: с 8 марта ${baseYear} по 7 марта ${baseYear + 1}`;
+
+  // Разница в днях от начала
+  const msInDay = 24 * 60 * 60 * 1000;
+  const dayOffset = Math.floor((today - startDate + 1) / msInDay);
+  let inRange = false;
+
+  // Основные узлы
+  ranges.forEach(range => {
+    const fromDate = addDays(startDate, range.from - 1);
+    const toDate = addDays(startDate, range.to - 1);
+    const isCurrent = dayOffset >= range.from && dayOffset <= range.to;
+
+    if (isCurrent) inRange = true;
+
+    const row = document.createElement('tr');
+    if (isCurrent) row.classList.add('current');
+
+    const imagePath = `./luna_menses/узел_${range.number}.jpg`;
+
+    row.innerHTML = `
+      <td>${range.number}</td>
+      <td>
+        <span class="popup-link">
+          ${range.name}
+          <span class="popup-image">
+            <img src="${imagePath}" alt="${range.name}">
+          </span>
+        </span>
+      </td>
+      <td>${formatDate(fromDate)}</td>
+      <td>${formatDate(toDate)}</td>
+    `;
+    tableBody.appendChild(row);
+  });
+
+  // !found (декабрь–февраль)
+  const lastRange = ranges[ranges.length - 1];
+  const transitionStart = addDays(startDate, lastRange.to); // день после последнего узла
+  const transitionEnd = new Date(baseYear + 1, 2, 7); // 7 марта следующего года
+  const isTransition = today >= transitionStart && today <= transitionEnd;
+
+  const transitionRow = document.createElement('tr');
+  transitionRow.classList.add('transition');
+  if (!inRange && isTransition) transitionRow.classList.add('current');
+
+  transitionRow.innerHTML = `
+    <td>нет месяца</td>
+    <td>
+      <span class="popup-link">
+        нет узла
+        <span class="popup-image">
+          <img src="./luna_menses/узел_no_node.jpg" alt="нет узла">
+        </span>
+      </span>
+    </td>
+    <td>${formatDate(transitionStart)}</td>
+    <td>${formatDate(transitionEnd)}</td>
+  `;
+  tableBody.appendChild(transitionRow);
+</script>
+
+</body>
+</html>
