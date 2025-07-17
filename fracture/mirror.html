@@ -11,42 +11,50 @@
       color: #eee;
       padding: 2em;
     }
+
     h1 {
       text-align: center;
       margin-bottom: 0.3em;
     }
+
     p {
       text-align: center;
       margin-top: 0;
       margin-bottom: 1.5em;
       color: #aaa;
     }
+
     table {
       width: 100%;
       border-collapse: collapse;
       background: #222;
     }
+
     th, td {
       border: 1px solid #333;
       padding: 0.75em;
       text-align: center;
     }
+
     th {
       background: #444;
     }
+
     tr:nth-child(even) {
       background-color: #1a1a1a;
     }
+
     .current {
       background-color: #3c2d56 !important;
       font-weight: bold;
     }
+
     .transition {
       background: #2d2d2d;
       font-style: italic;
     }
 
-    /* Стили для popup ссылки */
+    /* Стили для popup */
     .popup-link {
       position: relative;
       cursor: pointer;
@@ -54,10 +62,6 @@
       color: #9cf;
       text-decoration: none;
       display: inline-block;
-    }
-
-    .popup-link:hover .popup-image {
-      display: block;
     }
 
     .popup-image {
@@ -80,6 +84,10 @@
       height: auto;
       display: block;
       border-radius: 6px;
+    }
+
+    .popup-link.active .popup-image {
+      display: block;
     }
   </style>
 </head>
@@ -126,7 +134,7 @@
 
   const today = new Date();
 
-  // Выбор базового года: если до 8 марта — берём предыдущий
+  // Если сегодня до 8 марта — берём предыдущий год
   const baseYear = today.getMonth() < 2 || (today.getMonth() === 2 && today.getDate() < 8)
     ? today.getFullYear() - 1
     : today.getFullYear();
@@ -135,21 +143,18 @@
   const tableBody = document.querySelector('#lunarTable tbody');
   const title = document.querySelector('#yearTitle');
 
-  // Установка заголовков
   document.getElementById("pageTitle").textContent = `Календарь 🌙 Лунных Месяцев на ${baseYear} год`;
   title.textContent = `Лунный год: с 8 марта ${baseYear} по 7 марта ${baseYear + 1}`;
 
-  // Разница в днях от начала
   const msInDay = 24 * 60 * 60 * 1000;
   const dayOffset = Math.floor((today - startDate + 1) / msInDay);
   let inRange = false;
 
-  // Основные узлы
+  // Узлы
   ranges.forEach(range => {
     const fromDate = addDays(startDate, range.from - 1);
     const toDate = addDays(startDate, range.to - 1);
     const isCurrent = dayOffset >= range.from && dayOffset <= range.to;
-
     if (isCurrent) inRange = true;
 
     const row = document.createElement('tr');
@@ -173,10 +178,10 @@
     tableBody.appendChild(row);
   });
 
-  // !found (декабрь–февраль)
+  // !found — декабрь-февраль
   const lastRange = ranges[ranges.length - 1];
-  const transitionStart = addDays(startDate, lastRange.to); // день после последнего узла
-  const transitionEnd = new Date(baseYear + 1, 2, 7); // 7 марта следующего года
+  const transitionStart = addDays(startDate, lastRange.to); // после последнего узла
+  const transitionEnd = new Date(baseYear + 1, 2, 7); // до 7 марта
   const isTransition = today >= transitionStart && today <= transitionEnd;
 
   const transitionRow = document.createElement('tr');
@@ -197,6 +202,21 @@
     <td>${formatDate(transitionEnd)}</td>
   `;
   tableBody.appendChild(transitionRow);
+
+  // popup-клики
+  document.querySelectorAll('.popup-link').forEach(link => {
+    link.addEventListener('click', e => {
+      e.stopPropagation();
+      document.querySelectorAll('.popup-link').forEach(el => {
+        if (el !== link) el.classList.remove('active');
+      });
+      link.classList.toggle('active');
+    });
+  });
+
+  document.addEventListener('click', () => {
+    document.querySelectorAll('.popup-link').forEach(el => el.classList.remove('active'));
+  });
 </script>
 
 </body>
