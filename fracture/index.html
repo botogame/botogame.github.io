@@ -640,6 +640,7 @@ updateLightning();
         <li>Мечта оцифровывается в код для принятия сном.</li>
         <li>При создании заказов соблюдайте баланс между союзниками.</li>
         <li>Когда баланс соблюден, заказы принимаются в реализацию и создатель добавит дополнительный код на ваш вклад в общество.</li>
+        <li>Коды чертите в <a href="./mirror.html" style="color:#0f0;">Вакуумы</a> лунного календаря на зеркалах.</li>
         <li>Описание про Перелом читайте в <a href="https://www.litres.ru/book/andrey-volkov-33168547/tetrad-smerti-perelom-72117967/" target="_blank" style="color:#0f0;">книге</a>.</li>
       </ol>
       <button id="closeRules" title="Окей">Окей</button>
@@ -715,10 +716,9 @@ updateLightning();
 <b style="color:#0f0;">Пробуждение:</b> не убегай.</li>
       </ol>
 	  <hr>
-	  В январе узла нет, работайте через зеркало с Вакуумом наития:<br>
+	  В январе и феврале узла нет, работайте с двумя Вакуумами одновременно через зеркало:<br>
 	  <img src="./1.png" width="100%">
-	  <hr>
-	  В феврале узла нет, работайте через зеркало с Вакуумом солидности:<br>
+	  <br><br>
 	  <img src="./2.png" width="100%"><hr>
 	  И не забудьте, квантовый переход на новый лунный год (где вы можете начать все с чистого листа): <b id="new_god"></b>. <a href="./dreams.html">Подготовьтесь</a> чтобы перейти хорошими.
 	  <hr>
@@ -785,7 +785,7 @@ function getDateFromMarch(){
 function daysSinceFirstMarch() {
   const now = new Date(); // текущая дата
   const year = now.getFullYear(); // текущий год
-  const firstMarch = new Date(year, 2, 8); // 1 марта (месяцы в JS от 0, март — это 2)
+  const firstMarch = new Date(year, 2, 8); // 8 марта (месяцы в JS от 0, март — это 2)
 
   // Разница в миллисекундах
   const diffInMs = now - firstMarch + 1;
@@ -798,7 +798,7 @@ function daysSinceFirstMarch() {
 }
 
 function getAncientRomanMonth() {
-  // Смещаем так, чтобы 1 марта стало днём 1
+  // Смещаем так, чтобы 6 марта стало днём 1
   const dayFromMarch = daysSinceFirstMarch();
 
   // Диапазоны месяцев (от 1 марта)
