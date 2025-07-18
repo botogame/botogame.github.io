@@ -322,7 +322,7 @@ document.querySelectorAll('.accordion-title').forEach(title => {
   <small>Выберите готовую формулировку:</small><br>
   <div id="symvolOptions2">
   <a href="#"
-     title="У всех был социализирующий уклад что"
+     title="У всех был социализирующий уклад что ..."
      onclick="insertSymvol2(this, 'У всех был социализирующий уклад что', 'Продолжите мечту в формате утверждения, как будто уже все произошло!'); return false;">
      Работа через социум
   </a>
@@ -347,7 +347,7 @@ function insertSymvol2(el, text, description) {
   el.style.textDecoration = "underline";
 
   // Показать описание
-  document.getElementById("symvolDescription2").textContent = description;
+  document.getElementById("symvolDescription2").textContent = text + '... ' + description;
 }
 </script>
                 <select id="sphere" onchange="clear_input_error(this,true);updateDirections()" data-selected="Сфера влияния">
