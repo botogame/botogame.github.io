@@ -316,7 +316,40 @@ document.querySelectorAll('.accordion-title').forEach(title => {
                     <label for="wish">Мечтаю чтобы</label>
                     <input type="text" id="wish" placeholder="[ ваше пожелание ]" oninput="trackInput(this);" />
                 </div>
+				
+				
+<div style="margin: 10px 0;padding-left: 144px;">
+  <small>Выберите готовую формулировку:</small><br>
+  <div id="symvolOptions2">
+  <a href="#"
+     title="Продолжите мечту в формате утверждения, как будто уже все произошло!"
+     onclick="insertSymvol2(this, 'У всех был социализирующий уклад что', 'Продолжите мечту в формате утверждения, как будто уже все произошло!'); return false;">
+     У всех был социализирующий уклад что
+  </a>
+  </a>
+</div>
+  <div id="symvolDescription2" style="margin-top: 5px; font-size: 0.9em; color: #ccc;"></div>
+</div>
 
+<script>
+function insertSymvol2(el, text, description) {
+  const input = document.getElementById("wish");
+  input.value = text + ' ';
+  input.focus();
+
+  // Выделить выбранный элемент
+  const links = document.querySelectorAll("#symvolOptions2 a");
+  links.forEach(link => {
+    link.style.fontWeight = "normal";
+    link.style.textDecoration = "none";
+  });
+  el.style.fontWeight = "bold";
+  el.style.textDecoration = "underline";
+
+  // Показать описание
+  document.getElementById("symvolDescription2").textContent = 'Продолжите мечту в формате утверждения, как будто уже все произошло!';
+}
+</script>
                 <select id="sphere" onchange="clear_input_error(this,true);updateDirections()" data-selected="Сфера влияния">
                     <option value="">[ Определите сферу влияния ]</option>
                     <option value="стратегия">Стратегия</option>
@@ -341,7 +374,7 @@ document.querySelectorAll('.accordion-title').forEach(title => {
                 </div>
 				
 
-<div style="margin: 10px 0;padding-left: 124px;">
+<div style="margin: 10px 0;padding-left: 134px;">
   <small>Выберите готовую формулировку:</small><br>
   <div id="symvolOptions">
   <a href="#"
