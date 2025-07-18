@@ -340,10 +340,8 @@ function insertSymvol2(el, text, description) {
   const links = document.querySelectorAll("#symvolOptions2 a");
   links.forEach(link => {
     link.style.fontWeight = "normal";
-    link.style.textDecoration = "underline";
   });
   el.style.fontWeight = "bold";
-  el.style.textDecoration = "none";
 
   // Показать описание
   document.getElementById("symvolDescription2").textContent = text + '... ' + description;
@@ -414,10 +412,8 @@ function insertSymvol(el, text, description) {
   const links = document.querySelectorAll("#symvolOptions a");
   links.forEach(link => {
     link.style.fontWeight = "normal";
-    link.style.textDecoration = "underline";
   });
   el.style.fontWeight = "bold";
-  el.style.textDecoration = "none";
 
   // Показать описание
   document.getElementById("symvolDescription").textContent = description + ' Добавьте кто ОН.';
