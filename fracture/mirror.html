@@ -143,9 +143,6 @@
   const tableBody = document.querySelector('#lunarTable tbody');
   const title = document.querySelector('#yearTitle');
 
-  document.getElementById("pageTitle").textContent = `Календарь 🌙 Лунных Месяцев на ${baseYear} год`;
-  title.textContent = `Лунный год: с 8 марта ${baseYear} по 7 марта ${baseYear + 1}`;
-
   const msInDay = 24 * 60 * 60 * 1000;
   const dayOffset = Math.floor((today - startDate + 1) / msInDay);
   let inRange = false;
@@ -183,6 +180,10 @@
   const transitionStart = addDays(startDate, lastRange.to); // после последнего узла
   const transitionEnd = new Date(baseYear + 1, 2, 7); // до 7 марта
   const isTransition = today >= transitionStart && today <= transitionEnd;
+  const transitionStart2 = addDays(startDate, lastRange.to-1);
+
+  document.getElementById("pageTitle").textContent = `Календарь Лунных 🌙 Месяцев`;
+  title.textContent = `Лунный год: с 8 марта ${baseYear} по ${formatDate(transitionStart2)} ${baseYear + 1} года`;
 
   const transitionRow = document.createElement('tr');
   transitionRow.classList.add('transition');
