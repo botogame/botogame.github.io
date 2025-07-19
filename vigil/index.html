@@ -21,7 +21,57 @@
                 <div class="modal-header">
                     Квадратура
                 </div>
-                <table id="matrix"></table>
+                <table id="matrix"></table><br><br><small style="
+  font-family: 'Comic Sans MS', cursive, sans-serif; 
+  color: #39ff14; 
+  background: radial-gradient(circle, #0b0c10 0%, #1f2833 100%);
+  border: 2px dashed #66fcf1; 
+  padding: 10px; 
+  display: block; 
+  line-height: 1.5em; 
+  text-shadow: 0 0 5px #45a29e, 0 0 10px #66fcf1; 
+  transform: rotate(-1deg);
+  letter-spacing: 0.03em;
+  max-width: 500px;
+  user-select: none;
+">
+  <span id="preview-text">
+    Двигайся змейкой, по часовой...
+  </span>
+  <span id="full-text" style="display:none;">
+    , от центра, по квадрату — не потому что смысл, а потому что вся эта вселенная работает как багованная пошаговая стратегия на сложности «жопа». Тут неважно, сколько клеток, всё равно будет хаос. Все бегают, строят уклады из игральных карт, кидают кубики... А потом БАЦ — кто-то решает, что он и есть квадратура. И остаётся в нём. Навсегда. <br><br>
+    Короче, если хочешь не превратиться в мебель для мироздания — <b style="color:#ff3c00; text-shadow: 0 0 8px #ff3c00;">закрой квадратуру</b>. Пока ещё можно быть змеёй, а не коробкой с надписью «архив». 
+  </span>
+  <a href="#" id="toggle-link" style="
+    display: inline-block; 
+    margin-left: 5px; 
+    color: #66fcf1; 
+    text-shadow: 0 0 10px #66fcf1; 
+    font-weight: bold; 
+    cursor: pointer; 
+    user-select: none;
+    text-decoration: underline;
+  ">читать дальше</a>
+
+  <script>
+    const toggleLink = document.getElementById('toggle-link');
+    const fullText = document.getElementById('full-text');
+    const previewText = document.getElementById('preview-text');
+
+    toggleLink.addEventListener('click', (e) => {
+      e.preventDefault();
+      if (fullText.style.display === 'none') {
+        fullText.style.display = 'inline';
+        toggleLink.textContent = 'свернуть';
+        previewText.textContent = 'Двигайся змейкой, по часовой';
+      } else {
+        fullText.style.display = 'none';
+        toggleLink.textContent = 'читать дальше';
+        previewText.textContent = 'Двигайся змейкой, по часовой...';
+      }
+    });
+  </script>
+</small>
                 <button id="button5" class="open-modal-btn" onclick="freeMartix()">Освободить расклады на реализацию</button>
                 <!-- Миниатюрный листинг раскладов -->
                 <div id="cardListContainer">
