@@ -1,1277 +1,498 @@
 <!DOCTYPE html>
 <html lang="ru">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Тетрадь Смерти. Перелом</title>
-  <link rel="icon" type="image/x-icon" href="./favicon.png?v=1.0" />
-  <style>body {
-  font-family: "Courier New", monospace;
-  background-color: #111;
-  background-image: url("sarum.webp"); /* ← Укажи путь к своей картинке */
-  background-size: cover; /* Покрывает весь экран */
-  background-position: center;
-  background-attachment: fixed; /* Фон не скроллится */
-  color: #eee;
-  padding: 20px;
-  margin: 0;
-  min-height: 100vh;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-}
-    h1, h2 {
-      color: crimson;
-      text-align: center;
-      text-shadow: 0 0 5px crimson;
-      margin: 0.2em 0;
-    }
-    form {
-      background: #222;
-      padding: 12px;
-      border-radius: 10px;
-      box-shadow: 0 0 15px crimson;
-      width: 100%;
-      display: flex;
-      flex-direction: column;
-      gap: 15px;
-      margin-top: 20px;
-      max-width: 400px;
-    }
-    label {
-      display: flex;
-      flex-direction: column;
-      font-weight: bold;
-      font-size: 0.9rem;
-      user-select: none;
-    }
-    input, select, button {
-      padding: 10px;
-      background: #111;
-      color: #eee;
-      border: 1px solid #444;
-      border-radius: 6px;
-      font-family: monospace;
-      font-size: 1rem;
-    }
-    button {
-      background-color: crimson;
-      font-weight: bold;
-      cursor: pointer;
-      transition: background-color 0.3s ease;
-    }
-    button:hover {
-      background-color: darkred;
-    }
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Пасьянс Медичи. Бдилка</title>
+        <meta name="keywords" content="Пасьянс Медичи, ПМ, Бдилка, Волков Андрей, желания" />
+        <meta name="description" content="Пасьянс Медичи помогает в сложных ситуациях, а Бдилка выявляет скрытые желания. Перед вами инструмент настоящей свободы в мире, где ваши границы сознания станут как спасением, так и ловушкой." />
+        <link rel="icon" type="image/x-icon" href="./favicon.png?v=1.0" />
+        <link rel="stylesheet" href="./style.css?v=5.18.3" />
+        <script src="./functions.js?v=5.18.3"></script>
+        <script src="./scheme.js?v=5.15"></script>
+        <script src="./config.js?v=5.15"></script>
+    </head>
 
-    .stats {
-      width: 100%;
-      max-width: 400px;
-      background: #222;
-      border-radius: 10px;
-      padding: 12px;
-      margin-top: 10px;
-      color: #0f0;
-      font-weight: bold;
-      text-align: center;
-      box-shadow: 0 0 10px crimson;
-      user-select: none;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      gap: 15px;
-      font-size: 1.1rem;
-    }
-    .stats a {
-      color: #eee;
-      text-decoration: underline;
-      cursor: pointer;
-      font-weight: normal;
-    }
-    .stats a:hover {
-      color: crimson;
-    }
+    <body>
+        <!-- Модальное окно -->
+        <div id="matrixModal" class="modal">
+            <div class="modal-content">
+                <span class="close" onclick="closeModal()">&times;</span>
+                <div class="modal-header">
+                    Квадратура
+                </div>
+                <table id="matrix"></table><br><br><small style="
+  font-family: 'Comic Sans MS', cursive, sans-serif; 
+  color: #39ff14; 
+  background: radial-gradient(circle, #0b0c10 0%, #1f2833 100%);
+  border: 2px dashed #66fcf1; 
+  padding: 10px; 
+  display: block; 
+  line-height: 1.5em; 
+  text-shadow: 0 0 5px #45a29e, 0 0 10px #66fcf1; 
+  transform: rotate(-1deg);
+  letter-spacing: 0.03em;
+  max-width: 100%;
+  user-select: none;
+">
+  <span id="preview-text">
+    Двигайся змейкой, по часовой...
+  </span>
+  <span id="full-text" style="display:none;">
+    , от центра, по квадрату — не потому что смысл, а потому что вся эта вселенная работает как багованная пошаговая стратегия на сложности «жопа». Тут неважно, сколько клеток, всё равно будет хаос. Все бегают, строят уклады из игральных карт, кидают кубики... А потом БАЦ — кто-то решает, что он и есть квадратура. И остаётся в нём. Навсегда. <br><br>
+    Короче, если хочешь не превратиться в мебель для мироздания — <b style="color:#ff3c00; text-shadow: 0 0 8px #ff3c00;">закрой квадратуру</b>. Пока ещё можно быть змеёй, а не коробкой с надписью «архив». 
+  </span>
+  <a href="#" id="toggle-link" style="
+    display: inline-block; 
+    margin-left: 5px; 
+    color: #66fcf1; 
+    text-shadow: 0 0 10px #66fcf1; 
+    font-weight: bold; 
+    cursor: pointer; 
+    user-select: none;
+    text-decoration: underline;
+  ">читать дальше</a>
 
-    .output {
-      width: 100%;
-      max-width: 700px;
-      background: #222;
-      padding: 15px;
-      border-radius: 10px;
-      margin-top: 25px;
-      box-shadow: 0 0 20px crimson;
-      color: #eee;
-      user-select: text;
-	  padding:12px;
-    }
-    .output h3 {
-      margin-top: 0;
-      color: crimson;
-      text-align: center;
-      text-shadow: 0 0 8px crimson;
-    }
+  <script>
+    const toggleLink = document.getElementById('toggle-link');
+    const fullText = document.getElementById('full-text');
+    const previewText = document.getElementById('preview-text');
 
-    .orders-container {
-      display: flex;
-      gap: 30px;
-      margin-top: 15px;
-      justify-content: center;
-      flex-wrap: wrap;
-    }
-
-    .orders-column {
-      flex: 1 1 300px;
-      background: #111;
-      border: 1px solid crimson;
-      border-radius: 8px;
-      padding: 15px;
-      box-shadow: 0 0 10px crimson;
-      max-height: 300px;
-      overflow-y: auto;
-    }
-
-    .orders-column h4 {
-      margin-top: 0;
-      color: crimson;
-      text-align: center;
-      text-shadow: 0 0 6px red;
-      font-weight: bold;
-      margin-bottom: 10px;
-    }
-
-    .orders-column pre {
-      white-space: pre-wrap;
-      word-break: break-word;
-      color: #eee;
-      font-size: 1em;
-      margin: 0;
-    }
-
-    /* Popup rules styling */
-    #rulesPopup {
-      position: fixed;
-      top: 0; left: 0; right: 0; bottom: 0;
-      background: rgba(0,0,0,0.85);
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      visibility: hidden;
-      opacity: 0;
-      transition: opacity 0.3s ease;
-      z-index: 1000;
-    }
-    #rulesPopup.show {
-      visibility: visible;
-      opacity: 1;
-    }
-    #rulesContent {
-      background: #111;
-      color: #eee;
-      border: 2px solid crimson;
-      border-radius: 12px;
-      padding: 20px 30px;
-      max-width: 400px;
-      font-family: monospace;
-      font-size: 1rem;
-      text-align: left;
-      box-shadow: 0 0 20px crimson;
-      position: relative;
-    }
-    #closeuzel2 {
-      background: crimson;
-      border: none;
-      color: #eee;
-      font-weight: bold;
-      font-size: 1.2rem;
-      border-radius: 5px;
-      cursor: pointer;
-      width: 100%;
-    }
-    #closeuzel2:hover {
-      background: darkred;
-    }
-	#closeuzel {
-  position: absolute;
-  top: 10px;
-  right: 10px;
-  background: transparent;
-  color: crimson;
-  border: none;
-  font-size: 1.8rem;
-  font-weight: bold;
-  cursor: pointer;
-  line-height: 1;
-  padding: 0;
-  z-index: 10;
-  transition: color 0.2s ease;
-}
-    #closeuzel:hover {
-      background: #eee;
-    }
-	
-	@keyframes electricWords {
-  0% {
-    background-position: 0% 50%;
-    text-shadow: 0 0 4px crimson;
-  }
-  50% {
-    background-position: 100% 50%;
-    text-shadow: 0 0 12px white, 0 0 6px crimson;
-  }
-  100% {
-    background-position: 0% 50%;
-    text-shadow: 0 0 4px crimson;
-  }
-}
-
-
-
-.title {
-  position: relative;
-  display: inline-block;
-  font-size: 3rem;
-  color: crimson;
-  font-weight: bold;
-}
-
-.title .lightning {
-  position: absolute;
-  top: -12px; /* немного выше над текстом */
-  left: 0;
+    toggleLink.addEventListener('click', (e) => {
+      e.preventDefault();
+      if (fullText.style.display === 'none') {
+        fullText.style.display = 'inline';
+        toggleLink.textContent = 'свернуть';
+        previewText.textContent = 'Двигайся змейкой, по часовой';
+      } else {
+        fullText.style.display = 'none';
+        toggleLink.textContent = 'читать дальше';
+        previewText.textContent = 'Двигайся змейкой, по часовой...';
+      }
+    });
+  </script>
+</small>
+                <button id="button5" class="open-modal-btn" onclick="freeMartix()">Освободить расклады на реализацию</button>
+                <!-- Миниатюрный листинг раскладов -->
+                <div id="cardListContainer">
+                    <ul id="cardList" class="card-list"></ul>
+                </div>
+                <button id="button3" class="open-modal-btn" onclick="deleteCardGroupsCookies()">Удалить расклады</button>
+            </div>
+        </div>
+        <!-- Модальное окно -->
+        <div id="popupMantra" class="popup-overlayMantra">
+            <div class="popup-contentMantra">
+                <div class="image-backgroundMantra">
+                    <div class="text-overlayMantra">
+                    <p id="textMantra"></p>
+                    Повторяйте мантру пока не почуствуете что вы стали <text id="textMantraPovtoryate">другим</text>.<br><br>
+                    <img id="weekMantra" src="">
+                    <img id="doitMantra" src="">
+                    <br>
+                    <button class="close-btnMantra" id="buttonCloseMantra" onclick="closePopupMantra()"><b id="textCloseMantra">Я прошёл</b> ⛩️</button>
+                    <button class="close-btnMantra" id="buttonCloseMantra2" onclick="closePopupMantra();updateDayNow();" style="width:80%;">Сменить день недели</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- Модальное окно -->
+    <div class="overlayPlanet" id="musicoverlayPlanet">
+        <div class="popupPlanet">
+            <span class="close-btnPlanet" onclick="closepopupPlanet()">X</span>
+            <h2>Синхронизатор</h2>
+            <p id="planetInfo"></p>
+            <img id="planetImage" class="planet-image" src="" alt="Planet Image">
+            <p>Работает авто-воспроизведение и авто-повтор. В полночь будет автоматическая переключка на медитацию нового дня.</p>
+            <audio controls id="musicPlayer" loop preload="metadata">
+                <source id="audioSource" type="audio/mpeg">
+                Ваш браузер не поддерживает воспроизведение. <a id="planetHref" href="">Скачайте медитацию</a>.
+            </audio>
+            <p>Прослушивая медитацию (используйте наушники) вы будете синхронизированы с мужским началом (на уровне выживания) для получения вариантов к текущей вашей действительности.</p>
+            <p>От бдилки вы получаете переходы женского начала (и нужно дополняться мужским началом).</p>
+        </div>
+    </div>
+        <!-- Модальное окно -->
+    <div class="overlayPlanet" id="dninedeli">
+        <div class="popupPlanet">
+            <span class="close-btnPlanet" onclick="document.getElementById('dninedeli').style.display = 'none'">X</span>
+            <h2>Дни недели</h2>
+            <style>
+.accordion {
   width: 100%;
-  height: 10px;
-  pointer-events: none;
-  z-index: 2;
+  max-width: 700px;
+  margin: auto;
+  font-family: 'Orbitron', sans-serif;
 }
 
-.title polyline {
-  fill: none;
-  stroke: yellow;
-  stroke-width: 2;
-  stroke-linejoin: round;
-  stroke-linecap: round;
-  filter: drop-shadow(0 0 2px white);
-  transition: all 0.2s ease;
+.accordion-item {
+  border-bottom: 1px solid #444;
+  padding: 10px 0;
 }
 
-
- 
-#dreamOverlay {
-  position: fixed;
-  top: 0; left: 0;
-  width: 100vw;
-  height: 100vh;
-  background: rgba(0, 0, 0, 0.8);
-  z-index: 9998; /* ниже, чем у попапа */
-  opacity: 0;
-  pointer-events: none;
-  transition: opacity 1s ease;
-  display: block;
-}
-
-#dreamOverlay.active {
-  opacity: 1;
-  pointer-events: auto;
-}
-
-#dreamPopup {
-  position: fixed;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  background: rgba(0, 0, 0, 0.8); /* затемнение */
-  color: #40E0D0;
-  padding: 20px 30px;
-  border-radius: 12px;
-  font-size: 2rem;
+.accordion-title {
+  cursor: pointer;
   font-weight: bold;
-  text-align: center;
-  box-shadow: 0 0 30px #0f0, 0 0 60px #0f0, 0 0 90px #0f0; /* психоделический свет */
-  z-index: 9999;
-
-  opacity: 0;
-  pointer-events: none;
-  transition: opacity 1s ease;
-  display: block; /* чтобы работал transition opacity */
-  animation: pulse 1s infinite alternate;
-}
-
-#dreamPopup.active {
-  opacity: 1;
-  pointer-events: auto;
-}
-
-@keyframes pulse {
-  from {
-    transform: translate(-50%, -50%) scale(1);
-    box-shadow: 0 0 30px #0f0, 0 0 60px #0f0;
-  }
-  to {
-    transform: translate(-50%, -50%) scale(1.05);
-    box-shadow: 0 0 60px #0f0, 0 0 100px #0f0;
-  }
-}
-	
-	.orders-column2 {
-  white-space: normal;       /* чтобы переносить и не ломать пробелы */
-  text-align: center;        /* выравнивание по центру */
-  font-family: monospace;    /* фиксированная ширина шрифта */
-  margin: 0 auto;
-  width: 100%;        /* ширина по содержимому */
-  max-width: 100%;           /* не больше контейнера */
-}
-
-
-.RomanMonth{
-      width: 100%;
-      max-width: 400px;
-      background: #222;
-      border-radius: 10px;
-      padding: 12px;
-      margin-top: 10px;
-      color: #40E0D0;
-      font-weight: bold;
-      text-align: center;
-      box-shadow: 0 0 10px crimson;
-      user-select: none;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      gap: 15px;
-      font-size: 1.1rem;}
-
-   /* Popup container */
-#uzelPopup {
-  position: fixed;
-  top: 0; left: 0; right: 0; bottom: 0;
-  background: rgba(0,0,0,0.85);
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  visibility: hidden;
-  opacity: 0;
-  transition: opacity 0.3s ease;
-  z-index: 1000;
-}
-#uzelPopup.show {
-  visibility: visible;
-  opacity: 1;
-}
-
-/* Popup content */
-#uzelContent {
-  background: #111;
-  color: #eee;
-  border: 2px solid crimson;
-  border-radius: 12px 0 0 12px;
-  padding: 20px 30px;
-  max-width: 500px;
-  max-height: 90vh;
-  overflow-y: auto;
-  font-family: "Segoe UI", sans-serif;
-  font-size: 1rem;
-  line-height: 1.5;
-  text-align: left;
-  box-shadow: 0 0 20px crimson;
-  position: relative;
-}
-
-/* Typography enhancements */
-#uzelContent h1, #uzelContent h2, #uzelContent h3 {
-  color: crimson;
-  margin-top: 1em;
-  margin-bottom: 0.5em;
-}
-
-#uzelContent p {
-  margin: 0.5em 0;
-}
-
-#uzelContent a {
-  color: #4ecdc4;
-  text-decoration: none;
-}
-#uzelContent a:hover {
+  color: #66d9e8;
+  transition: color 0.3s ease;
   text-decoration: underline;
 }
 
-#uzelContent strong {
-  color: #ffd700;
+.accordion-title:hover {
+  color: #a6f0ff;
 }
 
-#uzelContent ul, #uzelContent ol {
-  padding-left: 1.5em;
-  margin: 0.5em 0;
-}
-#uzelContent li {
-  margin-bottom: 0.3em;
-}
-
-/* Scrollbar styling for modern browsers */
-#uzelContent::-webkit-scrollbar {
-  width: 10px;
-}
-#uzelContent::-webkit-scrollbar-track {
-  background: #222;
-  border-radius: 6px;
-}
-#uzelContent::-webkit-scrollbar-thumb {
-  background-color: crimson;
-  border-radius: 6px;
-  border: 2px solid #111;
-}
-#uzelContent::-webkit-scrollbar-thumb:hover {
-  background-color: #ff4d4d;
+.accordion-content {
+  display: none;
+  margin-top: 10px;
+  color: #ccc;
+  line-height: 1.5;
 }
 
-/* Firefox scrollbar */
-#uzelContent {
-  scrollbar-width: thin;
-  scrollbar-color: crimson #222;
+.scrollable {
+  max-height: 300px; /* или любое другое значение */
+  overflow-y: auto;
+}
+.scrollable::-webkit-scrollbar {
+  width: 8px;
 }
 
-#dreamPopupButton {
-  background-color: #39FF14; /* кислотно-зелёный */
-  color: #111;
-  font-weight: 900;
-  font-family: 'Courier New', monospace;
-  border: 2px solid #0f0;
-  border-radius: 10px;
-  padding: 12px 20px;
-  font-size: 1.1rem;
-  text-transform: uppercase;
-  cursor: pointer;
-  box-shadow: 0 0 10px #0f0, 0 0 20px #39FF14, 0 0 40px #39FF14;
-  transition: all 0.3s ease;
-  z-index: 1001;
+.scrollable::-webkit-scrollbar-thumb {
+  background: #66d9e8;
+  border-radius: 4px;
 }
 
-#dreamPopupButton:hover {
-  background-color: #00ffcc;
-  color: #000;
-  box-shadow: 0 0 15px #00ffcc, 0 0 30px #00ffcc, 0 0 50px #0ff;
-  transform: rotate(-2deg) scale(1.05);
+.scrollable::-webkit-scrollbar-track {
+  background: #0b2d3f;
 }
+</style>
 
-    #closeRules {
-      background: crimson;
-      border: none;
-      color: #eee;
-      font-weight: bold;
-      font-size: 1.2rem;
-      border-radius: 5px;
-      cursor: pointer;
-      width: 100%;
-    }
-    #closeRules:hover {
-      background: darkred;
-    }
-@import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@500&display=swap');
+<div class="accordion scrollable">
+  <div class="accordion-item">
+    <div class="accordion-title">Воскресенье шлёт последнее предупреждение</div>
+    <div class="accordion-content">
+      Внимание, путешественник: ты только что активировал экзистенциальную перезагрузку.
+      Это необратимо. И, согласно условиям, возврата и техподдержки не предусмотрено.
+    </div>
+  </div>
 
-body {
-  font-family: 'Orbitron', 'Courier New', monospace;
-  background-color: #050505;
-  background-image: url("sarum.webp");
-  background-size: cover;
-  background-position: center;
-  background-attachment: fixed;
-  color: #b3ffe0;
-}
+  <div class="accordion-item">
+    <div class="accordion-title">Понедельник оставил след… и долговую квитанцию</div>
+    <div class="accordion-content">
+      Ты проснулся, и уже кому-то должен. Добро пожаловать в корпоративную астрореальность.
+      Кстати, тень за тобой — не твоя. Мы её арендовали у галактической налоговой.
+    </div>
+  </div>
 
-h1, h2 {
-  color: #00ffcc;
-  text-align: center;
-  text-shadow: 0 0 10px #00ffcc, 0 0 20px #00ffcc;
-  animation: flicker 1.5s infinite alternate;
-}
+  <div class="accordion-item">
+    <div class="accordion-title">Вторник заглянул в бездну, и она написала ему</div>
+    <div class="accordion-content">
+      Ты посмотрел внутрь себя. Там Wi-Fi не ловит, но зато есть неоплаченные обещания.
+      И твой двойник, кстати, снова не платит за аренду.
+    </div>
+  </div>
 
-button, input, select {
-  font-family: 'Orbitron', monospace;
-}
+  <div class="accordion-item">
+    <div class="accordion-title">Среда сломалась. Всё идёт по плану</div>
+    <div class="accordion-content">
+      Системная ошибка на экзистенциальном уровне.
+      Ты думал это баг, но это фича. Или как минимум сюжетная необходимость.
+    </div>
+  </div>
 
-#dreamPopup {
-  background: rgba(0, 255, 204, 0.1);
-  color: #39FF14;
-  border: 2px dashed #39FF14;
-  box-shadow:
-    0 0 20px #0f0,
-    0 0 60px #00ffcc,
-    0 0 100px #0ff;
-  backdrop-filter: blur(6px);
-  animation: glitch 1s infinite alternate;
-}
+  <div class="accordion-item">
+    <div class="accordion-title">Четверг горит. Не туши, смотри</div>
+    <div class="accordion-content">
+      В голове пожар, в душе рассрочка, в глазах огонь.
+      Прозрение включилось автоматически — попробуйте выключить в настройках мультивселенной.
+    </div>
+  </div>
 
-#dreamPopupButton {
-  font-family: 'Orbitron', monospace;
-  text-shadow: 0 0 5px #0f0, 0 0 10px #0f0;
-}
+  <div class="accordion-item">
+    <div class="accordion-title">Пятница светится. Ты не должен светиться</div>
+    <div class="accordion-content">
+      Сияние — побочный эффект перехода на тёмную энергию.
+      Пасьянс недоволен. Он уже отправил за тобой вселенского аудитора.
+    </div>
+  </div>
 
-@keyframes flicker {
-  0% { opacity: 1; }
-  50% { opacity: 0.85; }
-  100% { opacity: 1; }
-}
+  <div class="accordion-item">
+    <div class="accordion-title">Суббота пришла. Возвращайся в себя, если найдёшь вход</div>
+    <div class="accordion-content">
+      Ты застрял в временной петле между "пофиг" и "а может, всё-таки".
+      Поздравляем! Ты официально — системный глюк Медичи.
+    </div>
+  </div>
+  <div class="accordion-item">
+    <div>Потренироваться с днями недели на развитие денежного потока можно <a href="./magnet.html">здесь</a>.</div>
+  </div>
+</div>
 
-@keyframes glitch {
-  0% {
-    transform: translate(-50%, -50%) skew(0deg);
-    filter: hue-rotate(0deg);
-  }
-  50% {
-    transform: translate(-51%, -49%) skew(-1deg);
-    filter: hue-rotate(20deg);
-  }
-  100% {
-    transform: translate(-50%, -50%) skew(0.5deg);
-    filter: hue-rotate(-20deg);
-  }
-}
-  </style>
-</head>
-<body>
-  <h2>Тетрадь Смерти</h2>
-  <h1 class="title">
-  <span>ПЕРЕЛОМ</span>
-  <svg class="lightning" viewBox="0 0 100 10" preserveAspectRatio="none">
-    <polyline points="" />
-  </svg>
-</h1>
+        </div>
+    </div>
+	
+	
+	
+        <!-- Модальное окно -->
+    <div class="overlayPlanet" id="instukciya">
+        <div class="popupPlanet">
+            <span class="close-btnPlanet" onclick="document.getElementById('instukciya').style.display = 'none'">X</span>
+            <h2>Инструкции</h2>
+            
+			<div class="accordion scrollable">
+			
+			<div class="accordion-item">
+    <div>Методичка приложения для Бдилки:</div>
+  </div>
+
+  <div class="accordion-item">
+    <div class="accordion-title">1. Выбор пола</div>
+    <div class="accordion-content">
+      Вы можете для новой мечты выбрать противоположный пол например чтобы спиздить артефакт симулировав артефакту (не вы выбираете артефакт, а артефакт выбирает и идет к вам) свойственный и нужный ему пол.
+    </div>
+  </div>
+  <div class="accordion-item">
+    <div class="accordion-title">2. Последняя карта</div>
+    <div class="accordion-content">
+      Если вы впервые или вы опять начали с чистого листа (удалили несобранные в квадратуру уклады) - выставляйте 8.
+    </div>
+  </div>
+  <div class="accordion-item">
+    <div class="accordion-title">3. Мечтаю чтобы</div>
+    <div class="accordion-content">
+      Используйте конструкцию "[мечтаю чтобы] у всех был социализирующий уклад что [я такой то]". Ваша мечта будет накладываться на карты от 2 до Туза, то есть обойдет все месяцы - предстанет перед Годом.
+    </div>
+  </div>
+  <div class="accordion-item">
+    <div class="accordion-title">4. Выбор сферы влияния и направления влияния</div>
+    <div class="accordion-content">
+      Перебирайте названия и по наитию ищите "врага" или уязвимое место. Чем точнее вычислите лазейку, тем тише хакните мир. Ну то есть нашли поломку - починили со своими условиями, внедрив мечту на реализацию, а мир доволен что починили.
+    </div>
+  </div>
+  <div class="accordion-item">
+    <div class="accordion-title">5. Выбор типа необходимости</div>
+    <div class="accordion-content">
+      Если создаете для себя и хотите плодов - то нужда, если вторгаетесь к кому то и забыли - внедрение.
+    </div>
+  </div>
+  <div class="accordion-item">
+    <div class="accordion-title">6. Мечтаю для</div>
+    <div class="accordion-content">
+      Это не относится к мечте, вы пишите аргумент для "старших арканов" (дней недели) почему вы доебались до Года, ну то есть пишите какое благо будет для мира. От этого в дальнейшем будет зависить дальнейшее развитие событий (текущий день недели может посчитать что ваше желание надо передать другому дню недели, что и включит в цепочку событий).
+    </div>
+  </div>
+  <div class="accordion-item">
+    <div class="accordion-title">7. Если расклад не создается</div>
+    <div class="accordion-content">
+      По причине сходства с последней картой предыдущего уклада - меняйте направление влияния на рядом стоящее. Для "стратегии + расположение" выбор внедрения невозможен.
+    </div>
+  </div>
+			
+<div class="accordion-item">
+    <div>Стадия после чтения мантр:</div>
+  </div>
+
+
+  <div class="accordion-item">
+    <div class="accordion-title">1. Выбор характеристики уклада</div>
+    <div class="accordion-content">
+      Определяете написанное "мечтаю для" к чему лучше всего подходит в совокупности вашего изменения (после прочтения всех мантр). По честному только, ну, используя свое наитие конечно же.
+    </div>
+  </div>
+  <div class="accordion-item">
+    <div class="accordion-title">2. Желательно повторить ввод мечты</div>
+    <div class="accordion-content">
+      Повторите ввод мечты еще три раза на другие конечные карты, которые ближе подходят по уязвимостям у 4-х стихий.
+    </div>
+  </div>
+
+<div class="accordion-item">
+    <div>По клику по картам (вокруг которых круглый ореол свечения) покажет собрание уклада в квадратуру (как только квадратура будет собрана вы будете уведомлены). Книга про Бдилку <a class="a_info2" target="_blank" href="https://www.litres.ru/book/andrey-volkov-33168547/pasyans-medichi-bdilka-71113513/">здесь</a>.</div>
+  </div>
+  
+</div>
+
+
+        </div>
+    </div>
+	
+	
 
 <script>
-function generateZigzagPoints(width = 100, height = 10, segments = 12) {
-  const points = [];
-  const step = width / segments;
-
-  for (let i = 0; i <= segments; i++) {
-    const x = (i * step).toFixed(1);
-    const y = (Math.random() * height).toFixed(1);
-    points.push(`${x},${y}`);
-  }
-
-  return points.join(' ');
-}
-
-function updateLightning() {
-  const polyline = document.querySelector('.lightning polyline');
-  polyline.setAttribute('points', generateZigzagPoints());
-}
-
-// Запуск анимации
-setInterval(updateLightning, 300);
-updateLightning();
+document.querySelectorAll('.accordion-title').forEach(title => {
+  title.addEventListener('click', () => {
+    document.querySelectorAll('.accordion-content').forEach(content => {
+      if (content !== title.nextElementSibling) {
+        content.style.display = 'none';
+      }
+    });
+    const content = title.nextElementSibling;
+    content.style.display = (content.style.display === 'block') ? 'none' : 'block';
+  });
+});
 </script>
+	
+        <!-- Рабочее окно -->
+        <div class="container">
+            <div id="overlay"><b>Cпасибо!</b></div>
 
-  <div class="stats" id="stats">
-    Счет: ...
-  </div>
-  
-  <div class="RomanMonth" id="RomanMonth">
-    
-  </div>
+            <h1>ПМ [<a title="Показать расклады" onclick="openModal()" id="star" href="#" class="sparkling-label"><img src="./favicon.png?v=1.0" style="width:45px;margin-bottom:-5px;"></a>] Бдилка</h1>
 
-  <form id="deathForm">
-    <label>Кто Вы:
-      <select id="gender" required>
-        <option value="мужской">Мужчина</option>
-        <option value="женский">Женщина</option>
-      </select>
-    </label>
+            <div id="selectForm">
+                <select id="gender" onchange="clear_input_error(this,true);" data-selected="Ваш пол">
+                    <option value="">[ Выберите пол ]</option>
+                    <option value="male">Мужской</option>
+                    <option value="female">Женский</option>
+                </select>
 
-    <label>Союзник:
-      <select id="type" required>
-        <option value="убрать">Аннигилятор</option>
-        <option value="подменить">Создатель</option>
-      </select>
-    </label>
+                <select id="startCard" onchange="clear_input_error(this,true);" data-selected="Последняя карта">
+                    <option value="">[ Последняя карта ]</option>
+                    <option value="Т">Т</option>
+                    <option value="К">К</option>
+                    <option value="Д">Д</option>
+                    <option value="В">В</option>
+                    <option value="10">10</option>
+                    <option value="9">9</option>
+                    <option value="8">8</option>
+                    <option value="7">7</option>
+                    <option value="6">6</option>
+                    <option value="5">5</option>
+                    <option value="4">4</option>
+                    <option value="3">3</option>
+                    <option value="2">2</option>
+                </select>
 
-    <label>Имя Клиента:
-      <input type="text" id="name" required />
-    </label>
+                <div class="inline-form">
+                    <label for="wish">Мечтаю чтобы</label>
+                    <input type="text" id="wish" placeholder="[ ваше пожелание ]" oninput="trackInput(this);" />
+                </div>
+				
+				
 
-    <label>Пол Клиента:
-      <select id="clientGender" required>
-        <option value="мужской">Мужчина</option>
-        <option value="женский">Женщина</option>
-      </select>
-    </label>
+ 
+  <div id="symvolOptions2" style="padding-top:10px;font-size: 0.9em; color: #ccc;"> Выберите готовую формулировку "чтобы":
+  <a href="#"  style="text-decoration: none; border-bottom: 1px dotted;"
+     title="У всех был социализирующий уклад что ..."
+     onclick="insertSymvol2(this, 'У всех был социализирующий уклад что', 'Продолжите мечту в формате утверждения, как будто уже все произошло!'); return false;">
+     У всех был социализирующий уклад что ...</a>.
+  </a>
+</div>
+  <div id="symvolDescription2" style="margin-top: 5px; font-size: 0.9em; color: #ccc;"></div>
 
-    <label>Время Клиента:
-      <select id="clientTime" required>
-        <option value="текущий">Текущее - клиент в вашем времени</option>
-        <option value="младший">Прошлое - клиент младший</option>
-        <option value="старший">Будующее - клиент старший</option>
-      </select>
-    </label>
 
-    <label><text id="methodLabel">Кем хотите чтобы Клиент был:</text>
-      <input type="text" id="method" required />
-    </label>
-
-    <button type="submit">Заказать</button>
-	<button id="buttonClose" onclick="Website2APK.exitApp()" style="display:none;">Закрыть программу</button>
-    <button id="buttonAndroid" onclick="window.location = 'https://botogame.github.io/fracture/perelom_v1.apk';" style="display:none;">Приложение на телефон (android)</button>
-  </form>
-
-  <div class="output" id="result">
-    <h3>Несбалансированные заказы:</h3>
-    <div class="orders-container">
-      <div class="orders-column" id="orders-remove">
-        <h4>Для аннигилятора (убрать)</h4>
-        <pre class="orders-column2"></pre>
-      </div>
-      <div class="orders-column" id="orders-replace">
-        <h4>Для создателя (подменить)</h4>
-        <pre class="orders-column2"></pre>
-      </div>
-    </div>
-  </div>
-  
-  
-    <div class="stats" ><a href="#" id="rulesLink">Правила</a> | <a href="#" id="uzelLink">Узлы сна</a></div>
-
-  <!-- Popup Правил -->
-  <div id="rulesPopup">
-    <div id="rulesContent">
-      <h3>Правила</h3>
-      <ol>
-        <li>Заимейте 4-е поношенные вещи гардероба 4-х разных людей для активации Перелома.</li>
-        <li>Храните вещи для Перелома отдельно и не носите их никогда.</li>
-        <li>В Клиенты можете записывать косвенные именые обозначения, в том числе "половинка того то".</li>
-        <li>Мечта оцифровывается в код для принятия сном.</li>
-        <li>При создании заказов соблюдайте баланс между союзниками.</li>
-        <li>Когда баланс соблюден, заказы принимаются в реализацию и создатель добавит дополнительный код на ваш вклад в общество.</li>
-        <li>Описание про Перелом читайте в <a href="https://www.litres.ru/book/andrey-volkov-33168547/tetrad-smerti-perelom-72117967/" target="_blank" style="color:#0f0;">книге</a>.</li>
-      </ol>
-      <button id="closeRules" title="Окей">Окей</button>
-    </div>
-  </div>
-  
-  <!-- Popup Правил -->
-  <div id="uzelPopup">
-    <div id="uzelContent">
-      <button id="closeuzel" title="Закрыть">×</button>
-      <h3>Узлы сна</h3>
-      <ol>
-        <li><b style="color:#40E0D0;">ЗЕРКАЛО ТЕЛА</b><br>
-<b style="color:#0f0;">Атмосфера:</b> ты внутри сна — но не управляешь. Все движения автоматичны. Всё — как будто не твое.<br>
-<b style="color:#0f0;">Структура:</b> тело движется само, ты не принимаешь решений.<br>
-<b style="color:#0f0;">Логика:</b> иллюзия контроля. Ты — внутри, но без воли. Всё за тебя делает “сценарий”.<br>
-<b style="color:#0f0;">Признак:</b> момент, когда ты пытаешься сказать или сделать — и ничего не происходит.<br>
-<b style="color:#0f0;">Осознание узла:</b> посмотри на что то одно.</li>
-        <li><b style="color:#40E0D0;">МЕХАНИЗМ ВРЕМЕНИ</b><br>
-<b style="color:#0f0;">Атмосфера:</b> ты снова в том же месте. Повтор. День сурка. Всё предсказуемо — и бесконечно.<br>
-<b style="color:#0f0;">Структура:</b> события идут по кругу. Те же действия, те же локации, те же слова.<br>
-<b style="color:#0f0;">Логика:</b> сон закольцован. Он не отпустит, пока ты не осознаешь, что это уже было.<br>
-<b style="color:#0f0;">Признак:</b> невозможность “уйти” или “завершить”.<br>
-<b style="color:#0f0;">Осознание узла:</b> ты — пружина этого механизма.</li>
-
-<li><b style="color:#40E0D0;">ДОПРОС ЧУВСТВАМИ</b><br>
-<b style="color:#0f0;">Атмосфера:</b> напряжение растёт, будто гром перед ударом.<br>
-<b style="color:#0f0;">Структура:</b> страх возникает мгновенно. Что то несется на тебя, сердце сжимается, ты хочешь увернуться, закричать.<br>
-<b style="color:#0f0;">Логика:</b>  сон создаёт образ погони, вторжения, агрессии. Он ставит тебя в центр опасного события, заставляя сказать правду.<br>
-<b style="color:#0f0;">Признак:</b> тело сжимается, инстинкты кричат — «спасайся».<br>
-<b style="color:#0f0;">Осознание узла:</b> страж не нужен.</li>
-        <li><b style="color:#40E0D0;">МИР БЕЗ ЗАКОНОВ</b><br>
-<b style="color:#0f0;">Атмосфера:</b> абсурд, сломанные законы, но всё — логично по-своему.<br>
-<b style="color:#0f0;">Структура:</b> здесь гравитация другая, время не линейно, мораль условна, путь нереален.<br>
-<b style="color:#0f0;">Логика:</b> мир сна не нарушен — просто это другой порядок, который ты можешь переписать.<br>
-<b style="color:#0f0;">Признак:</b> ты чувствуешь, что можешь управлять “внутренними” правилами.<br>
-<b style="color:#0f0;">Осознание узла:</b> найди адекватные детали.</li>
-        <li><b style="color:#40E0D0;">ЗАПРЕТНАЯ ПАМЯТЬ</b><br>
-<b style="color:#0f0;">Атмосфера:</b> перед тобой спертый воздух, пыль в солнечном луче, напряжённая тишина. Всё внутри давно смирилось с тем, что ты не вернёшься.<br>
-<b style="color:#0f0;">Структура:</b> закрытая дверь. Комната в глубине сна. Может быть шкаф, старая кладовая, потайной ящик. Ты всегда знал, где она.<br>
-<b style="color:#0f0;">Логика:</b> ты сам запер туда то, что не хотел вспоминать — слова, поступки, лица.<br>
-<b style="color:#0f0;">Признак:</b> ты подходишь к двери и не хочешь её трогать. А если откроешь: не хочешь входить.<br>
-<b style="color:#0f0;">Осознание узла:</b> перебори себя.</li>
-        <li><b style="color:#40E0D0;">ПОРОГОВЫЕ ЛИЦА</b><br>
-<b style="color:#0f0;">Атмосфера:</b> вежливая ловушка. Всё кажется "правильным": мягкие голоса, разумные аргументы, знакомые лица. Но внутри — нарастающий холод.<br>
-<b style="color:#0f0;">Структура:</b> ты среди тех, кто будто бы рад видеть тебя. Они уверяют, что ты всегда был с ними. Что ты — один из них. Что всё нормально.<br>
-<b style="color:#0f0;">Логика:</b> это демагогия. Они не грубят, не угрожают — они убеждают, ласково и настойчиво, будто под кожу проникают. Они не доказывают — они уже решили за тебя.<br>
-<b style="color:#0f0;">Признак:</b> в тебе растёт дискомфорт. Их слова гладкие, но ты чувствуешь, что за ними — ложь. Они хотят, чтобы ты забыл, кто ты, и стал кем-то удобным.<br>
-<b style="color:#0f0;">Осознание узла:</b> останови их.</li>
-        <li><b style="color:#40E0D0;">ОБРАТНАЯ СТОРОНА</b><br>
-<b style="color:#0f0;">Атмосфера:</b> тревожная встреча. Кто-то похож на тебя, но искажён.<br>
-<b style="color:#0f0;">Структура:</b> ты видишь двойника. Иногда — он действует против тебя. Иногда - противен.<br>
-<b style="color:#0f0;">Логика:</b> тень показывает, чего ты боишься в себе.<br>
-<b style="color:#0f0;">Признак:</b> он появляется там, где ты не хочешь быть.<br>
-<b style="color:#0f0;">Осознание узла:</b> ты увидел себя.</li>
-        <li><b style="color:#40E0D0;">ШЕПОТ ПРЕДКОВ</b><br>
-<b style="color:#0f0;">Атмосфера:</b> приглушённо, по древнему, сакрально.<br>
-<b style="color:#0f0;">Структура:</b> ты слышишь шёпот, молитвы, разговоры — всё из далекого прошлого.<br>
-<b style="color:#0f0;">Логика:</b> ты — не один. Ты продолжаешь тех, кто жил до тебя.<br>
-<b style="color:#0f0;">Признак:</b> ты видишь тех, которых не знаешь, но они знают тебя.<br>
-<b style="color:#0f0;">Осознание узла:</b> это уже устарело.</li>
-        <li><b style="color:#40E0D0;">ВХОЖДЕНИЕ В РОЛЬ</b><br>
-<b style="color:#0f0;">Атмосфера:</b> символично, почти все мифическое.<br>
-<b style="color:#0f0;">Структура:</b> ты становишься кем-то — воином, магом, судьёй, божеством.<br>
-<b style="color:#0f0;">Логика:</b> сновидение предлагает форму, через которую хочет испытать тебя.<br>
-<b style="color:#0f0;">Признак:</b> ты говоришь от имени того, кем не являешься. Ты действуешь уверенно, зная то, чего не учился.<br>
-<b style="color:#0f0;">Осознание узла:</b> найди дефект.</li>
-        <li><b style="color:#40E0D0;">БЕЛАЯ ПУСТОТА</b><br>
-<b style="color:#0f0;">Атмосфера:</b> белый шум, ничто, спокойствие, почти смерть.<br>
-<b style="color:#0f0;">Структура:</b> нет формы, событий, персонажей. Только ты — и пустота.<br>
-<b style="color:#0f0;">Логика:</b> всё завершено.<br>
-<b style="color:#0f0;">Признак:</b> тебя нет.<br>
-<b style="color:#0f0;">Осознание узла:</b> не убегай.</li>
-      </ol>
-	  <hr>
-	  В январе и феврале узла нет, работайте с двумя Вакуумами одновременно через зеркало:<br>
-	  <img src="./1.png" width="100%">
-	  <br><br>
-	  <img src="./2.png" width="100%">
-	  <br><br>
-	  
-      Лунный календарь и все Вакуумы <a href="./mirror.html" style="color:#0f0;">здесь</a>.</li>
-	  <hr>
-	  И не забудьте, квантовый переход на новый лунный год (где вы можете начать все с чистого листа): <b id="new_god"></b>. <a href="./dreams.html">Подготовьтесь</a> чтобы перейти хорошими.
-	  <hr>
-	  <button id="closeuzel2" title="Хорошо">Хорошо</button>
-    </div>
-  </div>
-  
-  
-  
-  
-<!-- Popup для суммы мечты -->
-<div id="dreamOverlay"></div>
-<div id="dreamPopup"><b id="dreamPopupText"></b><br><button id="dreamPopupButton" onclick="closeDreamPopup();return false;" style="width:100%;">Окей</button></div>
 <script>
+function insertSymvol2(el, text, description) {
+  const input = document.getElementById("wish");
+  input.value = text + ' ';
+  input.focus();
 
-getDateFromMarch();
+  // Выделить выбранный элемент
+  const links = document.querySelectorAll("#symvolOptions2 a");
+  links.forEach(link => {
+    link.style.fontWeight = "normal";
+  });
+  el.style.fontWeight = "bold";
 
-
-
-function getDateFromMarch(){
-
-  var dayNumber = 141;
-  var dayNumber0 = 140;
-
-
-  var year = new Date().getFullYear(); // Можно заменить на нужный, например: 2025
-  
-  if(daysSinceFirstMarch()>141){
-  year = year + 1;
-  }
-  
-  const firstMarch = new Date(year, 2, 8); // 1 марта (март = 2)
-  
-  // Прибавляем указанное количество дней (в мс)
-  const targetDate = new Date(firstMarch.getTime() + dayNumber * 24 * 60 * 60 * 1000);
-  const targetDate0 = new Date(firstMarch.getTime() + dayNumber0 * 24 * 60 * 60 * 1000);
-  
-  
-  // Названия месяцев для русской локализации
-  const months = [
-    "января", "февраля", "марта", "апреля", "мая", "июня",
-    "июля", "августа", "сентября", "октября", "ноября", "декабря"
-  ];
-
-  const day = targetDate.getDate();
-  const monthName = months[targetDate.getMonth()];
-  const fullYear = targetDate.getFullYear();
-  
-  const day0 = targetDate0.getDate();
-  var monthName0 = months[targetDate0.getMonth()];
-  const fullYear0 = targetDate0.getFullYear();
-  
-  if(monthName0!=monthName){
-  monthName0 = " " + monthName0;
-  }
-  else{
-  monthName0 = '';
-  }
-
-  
-  document.getElementById("new_god").innerText = `${day0}${monthName0} - ${day} ${monthName} ${fullYear} года`;
+  // Показать описание
+  document.getElementById("symvolDescription2").textContent = description;
 }
-
-function daysSinceFirstMarch() {
-  const now = new Date(); // текущая дата
-  const year = now.getFullYear(); // текущий год
-  const firstMarch = new Date(year, 2, 8); // 8 марта (месяцы в JS от 0, март — это 2)
-
-  // Разница в миллисекундах
-  const diffInMs = now - firstMarch + 1;
-
-  // Переводим миллисекунды в дни
-  const msInOneDay = 24 * 60 * 60 * 1000;
-  const daysPassed = Math.floor(diffInMs / msInOneDay);
-
-  return daysPassed;
-}
-
-function getAncientRomanMonth() {
-  // Смещаем так, чтобы 6 марта стало днём 1
-  const dayFromMarch = daysSinceFirstMarch();
-
-  // Диапазоны месяцев (от 1 марта)
-  const ranges = [
-    { name: "1-м узле сна: ЗЕРКАЛО ТЕЛА", desc: "Ты внутри сна — но не управляешь. Все движения автоматичны. Всё — как будто не твое.",     number: 1, from: 1,   to: 31 },
-    { name: "2-м узле сна: МЕХАНИЗМ ВРЕМЕНИ", desc: "Ты снова в том же месте. Повтор. День сурка. Всё предсказуемо — и бесконечно.",    number: 2, from: 32,  to: 61 },
-    { name: "3-м узле сна: ДОПРОС ЧУВСТВАМИ",desc: "Напряжение растёт, будто гром перед ударом.",       number: 3, from: 62,  to: 92 },
-    { name: "4-м узле сна: МИР БЕЗ ЗАКОНОВ", desc: "Абсурд, сломанные законы, но всё — логично по-своему.",     number: 4, from: 93,  to: 122 },
-    { name: "5-м узле сна: ЗАПРЕТНАЯ ПАМЯТЬ",desc: "Перед тобой спертый воздух, пыль в солнечном луче, напряжённая тишина. Всё внутри давно смирилось с тем, что ты не вернёшься.",   number: 5, from: 123, to: 153 },
-    { name: "6-м узле сна: ПОРОГОВЫЕ ЛИЦА", desc: "Вежливая ловушка. Всё кажется 'правильным': мягкие голоса, разумные аргументы, знакомые лица. Но внутри — нарастающий холод.",   number: 6, from: 154, to: 183 },
-    { name: "7-м узле сна: ОБРАТНАЯ СТОРОНА", desc: "Тревожная встреча. Кто-то похож на тебя, но искажён.",  number: 7, from: 184, to: 213 },
-    { name: "8-м узле сна: ШЕПОТ ПРЕДКОВ",desc: "Приглушённо, по древнему, сакрально.",     number: 8, from: 214, to: 244 },
-    { name: "9-м узле сна: ВХОЖДЕНИЕ В РОЛЬ",  desc: "Символично, почти все мифическое.",  number: 9, from: 245, to: 274 },
-    { name: "10-м узле сна: БЕЛАЯ ПУСТОТА", desc: "Белый шум, ничто, спокойствие, почти смерть.",   number: 10,from: 275, to: 305 }
-  ];
-
-  // Ищем соответствующий месяц по диапазону
-  const found = ranges.find(r => dayFromMarch >= r.from && dayFromMarch <= r.to);
-
-  return found
-    ? `Перелом на ${found.name}. ${found.desc}`
-    : "Сейчас зимний период, и вы в промежутке. Это фаза, где всё течёт, но ничего не закрепляется. Решения, принятые в промежутке, редко выживают. Перелом не возможен. Воспользуйтесь зеркалом.";
-}
-
-if (typeof Website2APK !== "undefined") {
-        document.getElementById("buttonClose").style.display = "block";
-        document.getElementById("buttonAndroid").style.display = "none";
-    }
-    else{
-        document.getElementById("buttonClose").style.display = "none";
-        document.getElementById("buttonAndroid").style.display = "block";
-    }
-
-  const phrases = [
-  "Да-да, конечно",
-  "Ну и ладно",
-  "Записал в дневник",
-  "Серьёзно?..",
-  "Я всё понял... вроде бы",
-  "И что теперь?",
-  "Ну ок",
-  "Ага, как скажешь",
-  "Допустим",
-  "Так и запишем",
-  "Сделаю вид, что понял",
-  "Мудро... наверное",
-  "Спасибо за это, сонный гуру",
-  "Ну это уже странно",
-  "Слишком глубоко",
-  "Окей, мастер подсознания",
-  "Тут что-то было важное?",
-  "Хватит уже",
-  "Сон принят",
-  "Ничего не понял, но интересно",
-  "Отключаюсь",
-  "Мои нейроны перегрелись",
-  "Где кнопка «пропустить»?",
-  "Запомню на потом",
-  "А теперь кофе",
-  "Хорош, я сдаюсь",
-  "До следующего сна",
-  "Дальше сам",
-  "Я проснулся, честно",
-  // Новые, с иронией
-  "Да-да, конечно… господин сон",
-  "О, великий узел, я просветлён",
-  "Слишком мета. Даже для меня",
-  "Я — сон во сне сна, ясно?",
-  "Запишу в магическую тетрадку",
-  "Ну вот опять началось",
-  "Типа понял. Типа нет",
-  "Это что, был квест?",
-  "Где тут выдать диплом по сновидениям?",
-  "Слишком сложно, я пас",
-  "А можно в форме комикса?",
-  "Такое только в мультике покажут",
-  "Запомню, когда перестану забывать",
-  "И что мне с этим делать?",
-  "Окей, Морти, только не паникуй",
-  "Это звучало... важно? Наверное",
-  "Я это перескажу своему психологу",
-  "Это был сон или туториал?",
-  "Ну и лабуда, брат",
-  "В этом есть смысл. Где-то",
-  "Пойду, притворюсь, что понял",
-  "Слишком много символизма, у меня аллергия",
-  "Хорошо, вы победили",
-  "Да-да, добавлю в коллекцию снов",
-  "А где багрепорт?",
-  "Если это квантовая психология — я увольняюсь",
-  "Глубоко... как мои студенческие долги",
-  "Ладно, я теперь шаман?",
-  "Что ж, опять этот сонный ребус"
-];
-
-  const form = document.getElementById("deathForm");
-  const genderSelect = document.getElementById("gender");
-  const typeSelect = document.getElementById("type");
-  const nameInput = document.getElementById("name");
-  const methodInput = document.getElementById("method");
-  const clientGenderSelect = document.getElementById("clientGender");
-  const methodLabel = document.getElementById("methodLabel");
-  const clientTimeSelect = document.getElementById("clientTime");
-
-  const statsDiv = document.getElementById("stats");
-  const RomanMonthDiv = document.getElementById("RomanMonth");
-  const resultDiv = document.getElementById("result");
-  const removePre = document.querySelector("#orders-remove pre");
-  const replacePre = document.querySelector("#orders-replace pre");
-
-  const rulesLink = document.getElementById("rulesLink");
-  const rulesPopup = document.getElementById("rulesPopup");
-  const closeRulesBtn = document.getElementById("closeRules");
-  
-  const uzelLink = document.getElementById("uzelLink");
-  const uzelPopup = document.getElementById("uzelPopup");
-  const closeuzelBtn = document.getElementById("closeuzel");
-  const closeuzel2Btn = document.getElementById("closeuzel2");
-
-  const letterValuesReduced = {
-  'А': 1,  'Б': 2,  'В': 3,  'Г': 4,  'Д': 5,  'Е': 6,  'Ё': 7,
-  'Ж': 8,  'З': 9,  'И': 1,  'Й': 2,  'К': 3,  'Л': 4,  'М': 5,
-  'Н': 6,  'О': 7,  'П': 8,  'Р': 9,  'С': 1,  'Т': 2,  'У': 3,
-  'Ф': 4,  'Х': 5,  'Ц': 6,  'Ч': 7,  'Ш': 8,  'Щ': 9,  'Ъ': 1,
-  'Ы': 2,  'Ь': 3,  'Э': 4,  'Ю': 5,  'Я': 6
-};
-
-const letterValuesRReduced = {
-  'А': 6,  'Б': 5,  'В': 4,  'Г': 3,  'Д': 2,  'Е': 1,  'Ё': 9,
-  'Ж': 8,  'З': 7,  'И': 6,  'Й': 5,  'К': 4,  'Л': 3,  'М': 2,
-  'Н': 1,  'О': 9,  'П': 8,  'Р': 7,  'С': 6,  'Т': 5,  'У': 4,
-  'Ф': 3,  'Х': 2,  'Ц': 1,  'Ч': 9,  'Ш': 8,  'Щ': 7,  'Ъ': 6,
-  'Ы': 5,  'Ь': 4,  'Э': 3,  'Ю': 2,  'Я': 1
-};
-
-const digitWords = {
-  0: 'ноль', 1: 'один', 2: 'два', 3: 'три', 4: 'четыре',
-  5: 'пять', 6: 'шесть', 7: 'семь', 8: 'восемь', 9: 'девять'
-};
-
-  // Функция для задания случайной фразы
-  const recentPhrases = [];
-
-function setRandomButtonText() {
-  let availablePhrases = phrases.filter(p => !recentPhrases.includes(p));
-
-  // Если вдруг все фразы перебрали — сбросим историю
-  if (availablePhrases.length === 0) {
-    recentPhrases.length = 0;
-    availablePhrases = [...phrases];
-  }
-
-  const randomIndex = Math.floor(Math.random() * availablePhrases.length);
-  const chosen = availablePhrases[randomIndex];
-
-  // Установим текст
-  document.getElementById('dreamPopupButton').textContent = chosen;
-
-  // Обновим историю последних 5
-  recentPhrases.push(chosen);
-  if (recentPhrases.length > 5) {
-    recentPhrases.shift(); // убираем самый старый
-  }
-}
-
-function replaceNumbersWithWords(text) {
-  return text.replace(/\d+/g, (num) => {
-    return num.split('').map(d => digitWords[d]).join(' ');
-  });
-}
-
-  function calculateDreamValue(text) {
-  text = replaceNumbersWithWords(text);
-
-  if(typeSelect.value=='убрать'){
-     var letterValues = letterValuesRReduced;
-  }
-  else{
-     var letterValues = letterValuesReduced;
-  }
-
-    return text
-      .toUpperCase()
-      .split('')
-      .map(ch => letterValues[ch] || 0)
-      .reduce((a, b) => a + b, 0);
-  }
-
-function updateRomanMonthDiv() {
-
-RomanMonthDiv.innerHTML = getAncientRomanMonth();
-}
-
-updateRomanMonthDiv();
-
-function closeDreamPopup() {
-  const popup = document.getElementById('dreamPopup');
-  const overlay = document.getElementById('dreamOverlay');
-
-    popup.classList.remove('active');
-    overlay.classList.remove('active');
-}
-
-function showDreamPopup(value) {
-  const popup = document.getElementById('dreamPopup');
-  const popupText = document.getElementById('dreamPopupText');
-  const overlay = document.getElementById('dreamOverlay');
-  const popupButton = document.getElementById('dreamPopupButton');
-  
-	setRandomButtonText();
-
-  popupText.textContent = `Код ${value}`;
-  popup.classList.add('active');
-  overlay.classList.add('active');
-
-}
-
-  // Обновление подписи поля method в зависимости от пола Клиента
-  clientGenderSelect.addEventListener("change", () => {
-  updatemethodLabel();
-  });
-  
-  typeSelect.addEventListener("change", () => {
-  updatemethodLabel();
-  });
-  
-  genderSelect.addEventListener("change", () => {
-  updatemethodLabel();
-  });
-  clientTimeSelect.addEventListener("change", () => {
-  updatemethodLabel();
-  });
-  function updatemethodLabel() {
-   if(genderSelect.value=='мужской'){
-   var mechta = 'желаете';
-   }
-   else{
-   var mechta = 'хотите';
-   }
-   if(typeSelect.value=='убрать'){
-   var ne = ' не';
-   }
-   else{
-   var ne = '';
-   }
-   
-   
-var clientTime = clientTimeSelect.value;
-   
-    if (clientGenderSelect.value === "мужской") {
-      methodLabel.innerText = "Кем " + mechta+ " чтобы " + clientTime + " Клиент" + ne+ " был:";
-    } else {
-      methodLabel.innerText = "Кем " + mechta+ " чтобы " + clientTime + " Клиент" + ne+ " стала:";
-    }
-  }
-  
-  
-function updateStats(entries) {
-  let countU = 0;
-  let countP = 0;
-
-  entries.forEach(entry => {
-    if (entry.startsWith("убрать")) countU++;
-    if (entry.startsWith("подменить")) countP++;
-  });
-
-  statsDiv.childNodes[0].nodeValue = `Счет: ${countU} | ${countP} `;
-
-  if (countU === countP && countU > 0) {
-    // Определим фразу по счёту
-    let phrase = "";
-    switch (countU) {
-      case 1:
-        phrase = "вклад в красивую родню";
-        break;
-      case 2:
-        phrase = "вклад в красивых друзей";
-        break;
-      case 3:
-        phrase = "вклад в красивую команду";
-        break;
-      default:
-        phrase = "вклад в красивых близких";
-        break;
-    }
-	
-    // Обнуляем историю
-    localStorage.removeItem("deaths");
-    removePre.textContent = "";
-    replacePre.textContent = "";
-    statsDiv.childNodes[0].nodeValue = "Заказы приняты на реализацию. Добавлен новый код на " + phrase + ".";
-	
-	document.getElementById("type").value = 'подменить';
-
-    var dreamValue = calculateDreamValue(phrase);
-	
-	var type = document.getElementById("type").value;
-	
-    let history = JSON.parse(localStorage.getItem("deaths") || "[]");
-    history.push(`${type}::${dreamValue}`);
-    localStorage.setItem("deaths", JSON.stringify(history));
-	localStorage.setItem("selectedType", type);
-	
-    renderHistory(history);
-
-  }
-}
-
-  function renderHistory(entries) {
-  const sanitizeEntry = (entry, index) => {
-    let value = entry.split("::")[1];
-
-    // Если значение не число, заменяем его на индекс + 1
-    if (isNaN(value)) {
-	
-	 value = calculateDreamValue(value);
-    }
-
-    return value;
-  };
-
-  const removeEntries = entries
-    .filter(entry => entry.startsWith("убрать"))
-    .map(sanitizeEntry)
-    .join(" "); // через пробел
-
-  const replaceEntries = entries
-    .filter(entry => entry.startsWith("подменить"))
-    .map(sanitizeEntry)
-    .join(" "); // через пробел
-
-  removePre.textContent = removeEntries || "";
-  replacePre.textContent = replaceEntries || "";
-}
-
-  form.addEventListener("submit", e => {
-    e.preventDefault();
-
-    const gender = genderSelect.value;
-    const type = typeSelect.value;
-    const name = nameInput.value.trim();
-    const method = methodInput.value.trim();
-    const clientGender = clientGenderSelect.value;
-
-    if (!gender || !type || !name || !method || !clientGender) {
-      alert("Пожалуйста, заполните все поля.");
-      return;
-    }
-
-    const transformedType = gender === "женский"
-      ? (type === "убрать" ? "не хорошего" : "прекрасного")
-      : (type === "убрать" ? "не лучшего" : "скорости");
-	  
-    const transformedNe = gender === "женский"
-      ? (type === "убрать" ? "не " : "")
-      : (type === "убрать" ? "не " : "");
-	  
-	  
-   
-   if(clientGenderSelect.value=='женский'){
-   if(clientTimeSelect.value=='текущий'){
-   var clientTime = 'текушая';
-   }
-   else if(clientTimeSelect.value=='младший'){
-   var clientTime = 'младшая';
-   }
-   else{
-   var clientTime = 'старшая';
-   }
-   
-   }
-   else{
-   var clientTime = clientTimeSelect.value;
-   
-   }
-   
-
-    const transformedClientGender = clientGender === "мужской" ? "был" : "стала";
-    const sentence = `Надо мне ${transformedType} чтобы ${clientTime} ${name} ${transformedNe}${transformedClientGender} ${transformedNe}${method}`;
-	
-	const dreamValue = calculateDreamValue(sentence);
-
-    let history = JSON.parse(localStorage.getItem("deaths") || "[]");
-    history.push(`${type}::${dreamValue}`);
-    localStorage.setItem("deaths", JSON.stringify(history));
-	localStorage.setItem("selectedGender", gender);
-	localStorage.setItem("selectedType", type);
-
-    renderHistory(history);
-    updateStats(history);
-	showDreamPopup(dreamValue);
-	updateRomanMonthDiv();
-    form.reset();
-    // Чтобы подпись method обновилась сразу на мужской по умолчанию после сброса формы:
-    clientGenderSelect.dispatchEvent(new Event("change"));
-	
-	// Восстанавливаем пол "Кто вы" и союзника
-var savedGender = localStorage.getItem("selectedGender");
-if (savedGender) genderSelect.value = savedGender;
-
-var savedType = localStorage.getItem("selectedType");
-if (savedType) typeSelect.value = savedType;
-	
-	updatemethodLabel();
-  });
-
-  window.addEventListener("load", () => {
-    const history = JSON.parse(localStorage.getItem("deaths") || "[]");
-    renderHistory(history);
-    updateStats(history);
-    typeSelect.dispatchEvent(new Event("change"));
-    clientGenderSelect.dispatchEvent(new Event("change"));
-	// Восстанавливаем пол "Кто вы" и союзника
-var savedGender = localStorage.getItem("selectedGender");
-if (savedGender) genderSelect.value = savedGender;
-
-var savedType = localStorage.getItem("selectedType");
-if (savedType) typeSelect.value = savedType;
-
-updatemethodLabel();
-  });
-
-  // Работа с попапом правил
-  rulesLink.addEventListener("click", e => {
-    e.preventDefault();
-    rulesPopup.classList.add("show");
-  });
-
-  closeRulesBtn.addEventListener("click", () => {
-    rulesPopup.classList.remove("show");
-  });
-
-  window.addEventListener("click", (e) => {
-    if (e.target === rulesPopup) {
-      rulesPopup.classList.remove("show");
-    }
-  });
-
-  window.addEventListener("keydown", (e) => {
-    if (e.key === "Escape" && rulesPopup.classList.contains("show")) {
-      rulesPopup.classList.remove("show");
-    }
-  });
-  
-  // Работа с попапом uzel
-  uzelLink.addEventListener("click", e => {
-    e.preventDefault();
-    uzelPopup.classList.add("show");
-  });
-
-  closeuzelBtn.addEventListener("click", () => {
-    uzelPopup.classList.remove("show");
-  });
-  closeuzel2Btn.addEventListener("click", () => {
-    uzelPopup.classList.remove("show");
-  });
-  
-  
-
-  window.addEventListener("click", (e) => {
-    if (e.target === rulesPopup) {
-      uzelPopup.classList.remove("show");
-    }
-  });
-
-  window.addEventListener("keydown", (e) => {
-    if (e.key === "Escape" && uzelPopup.classList.contains("show")) {
-      uzelPopup.classList.remove("show");
-    }
-  });
 </script>
-</body>
+                <select id="sphere" onchange="clear_input_error(this,true);updateDirections()" data-selected="Сфера влияния">
+                    <option value="">[ Определите сферу влияния ]</option>
+                    <option value="стратегия">Стратегия</option>
+                    <option value="восхищение">Восхищение</option>
+                    <option value="вдохновение">Вдохновение</option>
+                    <option value="прорицание">Прорицание</option>
+                </select>
+
+                <select id="direction" onchange="clear_input_error(this,true);" data-selected="Направление влияния" disabled>
+                    <option value="">[ Определите направление влияния ]</option>
+                </select>
+
+                <select id="needType" onchange="clear_input_error(this,true);" data-selected="Тип необходимости">
+                    <option value="">[ Определите тип необходимости ]</option>
+                    <option value="з-р-п">Нужда</option>
+                    <option value="п-р-з">Внедрение</option>
+                </select>
+				
+                <div class="inline-form">
+                    <label for="symvol_text">Мечтаю для</label>
+                    <input type="text" id="symvol_text" placeholder="[ опишите для чего ]" oninput="trackInput(this);" />
+                </div>
+				
+
+  
+  <div id="symvolOptions" style="padding-top:10px;font-size: 0.9em; color: #ccc;"> Выберите готовую формулировку "для чего":
+  <a href="#"  style="text-decoration: none; border-bottom: 1px dotted;"
+     title="К нему все притягиваются. Он — дает то, что не могут дать другие."
+     onclick="insertSymvol(this, 'Призвания', 'К нему все притягиваются. Он — дает то, что не могут дать другие.'); return false;">
+     ⚀&nbsp;Призвания</a>,
+  <a href="#"  style="text-decoration: none; border-bottom: 1px dotted;"
+     title="Он среди Учителей. Примет, кого встретишь. Не спорит. Преклонится перед Знанием."
+     onclick="insertSymvol(this, 'Уважения', 'Он среди Учителей. Примет, кого встретишь. Не спорит. Преклонится перед Знанием.'); return false;">
+     ⚁&nbsp;Уважения</a>,
+  <a href="#"  style="text-decoration: none; border-bottom: 1px dotted;"
+     title="Он несёт смысл. Не позволяет быть искажённым. Под защитой, даже если один."
+     onclick="insertSymvol(this, 'Отстаивания', 'Он несёт смысл. Не позволяет быть искажённым. Под защитой, даже если один.'); return false;">
+     ⚂&nbsp;Отстаивания</a>,
+  <a href="#"  style="text-decoration: none; border-bottom: 1px dotted;"
+     title="Он уводит. Позволяет выйти из любой сцены. Незаметный. Без следов."
+     onclick="insertSymvol(this, 'Выкручивания', 'Он уводит. Позволяет выйти из любой сцены. Незаметный. Без следов.'); return false;">
+     ⚃&nbsp;Выкручивания</a>,
+  <a href="#"  style="text-decoration: none; border-bottom: 1px dotted;"
+     title="Он не рассуждает. Делает, что требуется. Поток важнее его."
+     onclick="insertSymvol(this, 'Послушания', 'Он не рассуждает. Делает, что требуется. Поток важнее его.'); return false;">
+     ⚄&nbsp;Послушания</a>,
+  <a href="#"  style="text-decoration: none; border-bottom: 1px dotted;"
+     title="Он сброшен. Он сломан. Только очищение даст новый маршрут."
+     onclick="insertSymvol(this, 'Очищения', 'Он сброшен. Он сломан. Только очищение даст новый маршрут.'); return false;">
+     ⚅&nbsp;Очищения</a>.
+</div>
+  <div id="symvolDescription" style="margin-top: 5px; font-size: 0.9em; color: #ccc;"></div>
+
+
+
+<script>
+function insertSymvol(el, text, description) {
+  const input = document.getElementById("symvol_text");
+  input.value = text + ' ';
+  input.focus();
+
+  // Выделить выбранный элемент
+  const links = document.querySelectorAll("#symvolOptions a");
+  links.forEach(link => {
+    link.style.fontWeight = "normal";
+  });
+  el.style.fontWeight = "bold";
+
+  // Показать описание
+  document.getElementById("symvolDescription").textContent = description + ' Добавьте кто ОН.';
+}
+</script>
+				
+            </div>
+
+            <div id="result">
+                Загрузка...
+            </div>
+
+            <select id="uklad" onchange="clear_input_error(this,true,false,true,false);" data-selected="Характеристика уклада">
+                <option value="">[ Выберите характеристику уклада ]</option>
+            </select>
+
+            <button id="button" onclick="getCard()">Получить расклад</button>
+            <button id="button2" class="open-modal-btn" onclick="updateDayNow()" style="display:none;">Обновить месяц или день недели</button>
+            <button id="buttonClose" onclick="Website2APK.exitApp()">Закрыть программу</button>
+            <button id="buttonAndroid" onclick="window.location = 'https://botogame.github.io/vigil/ПМ_Бдилка.apk';">Приложение на телефон (android)</button>
+            <br />
+            <br />
+            <p>
+                <center>
+                    <a class="" href="#"  onclick="document.getElementById('dninedeli').style.display = 'flex';return false;">Дни недели</a>
+                    <span class="separator">|</span>
+                    <a class="a_info2" href="#"  onclick="document.getElementById('instukciya').style.display = 'flex';return false;">Инструкции</a>
+                </center>
+            </p>
+        </div>
+    </body>
 </html>
