@@ -314,7 +314,7 @@ select:hover, button:hover {
       resultDiv.innerHTML = `<p>Узел распознан. Погружаемся глубже...</p>`;
       setTimeout(loadDream, 3000);
     } else {
-      resultDiv.innerHTML = `<p>Неверно. Это был узел: ${correctNode}. Начни сначала.</p>`;
+      resultDiv.innerHTML = `<p>Неверно. Это был узел: <b style="color:red;">${correctNode}</b>. Ты проснулся! Начни сначала.</p>`;
       dreamLevel = 1;
       setTimeout(loadDream, 4000);
     }
