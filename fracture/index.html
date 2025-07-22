@@ -572,6 +572,7 @@ updateLightning();
   <form id="deathForm">
     <label>Кто Вы:
       <select id="gender" required>
+    <option value="" disabled selected hidden style="color: #888;">Выберите</option>
         <option value="мужской">Мужчина</option>
         <option value="женский">Женщина</option>
       </select>
@@ -579,6 +580,7 @@ updateLightning();
 
     <label>Союзник:
       <select id="type" required>
+    <option value="" disabled selected hidden style="color: #888;">Выберите</option>
         <option value="убрать">Аннигилятор</option>
         <option value="подменить">Создатель</option>
       </select>
@@ -590,6 +592,7 @@ updateLightning();
 
     <label>Пол Клиента:
       <select id="clientGender" required>
+    <option value="" disabled selected hidden style="color: #888;">Выберите</option>
         <option value="мужской">Мужчина</option>
         <option value="женский">Женщина</option>
       </select>
@@ -597,6 +600,7 @@ updateLightning();
 
     <label>Время Клиента:
       <select id="clientTime" required>
+    <option value="" disabled selected hidden style="color: #888;">Выберите</option>
         <option value="текущий">Текущее - клиент в вашем времени</option>
         <option value="младший">Прошлое - клиент младший</option>
         <option value="старший">Будующее - клиент старший</option>
@@ -606,6 +610,115 @@ updateLightning();
     <label><text id="methodLabel">Кем хотите чтобы Клиент был:</text>
       <input type="text" id="method" required />
     </label>
+
+    <style>
+   .custom-select {
+      position: relative;
+      width: 100%;
+      max-width: 400px;
+      user-select: none;
+      font-size: 15px;
+    }
+
+    .custom-select-trigger {
+      padding: 12px 16px;
+      background: #2a2a2a;
+      color: #f0f0f0;
+      border-radius: 6px;
+      border: 1px solid #444;
+      cursor: pointer;
+      position: relative;
+      text-transform: none;
+    }
+
+    .custom-select-trigger::after {
+      content: "▼";
+      position: absolute;
+      right: 16px;
+      top: 50%;
+      transform: translateY(-50%);
+      font-size: 12px;
+      pointer-events: none;
+    }
+
+    .custom-options {
+      position: absolute;
+      top: 100%;
+      left: 0;
+      right: 0;
+      max-height: 220px;
+      overflow-y: auto;
+      background: #2a2a2a;
+      border: 1px solid #444;
+      border-top: none;
+      display: none;
+      z-index: 10;
+      border-radius: 0 0 6px 6px;
+    }
+
+    .custom-option {
+      padding: 12px 16px;
+      border-bottom: 1px solid #333;
+      cursor: pointer;
+      color: #e0e0e0;
+      white-space: normal;
+      text-transform: none;
+    }
+
+    .custom-option:hover {
+      background: #383838;
+    }
+</style>
+
+<div class="custom-select" id="customSelect">
+  <div class="custom-select-trigger">
+    <span class="trigger-text">Выберите посыл</span>
+  </div>
+  <div class="custom-options">
+    <div class="custom-option" data-value="1">Пусть мечта возьмёт штурвал космического корабля, плыви в потоке без контроля — там, где рождается сила узла зеркала тела</div>
+    <div class="custom-option" data-value="2">Пусть повторение станет танцем Вселенной, открой скрытый цикл и выйди на новый уровень узла механизма времени</div>
+    <div class="custom-option" data-value="3">Пусть страх вспыхнет как ядро взрыва, снеси старые стены и зажги энергию узла допроса чуствами</div>
+    <div class="custom-option" data-value="4">Пусть мечта откроет портал в абсурдный мир, где хаос — это порядок, а чудо — закон узла мира без законов</div>
+    <div class="custom-option" data-value="5">Пусть смелость взломает запретные двери, за ними — ключи к могуществу узла запретной памяти</div>
+    <div class="custom-option" data-value="6">Пусть свет разгонит маски и ложь, освободись и засияй силой узла пороговых лиц</div>
+    <div class="custom-option" data-value="7">Пусть отражения станут проводником к теням, прими их и возвысь мощь узла обратной стороны</div>
+    <div class="custom-option" data-value="8">Пусть шёпот предков поведёт сквозь время, наполнись силой древних узла шепота предков</div>
+    <div class="custom-option" data-value="9">Пусть роль станет волшебным оружием, воплоти уникальность и власть узла вхождения в роль</div>
+    <div class="custom-option" data-value="10">Пусть пустота станет пространством для рождения нового, найди покой в начале узла белой пустоты</div>
+  </div>
+</div>
+
+<script>
+   const select = document.getElementById('customSelect');
+  const trigger = select.querySelector('.custom-select-trigger');
+  const triggerText = trigger.querySelector('.trigger-text');
+  const options = select.querySelector('.custom-options');
+  const optionList = select.querySelectorAll('.custom-option');
+  let selectedValue = null;
+  let selectedText = '';
+
+  trigger.addEventListener('click', (e) => {
+    e.stopPropagation(); // предотвратить закрытие
+    options.style.display = options.style.display === 'block' ? 'none' : 'block';
+  });
+
+  optionList.forEach(option => {
+  option.addEventListener('click', () => {
+    selectedText = option.textContent;
+    selectedValue = option.getAttribute('data-value');
+
+    triggerText.textContent = selectedText;
+    options.style.display = 'none';
+  });
+});
+
+  document.addEventListener('click', (e) => {
+    if (!select.contains(e.target)) {
+      options.style.display = 'none';
+    }
+  });
+</script>
+
 
     <button type="submit">Заказать</button>
 	<button id="buttonClose" onclick="Website2APK.exitApp()" style="display:none;">Закрыть программу</button>
@@ -738,8 +851,6 @@ updateLightning();
 <script>
 
 getDateFromMarch();
-
-
 
 function getDateFromMarch(){
 
@@ -1106,6 +1217,8 @@ function updateStats(entries) {
 	localStorage.setItem("selectedType", type);
 	
     renderHistory(history);
+	
+	document.getElementById("type").value = '';
 
   }
 }
@@ -1146,10 +1259,11 @@ function updateStats(entries) {
     const method = methodInput.value.trim();
     const clientGender = clientGenderSelect.value;
 
-    if (!gender || !type || !name || !method || !clientGender) {
+    if (!gender || !type || !name || !method || !clientGender || !selectedValue) {
       alert("Пожалуйста, заполните все поля.");
       return;
     }
+
 
     const transformedType = gender === "женский"
       ? (type === "убрать" ? "не хорошего" : "прекрасного")
@@ -1180,7 +1294,7 @@ function updateStats(entries) {
    
 
     const transformedClientGender = clientGender === "мужской" ? "был" : "стала";
-    const sentence = `Надо мне ${transformedType} чтобы ${clientTime} ${name} ${transformedNe}${transformedClientGender} ${transformedNe}${method}`;
+    const sentence = `Надо мне ${transformedType} чтобы ${clientTime} ${name} ${transformedNe}${transformedClientGender} ${transformedNe}${method} и ${selectedText}`;
 	
 	const dreamValue = calculateDreamValue(sentence);
 
@@ -1202,8 +1316,8 @@ function updateStats(entries) {
 var savedGender = localStorage.getItem("selectedGender");
 if (savedGender) genderSelect.value = savedGender;
 
-var savedType = localStorage.getItem("selectedType");
-if (savedType) typeSelect.value = savedType;
+//var savedType = localStorage.getItem("selectedType");
+//if (savedType) typeSelect.value = savedType;
 	
 	updatemethodLabel();
   });
