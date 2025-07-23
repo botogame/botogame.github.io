@@ -610,69 +610,80 @@ updateLightning();
     <label><text id="methodLabel">Кем хотите чтобы Клиент был:</text>
       <input type="text" id="method" required />
     </label>
+<style>
+  .custom-select {
+    position: relative;
+    width: 100%;
+    max-width: 420px;
+    user-select: none;
+    font-size: 16px;
+    font-family: 'Trebuchet MS', 'Segoe UI', sans-serif;
+    color: #3b2f3d;
+  }
 
-    <style>
-   .custom-select {
-      position: relative;
-      width: 100%;
-      max-width: 400px;
-      user-select: none;
-      font-size: 15px;
-    }
+  .custom-select-trigger {
+    padding: 14px 20px;
+    background: linear-gradient(145deg, #ffe0f0, #ffd1e8);
+    color: #5c2b48;
+    border-radius: 12px;
+    border: 1px solid #d8a0ba;
+    cursor: pointer;
+    position: relative;
+    text-shadow: 0 1px 1px rgba(255,255,255,0.8);
+    box-shadow: 0 4px 14px rgba(204, 102, 153, 0.2);
+    transition: all 0.3s ease-in-out;
+  }
 
-    .custom-select-trigger {
-      padding: 12px 16px;
-      background: #2a2a2a;
-      color: #f0f0f0;
-      border-radius: 6px;
-      border: 1px solid #444;
-      cursor: pointer;
-      position: relative;
-      text-transform: none;
-    }
+  .custom-select-trigger:hover {
+    background: linear-gradient(145deg, #ffd1e8, #ffc1dd);
+    box-shadow: 0 6px 20px rgba(204, 102, 153, 0.35);
+  }
 
-    .custom-select-trigger::after {
-      content: "▼";
-      position: absolute;
-      right: 16px;
-      top: 50%;
-      transform: translateY(-50%);
-      font-size: 12px;
-      pointer-events: none;
-    }
+  .custom-select-trigger::after {
+    content: "▼";
+    position: absolute;
+    right: 20px;
+    top: 50%;
+    transform: translateY(-50%);
+    font-size: 13px;
+    color: #913c66;
+    pointer-events: none;
+  }
 
-    .custom-options {
-      position: absolute;
-      top: 100%;
-      left: 0;
-      right: 0;
-      max-height: 220px;
-      overflow-y: auto;
-      background: #2a2a2a;
-      border: 1px solid #444;
-      border-top: none;
-      display: none;
-      z-index: 10;
-      border-radius: 0 0 6px 6px;
-    }
+  .custom-options {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    right: 0;
+    max-height: 260px;
+    overflow-y: auto;
+    background: #fff5fa;
+    border: 1px solid #eab0c6;
+    border-top: none;
+    display: none;
+    z-index: 10;
+    border-radius: 0 0 12px 12px;
+    box-shadow: 0 8px 18px rgba(200, 90, 130, 0.2);
+  }
 
-    .custom-option {
-      padding: 12px 16px;
-      border-bottom: 1px solid #333;
-      cursor: pointer;
-      color: #e0e0e0;
-      white-space: normal;
-      text-transform: none;
-    }
+  .custom-option {
+    padding: 14px 20px;
+    border-bottom: 1px solid #f6d5e2;
+    cursor: pointer;
+    color: #532e44;
+    background: transparent;
+    white-space: normal;
+    transition: background 0.2s ease;
+  }
 
-    .custom-option:hover {
-      background: #383838;
-    }
+  .custom-option:hover {
+    background: #ffeef4;
+  }
 </style>
 
 <div class="custom-select" id="customSelect">
   <div class="custom-select-trigger">
-    <span class="trigger-text">Выберите посыл</span>
+    <span class="trigger-text">Выберите посыл 💖</span>
   </div>
   <div class="custom-options">
     <div class="custom-option" data-value="1">Пусть мечта возьмёт штурвал космического корабля, плыви в потоке без контроля — там, где рождается сила узла зеркала тела</div>
@@ -717,6 +728,12 @@ updateLightning();
       options.style.display = 'none';
     }
   });
+  
+  function resetCustomSelect() {
+  selectedValue = null;
+  selectedText = '';
+  triggerText.textContent = 'Выберите посыл 💖';
+}
 </script>
 
 
@@ -1315,6 +1332,8 @@ function updateStats(entries) {
 	// Восстанавливаем пол "Кто вы" и союзника
 var savedGender = localStorage.getItem("selectedGender");
 if (savedGender) genderSelect.value = savedGender;
+
+resetCustomSelect();
 
 //var savedType = localStorage.getItem("selectedType");
 //if (savedType) typeSelect.value = savedType;
