@@ -323,22 +323,9 @@
 
 
 .RomanMonth{
-      width: 100%;
-      max-width: 400px;
-      background: #222;
-      border-radius: 10px;
-      padding: 12px;
-      margin-top: 10px;
-      color: #40E0D0;
-      font-weight: bold;
-      text-align: center;
-      box-shadow: 0 0 10px crimson;
-      user-select: none;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      gap: 15px;
-      font-size: 1.1rem;}
+     width: 100%; max-width: 400px; background: #222; border-radius: 10px; padding: 12px; margin-top: 10px;
+  color: #40E0D0; font-weight: bold; box-shadow: 0 0 10px crimson; user-select: none; font-size: 1.1rem;
+  text-align: justify; line-height: 1.5; display: block !important;}
 
    /* Popup container */
 #uzelPopup {
@@ -962,24 +949,37 @@ function getAncientRomanMonth() {
 
   // Диапазоны месяцев (от 1 марта)
   const ranges = [
-    { name: "1-м узле сна: ЗАПРЕТНАЯ ПАМЯТЬ",desc: "Перед тобой спертый воздух, пыль в солнечном луче, напряжённая тишина. Всё внутри давно смирилось с тем, что ты не вернёшься.",   number: 5, from: 123, to: 153 },
-    { name: "2-м узле сна: ПОРОГОВЫЕ ЛИЦА", desc: "Вежливая ловушка. Всё кажется 'правильным': мягкие голоса, разумные аргументы, знакомые лица. Но внутри — нарастающий холод.",   number: 6, from: 154, to: 183 },
-    { name: "3-м узле сна: ОБРАТНАЯ СТОРОНА", desc: "Тревожная встреча. Кто-то похож на тебя, но искажён.",  number: 7, from: 184, to: 213 },
-    { name: "4-м узле сна: ШЕПОТ ПРЕДКОВ",desc: "Приглушённо, по древнему, сакрально.",     number: 8, from: 214, to: 244 },
-    { name: "5-м узле сна: ВХОЖДЕНИЕ В РОЛЬ",  desc: "Символично, почти все мифическое.",  number: 9, from: 245, to: 274 },
-    { name: "6-м узле сна: БЕЛАЯ ПУСТОТА", desc: "Белый шум, ничто, спокойствие, почти смерть.",   number: 10,from: 275, to: 305 },
-    { name: "7-м узле сна: ЗЕРКАЛО ТЕЛА", desc: "Ты внутри сна — но не управляешь. Все движения автоматичны. Всё — как будто не твое.",     number: 1, from: 1,   to: 31 },
-    { name: "8-м узле сна: МЕХАНИЗМ ВРЕМЕНИ", desc: "Ты снова в том же месте. Повтор. День сурка. Всё предсказуемо — и бесконечно.",    number: 2, from: 32,  to: 61 },
-    { name: "9-м узле сна: ДОПРОС ЧУВСТВАМИ",desc: "Напряжение растёт, будто гром перед ударом.",       number: 3, from: 62,  to: 92 },
-    { name: "10-м узле сна: МИР БЕЗ ЗАКОНОВ", desc: "Абсурд, сломанные законы, но всё — логично по-своему.",     number: 4, from: 93,  to: 122 }
+    { name: "1-м узле сна ЗАПРЕТНАЯ ПАМЯТЬ",img: 'https://botogame.github.io/fracture/images/narnia-door-fe-1152x864.jpg',desc: "Перед тобой спертый воздух, пыль в солнечном луче, напряжённая тишина. Всё внутри давно смирилось с тем, что ты не вернёшься.",   number: 5, from: 123, to: 153 },
+    { name: "2-м узле сна ПОРОГОВЫЕ ЛИЦА",img: 'https://botogame.github.io/fracture/images/nJcBYdokY8.jpg', desc: "Вежливая ловушка. Всё кажется 'правильным': мягкие голоса, разумные аргументы, знакомые лица. Но внутри — нарастающий холод.",   number: 6, from: 154, to: 183 },
+    { name: "3-м узле сна ОБРАТНАЯ СТОРОНА", img: 'https://botogame.github.io/fracture/images/7c8482a10cd376633957e32031c3bd95.jpg',desc: "Тревожная встреча. Кто-то похож на тебя, но искажён.",  number: 7, from: 184, to: 213 },
+    { name: "4-м узле сна ШЕПОТ ПРЕДКОВ",img: 'https://botogame.github.io/fracture/images/37116_1621438875_60a5319b5b355.jpg',desc: "Приглушённо, по древнему, сакрально.",     number: 8, from: 214, to: 244 },
+    { name: "5-м узле сна ВХОЖДЕНИЕ В РОЛЬ",img: 'https://botogame.github.io/fracture/images/7193f4840cd7.png',  desc: "Символично, почти все мифическое.",  number: 9, from: 245, to: 274 },
+    { name: "6-м узле сна БЕЛАЯ ПУСТОТА", img: '',desc: "Белый шум, ничто, спокойствие, почти смерть.",   number: 10,from: 275, to: 305 },
+    { name: "7-м узле сна ЗЕРКАЛО ТЕЛА", img: 'https://botogame.github.io/fracture/images/69cddbb2e362b77fee1cda560b806e86.jpg',desc: "Ты внутри сна — но не управляешь. Все движения автоматичны. Всё — как будто не твое.",     number: 1, from: 1,   to: 31 },
+    { name: "8-м узле сна МЕХАНИЗМ ВРЕМЕНИ", img: '',desc: "Ты снова в том же месте. Повтор. День сурка. Всё предсказуемо — и бесконечно.",    number: 2, from: 32,  to: 61 },
+    { name: "9-м узле сна ДОПРОС ЧУВСТВАМИ",img: 'https://botogame.github.io/fracture/images/6554.jpg',desc: "Напряжение растёт, будто гром перед ударом.",       number: 3, from: 62,  to: 92 },
+    { name: "10-м узле сна МИР БЕЗ ЗАКОНОВ",img: 'https://botogame.github.io/fracture/images/stalker-cosplay-STALKER-удалённое-2980957.jpeg', desc: "Абсурд, сломанные законы, но всё — логично по-своему.",     number: 4, from: 93,  to: 122 }
   ];
 
   // Ищем соответствующий месяц по диапазону
   const found = ranges.find(r => dayFromMarch >= r.from && dayFromMarch <= r.to);
+  
+  if(found){
+  
+  if(found.img!=''){
+  
+  return `<img src="${found.img}" alt="Перелом на ${found.name}" style="float: left; width: auto; height: 64px; margin-right: 15px;margin-top: 5px; margin-bottom: 10px; border-radius: 6px;">Перелом на ${found.name}. ${found.desc}`;
+  
+  }
+  else{
+  return `Перелом на ${found.name}. ${found.desc}`;
+  }
+  
+  }
+  else{
+  return "Сейчас зимний период, и вы в промежутке. Это фаза, где всё течёт, но ничего не закрепляется. Решения, принятые в промежутке, редко выживают. Перелом не возможен. Воспользуйтесь зеркалом.";
+  }
 
-  return found
-    ? `Перелом на ${found.name}. ${found.desc}`
-    : "Сейчас зимний период, и вы в промежутке. Это фаза, где всё течёт, но ничего не закрепляется. Решения, принятые в промежутке, редко выживают. Перелом не возможен. Воспользуйтесь зеркалом.";
 }
 
 if (typeof Website2APK !== "undefined") {
