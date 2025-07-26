@@ -599,45 +599,50 @@ updateLightning();
 
     <label><text id="methodLabel">Кем хотите чтобы Клиент был:</text>
       <input type="text" id="method" required />
-    </label>
-<style>
+    </label><style>
   .custom-select {
     position: relative;
     width: 100%;
     max-width: 420px;
     user-select: none;
     font-size: 16px;
-    font-family: 'Trebuchet MS', 'Segoe UI', sans-serif;
-    color: #3b2f3d;
+    font-family: 'Cinzel', serif, 'Trebuchet MS', 'Segoe UI', sans-serif;
+    color: #d4af37; /* золотой цвет */
+    background: #1a1a1a; /* тёмный фон */
+    border: 2px solid #5a2e07; /* коричневый металлический обвод */
+    border-radius: 8px;
+    box-shadow: 0 0 15px #7a4500 inset;
   }
 
   .custom-select-trigger {
     padding: 14px 20px;
-    background: linear-gradient(145deg, #ffe0f0, #ffd1e8);
-    color: #5c2b48;
-    border-radius: 12px;
-    border: 1px solid #d8a0ba;
+    background: linear-gradient(145deg, #3c2f14, #5a4210);
+    color: #e3c77b;
+    border-radius: 8px;
+    border: 1px solid #7a4a07;
     cursor: pointer;
     position: relative;
-    text-shadow: 0 1px 1px rgba(255,255,255,0.8);
-    box-shadow: 0 4px 14px rgba(204, 102, 153, 0.2);
+    font-weight: 700;
+    text-shadow: 1px 1px 2px #000;
+    box-shadow: 0 4px 10px #532e04 inset;
     transition: all 0.3s ease-in-out;
   }
 
   .custom-select-trigger:hover {
-    background: linear-gradient(145deg, #ffd1e8, #ffc1dd);
-    box-shadow: 0 6px 20px rgba(204, 102, 153, 0.35);
+    background: linear-gradient(145deg, #5a4210, #7a5e10);
+    box-shadow: 0 6px 20px #7a4a07 inset;
   }
 
   .custom-select-trigger::after {
     content: "▼";
     position: absolute;
-    right: 5px;
+    right: 10px;
     top: 50%;
     transform: translateY(-50%);
-    font-size: 13px;
-    color: #913c66;
+    font-size: 14px;
+    color: #d4af37;
     pointer-events: none;
+    text-shadow: 1px 1px 2px #000;
   }
 
   .custom-options {
@@ -647,27 +652,30 @@ updateLightning();
     right: 0;
     max-height: 260px;
     overflow-y: auto;
-    background: #fff5fa;
-    border: 1px solid #eab0c6;
+    background: #2a2110;
+    border: 2px solid #5a2e07;
     border-top: none;
     display: none;
     z-index: 10;
-    border-radius: 0 0 12px 12px;
-    box-shadow: 0 8px 18px rgba(200, 90, 130, 0.2);
+    border-radius: 0 0 8px 8px;
+    box-shadow: 0 8px 18px #4a370b;
   }
 
   .custom-option {
     padding: 14px 20px;
-    border-bottom: 1px solid #f6d5e2;
+    border-bottom: 1px solid #4a370b;
     cursor: pointer;
-    color: #532e44;
+    color: #c8a742;
     background: transparent;
     white-space: normal;
-    transition: background 0.2s ease;
+    font-weight: 600;
+    font-family: 'Cinzel', serif;
+    transition: background 0.2s ease, color 0.2s ease;
   }
 
   .custom-option:hover {
-    background: #ffeef4;
+    background: #5a420a;
+    color: #f3d879;
   }
 </style>
 
@@ -690,7 +698,7 @@ updateLightning();
 </div>
 
 <script>
-   const select = document.getElementById('customSelect');
+  const select = document.getElementById('customSelect');
   const trigger = select.querySelector('.custom-select-trigger');
   const triggerText = trigger.querySelector('.trigger-text');
   const options = select.querySelector('.custom-options');
@@ -699,32 +707,32 @@ updateLightning();
   let selectedText = '';
 
   trigger.addEventListener('click', (e) => {
-    e.stopPropagation(); // предотвратить закрытие
+    e.stopPropagation();
     options.style.display = options.style.display === 'block' ? 'none' : 'block';
   });
 
   optionList.forEach(option => {
-  option.addEventListener('click', () => {
-    selectedText = option.textContent;
-    selectedValue = option.getAttribute('data-value');
-
-    triggerText.textContent = selectedText;
-    options.style.display = 'none';
+    option.addEventListener('click', () => {
+      selectedText = option.textContent;
+      selectedValue = option.getAttribute('data-value');
+      triggerText.textContent = selectedText;
+      options.style.display = 'none';
+    });
   });
-});
 
   document.addEventListener('click', (e) => {
     if (!select.contains(e.target)) {
       options.style.display = 'none';
     }
   });
-  
+
   function resetCustomSelect() {
-  selectedValue = null;
-  selectedText = '';
-  triggerText.textContent = 'Выберите посыл 💖';
-}
+    selectedValue = null;
+    selectedText = '';
+    triggerText.textContent = 'Выберите посыл 💖';
+  }
 </script>
+
 
 
     <button type="submit">Заказать</button>
