@@ -371,11 +371,40 @@ document.querySelectorAll('.accordion-title').forEach(title => {
 
  
   <div id="symvolOptions2" style="padding-top:10px;font-size: 0.9em; color: #ccc;"> Выберите готовую формулировку "чтобы":
-  <a href="#"  style="text-decoration: none; border-bottom: 1px dotted;"
-     title="У всех был социализирующий уклад что ..."
-     onclick="insertSymvol2(this, 'У всех был социализирующий уклад что', 'Продолжите мечту в формате утверждения, как будто уже все произошло!'); return false;">
-     У всех был социализирующий уклад что ...</a>.
-  </a>
+  <a href="#"
+   style="text-decoration: none; border-bottom: 1px dotted;"
+   id="monthLink"
+   title=""
+   onclick="insertSymvol2(this, '', 'Продолжите мечту в формате утверждения, как будто уже все произошло!'); return false;">
+   У всех был <span id="monthWord">социализирующий</span> уклад что ...
+</a>
+
+<script>
+  const schemeMonthAdj = [
+    'наитийный',      // январь
+    'солидный',       // февраль
+    'партнёрский',    // март
+    'заносчивый',     // апрель
+    'деятельный',     // май
+    'укрепляющий',    // июнь
+    'заигрывающий',   // июль
+    'надёжный',       // август
+    'стильный',       // сентябрь
+    'смелый',         // октябрь
+    'опекающий',      // ноябрь
+    'признанный'      // декабрь
+  ];
+
+  const now = new Date();
+  const monthIndex = now.getMonth();
+  const word = schemeMonthAdj[monthIndex];
+
+  document.getElementById('monthWord').innerText = word;
+  document.getElementById('monthLink').title = `У всех был ${word} уклад что`;
+  document.getElementById('monthLink').setAttribute('onclick',
+    `insertSymvol2(this, 'У всех был ${word} уклад что', 'Продолжите мечту в формате утверждения, как будто уже все произошло!'); return false;`
+  );
+</script>
 </div>
   <div id="symvolDescription2" style="margin-top: 5px; font-size: 0.9em; color: #ccc;"></div>
 
