@@ -396,7 +396,17 @@ document.querySelectorAll('.accordion-title').forEach(title => {
   ];
 
   const now = new Date();
-  const monthIndex = now.getMonth();
+
+  // Получаем последний день текущего месяца
+  const lastDayOfMonth = new Date(now.getFullYear(), now.getMonth() + 1, 0);
+  const daysLeft = lastDayOfMonth.getDate() - now.getDate();
+
+  // Если осталось 3 дня или меньше, используем следующий месяц
+  let monthIndex = now.getMonth();
+  if (daysLeft <= 3) {
+    monthIndex = (monthIndex + 1) % 12; // переходим на следующий месяц, с учётом декабря
+  }
+
   const word = schemeMonthAdj[monthIndex];
 
   document.getElementById('monthWord').innerText = word;
