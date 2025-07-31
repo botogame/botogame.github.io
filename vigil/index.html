@@ -335,8 +335,45 @@ document.querySelectorAll('.accordion-title').forEach(title => {
         <!-- Рабочее окно -->
         <div class="container">
             <div id="overlay"><b>Cпасибо!</b></div>
+			<style>@keyframes appearDisappearSmoke {
+  0% {
+    opacity: 0;
+    filter: blur(6px);
+    transform: scale(1.1);
+  }
+  20% {
+    opacity: 0.5;
+    filter: blur(3px);
+    transform: scale(1.05);
+  }
+  40% {
+    opacity: 1;
+    filter: blur(0px);
+    transform: scale(1);
+  }
+  60% {
+    opacity: 1;
+    filter: blur(0px);
+    transform: scale(1);
+  }
+  80% {
+    opacity: 0.5;
+    filter: blur(3px);
+    transform: scale(1.05);
+  }
+  100% {
+    opacity: 0;
+    filter: blur(6px);
+    transform: scale(1.1);
+  }
+}
 
-            <h1>ПМ [<a title="Показать расклады" onclick="openModal()" id="star" href="#" class="sparkling-label"><img src="./favicon.png?v=1.0" style="width:45px;margin-bottom:-5px;"></a>] Бдилка</h1>
+.smoke-fade-cycle {
+  display: inline-block;
+  animation: appearDisappearSmoke 6s infinite ease-in-out;
+}
+</style>
+            <h1>ПМ [<a title="Показать расклады" onclick="openModal()" id="star" href="#" class="sparkling-label"><img src="./favicon.png?v=1.0" style="width:45px;margin-bottom:-5px;"></a>] Бди<b class="smoke-fade-cycle">лка</b></h1>
 
             <div id="selectForm">
                 <select id="gender" onchange="clear_input_error(this,true);" data-selected="Ваш пол">
