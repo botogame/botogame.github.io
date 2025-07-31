@@ -38,6 +38,13 @@
             height: auto;
             border-radius: 5px;
         }
+        .dream-image canvas {
+            width: 100%;
+            height: auto;
+            border-radius: 5px;
+            border: 1px solid #40E0D0;
+            height: 225px;
+        }
 
         .dream-text {
             flex: 2 1 10px;
@@ -109,11 +116,15 @@
                 padding-right: 0;
                 margin-bottom: 10px;
             max-width: 100%;
+            width: 100%;
             }
 
             h1 {
                 font-size: 1.5em;
             }
+        .dream-image canvas {
+            height: auto;
+        }
 
             .fracture-link {
                 font-size: 1em;
@@ -126,9 +137,32 @@
 			display:none;
 			}
         }
+		
+		canvas {
+  width: 100%;
+  height: 300px;
+  display: block;
+  background: radial-gradient(circle at center, 
+              rgba(255, 80, 0, 1) 0%, 
+              rgba(255, 140, 50, 0.8) 50%, 
+              rgba(100, 0, 0, 0) 100%);
+  animation: flickerInfrared 3s infinite ease-in-out;
+}
+
+/* Анимация плавного мерцания (яркости) */
+@keyframes flickerInfrared {
+  0%, 100% {
+    filter: brightness(1);
+  }
+  50% {
+    filter: brightness(1.3);
+  }
+}
+		
     </style>
 </head>
 <body>
+
     <center>
         <h1>Тетрадь Смерти: <a class="fracture-link" href="./index.html">Перелом</a></h1>
         На этой странице описаны ВСЕ варианты узлов сна! Кто управляет узлами - тот управляет ВСЕМ!<br><br>
@@ -143,7 +177,8 @@
     <ul class="dream-image2" style="list-style-type: none; padding: 0;">
         <li class="dream-item">
             <div class="dream-image">
-                <img src="./images/cropped/narnia-door-fe-1152x864.jpg" alt="Forbidden Memory">
+                <img src="https://botogame.github.io/fracture/images/cropped/narnia-door-fe-1152x864.jpg" alt="Forbidden Memory" id="sourceImg1" style="display:none;" crossorigin="anonymous">
+ <canvas id="canvas1"></canvas>
             </div>
             <div class="dream-text">
                 <b style="color:#40E0D0;">1-й узел: ЗАПРЕТНАЯ ПАМЯТЬ</b><br><br class="megabr">
@@ -159,7 +194,9 @@
 
         <li class="dream-item">
             <div class="dream-image">
-                <img src="./images/cropped/nJcBYdokY8.jpg" alt="Threshold Faces">
+                <img src="https://botogame.github.io/fracture/images/cropped/nJcBYdokY8.jpg" alt="Threshold Faces" id="sourceImg2" style="display:none;" crossorigin="anonymous">
+ <canvas id="canvas2"></canvas>
+ 
             </div>
             <div class="dream-text">
                 <b style="color:#40E0D0;">2-й узел: ПОРОГОВЫЕ ЛИЦА</b><br><br class="megabr"><br class="megabr">
@@ -174,7 +211,8 @@
 
         <li class="dream-item">
             <div class="dream-image">
-                <img src="./images/cropped/7c8482a10cd376633957e32031c3bd95.jpg" alt="Reverse Side">
+                <img src="https://botogame.github.io/fracture/images/cropped/7c8482a10cd376633957e32031c3bd95.jpg" alt="Reverse Side" id="sourceImg3" style="display:none;" crossorigin="anonymous">
+ <canvas id="canvas3"></canvas>
             </div>
             <div class="dream-text">
                 <b style="color:#40E0D0;">3-й узел: ОБРАТНАЯ СТОРОНА</b><br><br class="megabr"><br class="megabr">
@@ -189,7 +227,8 @@
 
         <li class="dream-item">
             <div class="dream-image">
-                <img src="./images/cropped/37116_1621438875_60a5319b5b355.jpg" alt="Whisper of Ancestors">
+                <img src="https://botogame.github.io/fracture/images/cropped/37116_1621438875_60a5319b5b355.jpg" alt="Whisper of Ancestors" id="sourceImg4" style="display:none;" crossorigin="anonymous">
+ <canvas id="canvas4"></canvas>
             </div>
             <div class="dream-text">
                 <b style="color:#40E0D0;">4-й узел: ШЕПОТ ПРЕДКОВ</b><br><br class="megabr"><br class="megabr">
@@ -204,7 +243,8 @@
 
         <li class="dream-item">
             <div class="dream-image">
-                <img src="./images/cropped/7193f4840cd7.png" alt="Entering the Role">
+                <img src="https://botogame.github.io/fracture/images/cropped/7193f4840cd7.png" alt="Entering the Role" id="sourceImg5" style="display:none;" crossorigin="anonymous">
+ <canvas id="canvas5"></canvas>
             </div>
             <div class="dream-text">
                 <b style="color:#40E0D0;">5-й узел: ВХОЖДЕНИЕ В РОЛЬ</b><br><br class="megabr"><br class="megabr">
@@ -219,7 +259,8 @@
 
         <li class="dream-item">
             <div class="dream-image">
-                <img src="./images/cropped/be80db827b851b9452e7c0e926ece24e.jpg" alt="White Void">
+                <img src="https://botogame.github.io/fracture/images/cropped/be80db827b851b9452e7c0e926ece24e.jpg" alt="White Void" id="sourceImg6" style="display:none;" crossorigin="anonymous">
+ <canvas id="canvas6"></canvas>
             </div>
             <div class="dream-text">
                 <b style="color:#40E0D0;">6-й узел: БЕЛАЯ ПУСТОТА</b><br><br class="megabr"><br class="megabr">
@@ -234,7 +275,8 @@
 
         <li class="dream-item">
             <div class="dream-image">
-                <img src="./images/cropped/69cddbb2e362b77fee1cda560b806e86.jpg" alt="Mirror of Body">
+                <img src="https://botogame.github.io/fracture/images/cropped/69cddbb2e362b77fee1cda560b806e86.jpg" alt="Mirror of Body" id="sourceImg7" style="display:none;" crossorigin="anonymous">
+ <canvas id="canvas7"></canvas>
             </div>
             <div class="dream-text">
                 <b style="color:#40E0D0;">7-й узел: ЗЕРКАЛО ТЕЛА</b><br><br class="megabr"><br class="megabr">
@@ -249,7 +291,8 @@
 
         <li class="dream-item">
             <div class="dream-image">
-                <img src="./images/cropped/maxresdefault.jpg" alt="Time Mechanism">
+                <img src="https://botogame.github.io/fracture/images/cropped/maxresdefault.jpg" alt="Time Mechanism" id="sourceImg8" style="display:none;" crossorigin="anonymous">
+ <canvas id="canvas8"></canvas>
             </div>
             <div class="dream-text">
                 <b style="color:#40E0D0;">8-й узел: МЕХАНИЗМ ВРЕМЕНИ</b><br><br class="megabr"><br class="megabr">
@@ -264,7 +307,8 @@
 
         <li class="dream-item">
             <div class="dream-image">
-                <img src="./images/cropped/6554.jpg" alt="Interrogation by Senses">
+                <img src="https://botogame.github.io/fracture/images/cropped/6554.jpg" alt="Interrogation by Senses" id="sourceImg9" style="display:none;" crossorigin="anonymous">
+ <canvas id="canvas9"></canvas>
             </div>
             <div class="dream-text">
                 <b style="color:#40E0D0;">9-й узел: ДОПРОС ЧУВСТВАМИ</b><br><br class="megabr"><br class="megabr">
@@ -279,7 +323,8 @@
 
         <li class="dream-item">
             <div class="dream-image">
-                <img src="./images/cropped/stalker-cosplay-STALKER-удалённое-2980957.jpg" alt="World Without Laws">
+                <img src="https://botogame.github.io/fracture/images/cropped/stalker-cosplay-STALKER-удалённое-2980957.jpg" alt="World Without Laws" id="sourceImg10" style="display:none;" crossorigin="anonymous">
+ <canvas id="canvas10"></canvas>
             </div>
             <div class="dream-text">
                 <b style="color:#40E0D0;">10-й узел: МИР БЕЗ ЗАКОНОВ</b><br><br class="megabr"><br class="megabr">
@@ -292,5 +337,177 @@
             </div>
         </li>
     </ul>
+	
+  <script>
+    function infraredReveal({
+      canvasId,
+      imgId,
+      pointsPerFrame = 60000,
+      colorFunc = function(r, g, b) {
+        const luminance = 0.299 * r + 0.587 * g + 0.114 * b;
+        return {
+          r: Math.min(255, luminance * 1.8),
+          g: Math.min(80, luminance * 0.1),
+          b: Math.min(180, 255 - luminance)
+        };
+      }
+    }) {
+      const canvas = document.getElementById(canvasId);
+      const ctx = canvas.getContext('2d');
+      const img = document.getElementById(imgId);
+
+      function lerp(a, b, t) {
+        return a + (b - a) * t;
+      }
+
+      function runAnimation() {
+        const width = img.width;
+        const height = img.height;
+
+        canvas.width = width;
+        canvas.height = height;
+
+        ctx.drawImage(img, 0, 0, width, height);
+        const imageData = ctx.getImageData(0, 0, width, height);
+        const pixels = imageData.data;
+
+        ctx.clearRect(0, 0, width, height);
+
+        const revealed = new Uint8Array(pixels.length / 4).fill(0);
+
+        let phase = 'reveal';
+        let transitionT = 0;
+
+        function animate() {
+          if (phase === 'reveal') {
+            let done = true;
+
+            for (let i = 0; i < pointsPerFrame; i++) {
+              const index = Math.floor(Math.random() * revealed.length);
+              if (revealed[index]) continue;
+
+              done = false;
+
+              const x = index % width;
+              const y = Math.floor(index / width);
+
+              const r = pixels[index * 4];
+              const g = pixels[index * 4 + 1];
+              const b = pixels[index * 4 + 2];
+              const a = pixels[index * 4 + 3];
+
+              if (a > 30) {
+                const c = colorFunc(r, g, b);
+                ctx.fillStyle = `rgb(${c.r}, ${c.g}, ${c.b})`;
+                ctx.fillRect(x, y, 1, 1);
+              }
+
+              revealed[index] = 1;
+            }
+
+            if (done) {
+              phase = 'transition';
+              transitionT = 0;
+            }
+
+            requestAnimationFrame(animate);
+
+          } else if (phase === 'transition') {
+            transitionT += 0.02;
+            if (transitionT > 1) transitionT = 1;
+
+            const imgData = ctx.createImageData(width, height);
+            const data = imgData.data;
+
+            for (let i = 0; i < revealed.length; i++) {
+              const r = pixels[i * 4];
+              const g = pixels[i * 4 + 1];
+              const b = pixels[i * 4 + 2];
+              const a = pixels[i * 4 + 3];
+
+              const cInfrared = colorFunc(r, g, b);
+
+              data[i * 4] = lerp(cInfrared.r, r, transitionT);
+              data[i * 4 + 1] = lerp(cInfrared.g, g, transitionT);
+              data[i * 4 + 2] = lerp(cInfrared.b, b, transitionT);
+              data[i * 4 + 3] = a;
+            }
+
+            ctx.putImageData(imgData, 0, 0);
+
+            if (transitionT < 1) {
+              requestAnimationFrame(animate);
+            }
+          }
+        }
+
+        animate();
+      }
+
+      function setupObserver() {
+        const observer = new IntersectionObserver((entries, observer) => {
+          entries.forEach(entry => {
+            if (entry.isIntersecting) {
+              runAnimation();
+              observer.unobserve(entry.target);
+            }
+          });
+        }, { threshold: 0.1 });
+
+        observer.observe(canvas);
+      }
+
+      if (img.complete && img.naturalHeight !== 0) {
+        setupObserver();
+      } else {
+        img.onload = setupObserver;
+      }
+    }
+	
+	// Массив объектов с элементами и параметрами
+const elementsWithParams = [
+  { selector: '#canvas1', params: ['canvas1', 'sourceImg1'] },
+  { selector: '#canvas2', params: ['canvas2', 'sourceImg2'] },
+  { selector: '#canvas3', params: ['canvas3', 'sourceImg3'] },
+  { selector: '#canvas4', params: ['canvas4', 'sourceImg4'] },
+  { selector: '#canvas5', params: ['canvas5', 'sourceImg5'] },
+  { selector: '#canvas6', params: ['canvas6', 'sourceImg6'] },
+  { selector: '#canvas7', params: ['canvas7', 'sourceImg7'] },
+  { selector: '#canvas8', params: ['canvas8', 'sourceImg8'] },
+  { selector: '#canvas9', params: ['canvas9', 'sourceImg9'] },
+  { selector: '#canvas10', params: ['canvas10', 'sourceImg10'] },
+];
+
+// Создаем наблюдатель
+const observer = new IntersectionObserver((entries, observer) => {
+  entries.forEach(entry => {
+    if (entry.isIntersecting) {
+      // Получаем параметры, сохранённые в data-атрибутах элемента
+      const param1 = entry.target.getAttribute('data-param1');
+      const param2 = entry.target.getAttribute('data-param2');
+
+      // Вызываем функцию с параметрами
+	  infraredReveal({ canvasId: param1, imgId: param2 });
+
+      // Если нужен один раз, отписываемся
+      observer.unobserve(entry.target);
+    }
+  });
+}, {
+  threshold: 0.1
+});
+
+// Навешиваем наблюдатель на каждый элемент и передаём параметры через data-атрибуты
+elementsWithParams.forEach(item => {
+  const el = document.querySelector(item.selector);
+  if (el) {
+    el.setAttribute('data-param1', item.params[0]);
+    el.setAttribute('data-param2', item.params[1]);
+    observer.observe(el);
+  }
+});
+
+  
+  </script>
 </body>
 </html>
