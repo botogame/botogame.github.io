@@ -295,8 +295,45 @@ body, html {
 <body>
 
 <canvas id="buddhaSymbolsCanvas"></canvas>
+<style>@keyframes appearDisappearSmoke {
+  0% {
+    opacity: 0;
+    filter: blur(6px);
+    transform: scale(1.1);
+  }
+  20% {
+    opacity: 0.5;
+    filter: blur(3px);
+    transform: scale(1.05);
+  }
+  40% {
+    opacity: 1;
+    filter: blur(0px);
+    transform: scale(1);
+  }
+  60% {
+    opacity: 1;
+    filter: blur(0px);
+    transform: scale(1);
+  }
+  80% {
+    opacity: 0.5;
+    filter: blur(3px);
+    transform: scale(1.05);
+  }
+  100% {
+    opacity: 0;
+    filter: blur(6px);
+    transform: scale(1.1);
+  }
+}
 
-  <h1>Пасьянс Медичи. <a href="./index.html">Бдилка</a> - денежный поток</h1>
+.smoke-fade-cycle {
+  display: inline-block;
+  animation: appearDisappearSmoke 6s infinite ease-in-out;
+}
+</style>
+  <h1>Пасьянс Медичи. <a href="./index.html">Бди</a><a class="smoke-fade-cycle" href="./index.html">лка</a></h1>
   <div id="description">
     Этот продвинутый расчёт поможет тебе быть (стать) в денежном потоке, будто ты пилот космического корабля! Каждый день — новый курс на прибыль или контролируемые траты. Выбирай умно и пусть деньги текут, как солнечный ветер!
   </div>
