@@ -151,12 +151,50 @@ select:hover, button:hover {
   pointer-events: none;
   z-index: 1;
 }
+		.fracture-link {
+  display: inline-block;
+  color: #ff3c3c;
+  font-weight: bold;
+  text-decoration: none;
+  font-family: 'Courier New', monospace;
+  font-size: 1.2em;
+  letter-spacing: 1px;
+  position: relative;
+  animation: glitch 1s infinite;
+}
+
+@keyframes glitch {
+  0% {
+    text-shadow: 2px 0 red, -2px 0 blue;
+    transform: translate(0);
+  }
+  20% {
+    text-shadow: -2px 0 red, 2px 0 blue;
+    transform: translate(-1px, 1px);
+  }
+  40% {
+    text-shadow: 2px 2px red, -2px -2px blue;
+    transform: translate(1px, -1px);
+  }
+  60% {
+    text-shadow: -2px -2px red, 2px 2px blue;
+    transform: translate(0.5px, 0.5px);
+  }
+  80% {
+    text-shadow: 0 0 red, 0 0 blue;
+    transform: translate(-0.5px, -0.5px);
+  }
+  100% {
+    text-shadow: 2px 0 red, -2px 0 blue;
+    transform: translate(0);
+  }
+}
   </style>
 </head>
 <body>
 <div id="web-overlay"></div>
   <div class="container">
-    <h1>Тетрадь Смерти: <a class="button_a" href="./index.html">Перелом</a></h1>
+    <h1>Тетрадь Смерти: <a class="fracture-link" href="./index.html">Перелом</a></h1>
 	Тестирование мастерства обобщения: от родства до близости!<br><br>
     <div id="dream"></div>
     <select id="choice">
