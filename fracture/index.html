@@ -518,12 +518,52 @@ button, input, select {
     filter: hue-rotate(-20deg);
   }
 }
+
+
+		.fracture-link {
+  display: inline-block;
+  color: #ff3c3c;
+  font-weight: bold;
+  text-decoration: none;
+  font-family: 'Courier New', monospace;
+  font-size: 1.2em;
+  letter-spacing: 1px;
+  position: relative;
+  animation: glitch 1s infinite;
+}
+
+@keyframes glitch {
+  0% {
+    text-shadow: 2px 0 red, -2px 0 blue;
+    transform: translate(0);
+  }
+  20% {
+    text-shadow: -2px 0 red, 2px 0 blue;
+    transform: translate(-1px, 1px);
+  }
+  40% {
+    text-shadow: 2px 2px red, -2px -2px blue;
+    transform: translate(1px, -1px);
+  }
+  60% {
+    text-shadow: -2px -2px red, 2px 2px blue;
+    transform: translate(0.5px, 0.5px);
+  }
+  80% {
+    text-shadow: 0 0 red, 0 0 blue;
+    transform: translate(-0.5px, -0.5px);
+  }
+  100% {
+    text-shadow: 2px 0 red, -2px 0 blue;
+    transform: translate(0);
+  }
+}
   </style>
 </head>
 <body>
   <h2>Тетрадь Смерти</h2>
   <h1 class="title">
-  <span>ПЕРЕЛОМ</span>
+  <span class="fracture-link">ПЕРЕЛОМ</span>
   <svg class="lightning" viewBox="0 0 100 10" preserveAspectRatio="none">
     <polyline points="" />
   </svg>
@@ -883,7 +923,7 @@ updateLightning();
 	  <img src="./2.png" width="100%">
 	  <br><br>
 	  
-      Лунный календарь и все Вакуумы <a href="./mirror.html" style="color:#0f0;">здесь</a>.</li>
+      Лунный календарь и все Вакуумы <a href="./mirror.html" style="color:#0f0;">здесь</a>. Отдельно информация по шаблонам снам <a href="./dreamscape.html" style="color:#0f0;">здесь</a>.</li>
 	  <hr>
 	  И не забудьте, квантовый переход на новый лунный год (где вы можете начать все с чистого листа): <b id="new_god"></b>. <a href="./dreams.html">Подготовьтесь</a> чтобы перейти хорошими.
 	  <hr>
