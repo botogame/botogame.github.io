@@ -14,6 +14,29 @@
     </head>
 
     <body>
+	<style>@media screen and (max-width: 600px) {
+  #matrix td {
+    padding: 0px;
+    font-size: 10px;
+    line-height: 1.2;
+        width: 20px;
+        height: 20px;
+  }
+
+  #matrix {
+    font-size: 10px;white-space: nowrap;
+    
+  }
+
+  #matrix td img {
+    max-width: 15px !important;
+    margin-bottom: 0px !important;
+	margin-top: 5px !important;
+  }
+
+
+}
+</style>
         <!-- Модальное окно -->
         <div id="matrixModal" class="modal">
             <div class="modal-content">
@@ -373,7 +396,25 @@ document.querySelectorAll('.accordion-title').forEach(title => {
   animation: appearDisappearSmoke 6s infinite ease-in-out;
 }
 </style>
-            <h1>ПМ [<a title="Показать расклады" onclick="openModal()" id="star" href="#" class="sparkling-label"><img src="./favicon.png?v=1.0" style="width:45px;margin-bottom:-5px;"></a>] Бди<b class="smoke-fade-cycle">лка</b></h1>
+<style>
+  @media (max-width: 768px) {
+    #adaptiveTitle span {
+      display: block;
+    }
+    #adaptiveTitle {
+      padding-top: 20px;
+    }
+  }
+</style>
+            <h1 id="adaptiveTitle" style="text-align:center;">
+  <span class="part1">ПМ</span>
+  <span class="part2">
+    [<a title="Показать расклады" onclick="openModal()" id="star" href="#" class="sparkling-label" style="text-decoration: none;">
+      <img src="./favicon.png?v=1.0" style="width:45px;margin-bottom:-5px;">
+    </a>]
+  </span>
+  <span class="part3">Бди<b class="smoke-fade-cycle">лка</b></span>
+</h1>
 
             <div id="selectForm">
                 <select id="gender" onchange="clear_input_error(this,true);" data-selected="Ваш пол">
