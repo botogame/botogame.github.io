@@ -43,9 +43,49 @@
             background: #40E0D0;
             margin: 20px 0;
         }
+		.fracture-link {
+  display: inline-block;
+  color: #ff3c3c;
+  font-weight: bold;
+  text-decoration: none;
+  font-family: 'Courier New', monospace;
+  font-size: 1.2em;
+  letter-spacing: 1px;
+  position: relative;
+  animation: glitch 1s infinite;
+}
+
+@keyframes glitch {
+  0% {
+    text-shadow: 2px 0 red, -2px 0 blue;
+    transform: translate(0);
+  }
+  20% {
+    text-shadow: -2px 0 red, 2px 0 blue;
+    transform: translate(-1px, 1px);
+  }
+  40% {
+    text-shadow: 2px 2px red, -2px -2px blue;
+    transform: translate(1px, -1px);
+  }
+  60% {
+    text-shadow: -2px -2px red, 2px 2px blue;
+    transform: translate(0.5px, 0.5px);
+  }
+  80% {
+    text-shadow: 0 0 red, 0 0 blue;
+    transform: translate(-0.5px, -0.5px);
+  }
+  100% {
+    text-shadow: 2px 0 red, -2px 0 blue;
+    transform: translate(0);
+  }
+}
     </style>
 </head>
 <body>
+    <center><h1>Тетрадь Смерти: <a class="fracture-link" href="./index.html">Перелом</a></h1>
+	На этой странице описаны ВСЕ варианты шаблонов сна!</center><br><br>
     <ul style="list-style-type: none; padding: 0;">
         <li class="dream-item">
             <div class="dream-image">
