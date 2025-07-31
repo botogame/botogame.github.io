@@ -4,98 +4,133 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Узлы сна</title>
-  <link rel="icon" type="image/x-icon" href="./favicon.png?v=1.0" />
+    <link rel="icon" type="image/x-icon" href="./favicon.png?v=1.0" />
     <style>
         body {
-            background: #000;color: #c5c6c7cc;
-  font-family: 'Courier New', monospace;
+            background: #000;
+            color: #c5c6c7cc;
             font-family: 'Arial', sans-serif;
             margin: 0;
             padding: 20px;
             overflow-x: hidden;
         }
+
         .dream-item {
             display: flex;
+            flex-direction: row;
             margin-bottom: 40px;
             align-items: flex-start;
             border: 1px solid #40E0D0;
             border-radius: 10px;
             padding: 10px;
             background: rgba(64, 224, 208, 0.1);
+            flex-wrap: wrap;
         }
+
         .dream-image {
-            flex: 0 0 300px;
+            flex: 1 1 10px;
+            max-width: 400px;
             padding-right: 20px;
         }
+
         .dream-image img {
             width: 100%;
             height: auto;
             border-radius: 5px;
         }
+
         .dream-text {
-            flex: 1;
+            flex: 2 1 10px;
             line-height: 1.6;
-			align-items: center;
         }
+
         hr {
             border: 0;
             height: 1px;
             background: #40E0D0;
             margin: 20px 0;
         }
-		.fracture-link {
-  display: inline-block;
-  color: #ff3c3c;
-  font-weight: bold;
-  text-decoration: none;
-  font-family: 'Courier New', monospace;
-  font-size: 1.2em;
-  letter-spacing: 1px;
-  position: relative;
-  animation: glitch 1s infinite;
-}
 
-h1 {
-  color: #66fcf1;
-  text-shadow:
-    0 0 10px #66fcf1cc,
-    0 0 20px #66fcf1bb,
-    0 0 30px #66fcf1aa;
-  font-weight: 700;
-  letter-spacing: 1.5px;
-}
+        .fracture-link {
+            display: inline-block;
+            color: #ff3c3c;
+            font-weight: bold;
+            text-decoration: none;
+            font-family: 'Courier New', monospace;
+            font-size: 1.2em;
+            letter-spacing: 1px;
+            position: relative;
+            animation: glitch 1s infinite;
+        }
 
-@keyframes glitch {
-  0% {
-    text-shadow: 2px 0 red, -2px 0 blue;
-    transform: translate(0);
-  }
-  20% {
-    text-shadow: -2px 0 red, 2px 0 blue;
-    transform: translate(-1px, 1px);
-  }
-  40% {
-    text-shadow: 2px 2px red, -2px -2px blue;
-    transform: translate(1px, -1px);
-  }
-  60% {
-    text-shadow: -2px -2px red, 2px 2px blue;
-    transform: translate(0.5px, 0.5px);
-  }
-  80% {
-    text-shadow: 0 0 red, 0 0 blue;
-    transform: translate(-0.5px, -0.5px);
-  }
-  100% {
-    text-shadow: 2px 0 red, -2px 0 blue;
-    transform: translate(0);
-  }
-}
+        h1 {
+            color: #66fcf1;
+            text-shadow:
+                0 0 10px #66fcf1cc,
+                0 0 20px #66fcf1bb,
+                0 0 30px #66fcf1aa;
+            font-weight: 700;
+            letter-spacing: 1.5px;
+        }
+
+        @keyframes glitch {
+            0% {
+                text-shadow: 2px 0 red, -2px 0 blue;
+                transform: translate(0);
+            }
+            20% {
+                text-shadow: -2px 0 red, 2px 0 blue;
+                transform: translate(-1px, 1px);
+            }
+            40% {
+                text-shadow: 2px 2px red, -2px -2px blue;
+                transform: translate(1px, -1px);
+            }
+            60% {
+                text-shadow: -2px -2px red, 2px 2px blue;
+                transform: translate(0.5px, 0.5px);
+            }
+            80% {
+                text-shadow: 0 0 red, 0 0 blue;
+                transform: translate(-0.5px, -0.5px);
+            }
+            100% {
+                text-shadow: 2px 0 red, -2px 0 blue;
+                transform: translate(0);
+            }
+        }
+
+        @media (max-width: 768px) {
+            .dream-item {
+                flex-direction: column;
+            }
+
+            .dream-image {
+                padding-right: 0;
+                margin-bottom: 10px;
+            max-width: 100%;
+            }
+
+            h1 {
+                font-size: 1.5em;
+            }
+
+            .fracture-link {
+                font-size: 1em;
+            }
+
+            body {
+                padding: 10px;
+            }
+        }
     </style>
 </head>
 <body>
-    <center><h1>Тетрадь Смерти: <a class="fracture-link" href="./index.html">Перелом</a></h1>
-	На этой странице описаны ВСЕ варианты узлов сна! Кто управляет узлами - тот управляет ВСЕМ!<br><br>И если неожиданно начался звонок... это звонит узел! Хочет всего лишь поговорить, не бойтесь.</center><br>
+    <center>
+        <h1>Тетрадь Смерти: <a class="fracture-link" href="./index.html">Перелом</a></h1>
+        На этой странице описаны ВСЕ варианты узлов сна! Кто управляет узлами - тот управляет ВСЕМ!<br><br>
+        И если неожиданно начался звонок... это звонит узел! Хочет всего лишь поговорить, не бойтесь.
+    </center><br>
     <ul style="list-style-type: none; padding: 0;">
         <li class="dream-item">
             <div class="dream-image">
