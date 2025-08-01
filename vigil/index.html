@@ -8,7 +8,7 @@
         <meta name="description" content="Пасьянс Медичи помогает в сложных ситуациях, а Бдилка выявляет скрытые желания. Перед вами инструмент настоящей свободы в мире, где ваши границы сознания станут как спасением, так и ловушкой." />
         <link rel="icon" type="image/x-icon" href="./favicon.png?v=1.0" />
         <link rel="stylesheet" href="./style.css?v=5.18.3" />
-        <script src="./functions.js?v=5.18.3"></script>
+        <script src="./functions.js?v=5.18.4"></script>
         <script src="./scheme.js?v=5.15"></script>
         <script src="./config.js?v=5.15"></script>
     </head>
@@ -44,7 +44,7 @@
                 <div class="modal-header">
                     Поляна
                 </div>
-                <table id="matrix"></table><br><br><small style="
+				<small style="
   font-family: 'Comic Sans MS', cursive, sans-serif; 
   color: #39ff14; 
   background: radial-gradient(circle, #0b0c10 0%, #1f2833 100%);
@@ -94,9 +94,13 @@
       }
     });
   </script>
-</small>
+</small><br><br>
+                <table id="matrix"></table><br><br>
                 <button id="button5" class="open-modal-btn" onclick="freeMartix()">Освободить расклады на реализацию</button>
                 <!-- Миниатюрный листинг раскладов -->
+				<div id="cardListContainerTitle" style="display:none;">
+                    Расклады:
+                </div>
                 <div id="cardListContainer">
                     <ul id="cardList" class="card-list"></ul>
                 </div>
