@@ -628,10 +628,12 @@ function renderMatrix(matrix) {
 
     // Добавляем выделение последовательности чисел
     if (countAllCards() > 0) {
+        document.getElementById("cardListContainerTitle").style.display = "block";
         document.getElementById("button3").style.display = "block";
     } else {
         cardListElement.innerHTML = '<b style="float:right;text-align:center;width:100%;">Здесь будут храниться ваши расклады. Вы сможете их удалить (ниже появится кнопка) или подождать когда расклады соберутся в квадатуру (5x5,7x7 и т.д.), чтобы расклады можно было освободить для реализации (об этой возможности вы будете уведомлены)!</b>';
         document.getElementById("button3").style.display = "none";
+        document.getElementById("cardListContainerTitle").style.display = "none";
     }
 }
 
