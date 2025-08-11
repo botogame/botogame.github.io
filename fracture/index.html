@@ -626,6 +626,8 @@ updateLightning();
     <option value="" disabled selected hidden style="color: #888;">Выберите</option>
         <option value="мужской">Мужчина</option>
         <option value="женский">Женщина</option>
+        <option value="много мужчин">Много мужчин</option>
+        <option value="много женщин">Много женщин</option>
       </select>
     </label>
 
@@ -1258,7 +1260,7 @@ function showDreamPopup(value) {
   updatemethodLabel();
   });
   function updatemethodLabel() {
-   if(genderSelect.value=='мужской'){
+   if(genderSelect.value=='мужской' || genderSelect.value=='много мужчин'){
    var mechta = 'желаете';
    }
    else{
@@ -1273,9 +1275,20 @@ function showDreamPopup(value) {
    
    
 var clientTime = clientTimeSelect.value;
+
+if (clientGenderSelect.value === "много мужчин" || clientGenderSelect.value === "много женщин") {
+if(clientTime=='текущий'){clientTime = 'текущие';}
+else if(clientTime=='младший'){clientTime = 'младшие';}
+else if(clientTime=='старший'){clientTime = 'старшие';}
+      
+    }
    
     if (clientGenderSelect.value === "мужской") {
       methodLabel.innerText = "Кем " + mechta+ " чтобы " + clientTime + " Клиент" + ne+ " был:";
+    } else if (clientGenderSelect.value === "много мужчин") {
+      methodLabel.innerText = "Кем " + mechta+ " чтобы " + clientTime + " Клиенты" + ne+ " были:";
+    } else if (clientGenderSelect.value === "много женщин") {
+      methodLabel.innerText = "Кем " + mechta+ " чтобы " + clientTime + " Клиенты" + ne+ " стали:";
     } else {
       methodLabel.innerText = "Кем " + mechta+ " чтобы " + clientTime + " Клиент" + ne+ " стала:";
     }
@@ -1404,8 +1417,27 @@ function updateStats(entries) {
    
    }
    
+   
+if (clientGenderSelect.value === "много мужчин" || clientGenderSelect.value === "много женщин") {
+if(clientTime=='текущий' || clientTime=='текушая'){clientTime = 'текущие';}
+else if(clientTime=='младший' || clientTime=='младшая'){clientTime = 'младшие';}
+else if(clientTime=='старший' || clientTime=='старшая'){clientTime = 'старшие';}
+      
+    }
+   
 
-    const transformedClientGender = clientGender === "мужской" ? "был" : "стала";
+    var transformedClientGender = null;
+	
+	if(clientGender === "мужской"){
+	    transformedClientGender = "был"
+	}else if(clientGender === "много мужчин"){
+	    transformedClientGender = "были"
+	}else if(clientGender === "много женщин"){
+	    transformedClientGender = "стали"
+	}else{
+	    transformedClientGender = "стала"
+	}
+	
     const sentence = `Надо мне ${transformedType} чтобы ${clientTime} ${name} ${transformedNe}${transformedClientGender} ${transformedNe}${method} и ${selectedText}`;
 	
 	const dreamValue = calculateDreamValue(sentence);
