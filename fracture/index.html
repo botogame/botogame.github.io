@@ -808,7 +808,7 @@ updateLightning();
         <li>Заимейте 4-е поношенные вещи гардероба 4-х разных людей для активации Перелома.</li>
         <li>Храните вещи для Перелома в отдельной коробке и не открывайте её никогда.</li>
         <li>В Клиенты можете записывать косвенные именые обозначения, в том числе "половинка того то".</li>
-        <li>Цель с посылом оцифровывается в код для принятия сном.</li>
+        <li>Текст заказа оцифровывается в код для принятия сном.</li>
         <li>При создании заказов соблюдайте баланс между союзниками.</li>
         <li>Когда баланс соблюден, заказы принимаются в реализацию и создатель добавит дополнительный код на ваш вклад в общество.</li>
         <li>Описание про Перелом читайте в <a href="https://www.litres.ru/book/andrey-volkov-33168547/tetrad-smerti-perelom-72117967/" target="_blank" style="color:#0f0;">книге</a> и ищите в <a href="https://t.me/pm_bdilka" target="_blank" style="color:#0f0;">телеграм группе</a>.</li>
@@ -1439,7 +1439,7 @@ else if(clientTime=='старший' || clientTime=='старшая'){clientTime
 	}
 	
     const sentence = `Надо мне ${transformedType} чтобы ${clientTime} ${name} ${transformedNe}${transformedClientGender} ${transformedNe}${method} и ${selectedText}`;
-	
+
 	const dreamValue = calculateDreamValue(sentence);
 
     let history = JSON.parse(localStorage.getItem("deaths") || "[]");
