@@ -1,15 +1,11 @@
 body {
-    background: url(../modules/79844eda36768706d5e9f010cbd8b2fa.jpg) repeat #2e2e2e;
-    backdrop-filter: blur(1px);
+    background: url(../modules/21_27_47.png) repeat #2e2e2e;
+    //backdrop-filter: blur(5px);
     color: #b8b8b8;
     font-family: Arial, sans-serif;
     margin: 0;
     padding: 20px;
     box-sizing: border-box;
-    background-blend-mode: overlay, color;
-    background-repeat: no-repeat;
-    background-position: center;
-    background-size: cover;
 }
 ul {
     list-style-type: none;
